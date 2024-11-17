@@ -1,0 +1,121 @@
+body {
+    background-color: rgb(250, 235, 242);
+    margin: 0;
+}
+ul.pagehat {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(249, 190, 243);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display:flex;
+    align-items: center;
+}
+li.pagehat {
+flex: 1;
+}
+li.pagehat a{
+    display: block;
+    color: rgb(0,0,0);
+    text-align: center;
+    padding: 25px;
+    text-decoration: none;
+}
+li.pagehat:not(:first-child) a:hover {
+    background-color: rgb(251, 121, 238);
+}
+li.pagehat:first-child a{
+    padding: 5px;
+}
+
+img.logo{
+    padding: 0;
+    height: 50px;
+    width:auto;
+}
+#button{
+    background-color: rgb(255,255,255);
+    padding: 10px;
+    border-style: hidden;
+    border-radius: 10px;
+}
+#button:hover{
+    background-color: rgb(207, 207, 207);
+}
+main{
+    margin-top: 70px;
+}
+.carousel {
+    position: relative;
+    margin: 0 auto; 
+    width: 100%;
+    padding: 10px 40px;
+    border: 1px solid #CCC;
+    border-radius: 15px;
+    background: #eee;
+}
+
+.carousel img {
+    display: block;
+    width: 100%; /* Убедитесь, что изображения занимают всю ширину */
+    height: auto; /* Поддержка пропорций */
+}
+
+.arrow {
+    position: absolute;
+    top: 60px;
+    padding: 0;
+    background: #ddd;
+    border-radius: 15px;
+    border: 1px solid gray;
+    font-size: 24px;
+    line-height: 24px;
+    color: #444;
+    display: block;
+}
+
+.arrow:focus {
+    outline: none;
+}
+
+.arrow:hover {
+    background: #ccc;
+    cursor: pointer;
+}
+
+.prev {
+    left: 7px;
+}
+
+.next {
+    right: 7px;
+}
+
+.gallery {
+    width: 100%;
+    overflow: hidden;
+}
+
+.gallery ul {
+    margin: 0;
+    display: flex;
+    padding: 0;
+    list-style: none;
+    transition: margin-left 250ms;
+    font-size: 0;
+}
+.gallery li {
+    display: inline-block;
+}
+.variant{
+    display: block;
+	width: 100%;
+	float: left;
+	transition: width .2s;
+}
+footer{
+    background-color: rgb(249, 190, 243); 
+}

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {/*ко всему тексту с типом */
+    background-color: lightblue;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    text-decoration: none; /*часто используется для удаления подстрочных ссылок*/
+}
+.center {/*элементы с class="center" можно также p.center тогда действует только на элементы <p> с классом center*/
+    text-indent: 50px;/*отступ первой строки*/
+    color: red;
+}
+#para1 {/*для идентифекатора*/
+    text-align: center;
+    color: rgb(165, 11, 111);
+    letter-spacing: 3px;/* пробел*/
+    line-height : 0.8;/*промежуток между строками*/
+    background-color: lightgrey;
+    text-transform: uppercase;
+    /*(lowercase capitalize)Свойство text-transform используется для указания прописных и строчных букв в тексте.
+    Его можно использовать для того чтобы превратить все в прописные или строчные буквы, или прописную букву первой буквы каждого слова:*/
+}
+
+p {
+    font-family: verdana;
+    font-size: 20px; /*(или 1.25em)*/
+}
+ h2, h3 {/*группировка селекторов*/
+    text-align: center;
+    /* выравнивание текста (center left right  justify(текст растягивается во всю ширину строки))*/
+    color: rgb(4, 93, 75);
+}
+section {
+    background-image: url("paper.gif");/*По умолчанию свойство background-image повторяет изображение как по горизонтали, так и по вертикали.*/
+background-repeat: repeat-x;/* повторяется только горизонтальнo( также repeat y; no repeat;)*/
+background-position: right top;
+background-attachment: fixed;/* изображение не прокучивается ыместе с остальной страницкй*/
+}
+/*Свойство border-style outline-style указывает тип отображаемой границы.
+outline не занимает места то есть не учавствует в блочной модели
+Допустимы следующие значения:
+
+dotted - Определяет пунктирную границу
+dashed - Определяет пунктирную границу
+solid - Определяет сплошную границу
+double - Определяет двойную границу
+groove - Определяет 3D канавку границы. Эффект зависит от значения цвета границы
+ridge - Определяет трехмерную ребристую границу. Эффект зависит от значения цвета границы
+inset - Определяет 3D-вставку границы. Эффект зависит от значения цвета границы
+outset - Определяет трехмерную границу начала. Эффект зависит от значения цвета границы
+none - Не определяет границы
+hidden - Определяет скрытую границу*/
+p.dotted {border-style: dotted;
+    border-width: 5px;
+}
+p.dashed {border-style: dashed;}
+p.solid {border-style: solid;}
+p.double {border-style: double;
+    border-color: red green blue yellow;
+}
+p.groove {border-style: groove;
+    border-width: 2px 10px 4px 20px;
+}
+p.ridge {border-style: ridge;
+    border-color: green;
+}
+p.inset {border-style: inset;}
+p.outset {border-style: outset;}
+p.none {border-style: none;}
+p.hidden {border-style: hidden;}
+p.mix {border-style: dotted dashed solid double;}
+/*Свойства CSS margin используются для создания пространства вокруг элементов вне любых определенных границ.
+С помощью CSS вы имеете полный контроль над полями. Существуют свойства для настройки поля для каждой стороны элемента (сверху, справа, снизу и слева).
+Можно задать для свойства Margin значение auto для горизонтального центрирования элемента в его контейнере.
+*/
+div {
+    border: 1px solid black;
+    margin: 25px 50px 75px 100px;
+    background-color: rgb(0, 191, 255);
+}
+p.ex1 {
+    margin-left: inherit;/*левое поле <p class = "EX1"> наследуется от родительского элемента (<div>):*/
+}
+/*Свойства CSS padding используются для создания пространства вокруг содержимого элемента внутри любых определенных границ.
+С помощью CSS вы имеете полный контроль над заполнением. Существуют свойства для настройки заполнения для каждой стороны элемента (сверху, справа, снизу и слева).
+*/
+div.class {
+    border: 1px solid rgb(6, 29, 0);
+    background-color: rgb(134, 214, 142);
+    padding-top: 50px;
+    padding-right: 30px;
+    padding-bottom: 50px;
+    padding-left: 80px;
+}
+a{
+    font-size: 50px;
+}
+/* unvisited link */
+a:link {
+    color: red;
+}
+
+/* visited link */
+a:visited {
+    color: green;
+}
+
+/* mouse over link */
+a:hover {
+    color: hotpink;
+}
+
+/* selected link */
+a:active {
+    color: blue;
+}
+</style>
+</head>
+<body>
+<h1 style="border:2px solid rgb(218, 158, 147);/*установка гранц и их цвета */">Hello World</h1>
+<h1>Мой первый пример CSS</h1>
+<h1 class="center">Red and center-aligned heading</h1>
+<h2>Smaller heading!</h2>
+<h3>Smaller smaller heading!</h3>
+<p>Это абзац.</p>
+<p id="para1">Hello World!</p>
+<section>
+<p1>fon fon fon fon
+</p1>
+</section>
+<p class="dotted">A dotted border.</p>
+<p class="dashed">A dashed border.</p>
+<p class="solid">A solid border.</p>
+<p class="double">A double border.</p>
+<p class="groove">A groove border.</p>
+<p class="ridge">A ridge border.</p>
+<p class="inset">An inset border.</p>
+<p class="outset">An outset border.</p>
+<p class="none">No border.</p>
+<p class="hidden">A hidden border.</p>
+<p class="mix">A mixed border.</p>
+<div>This div element has a top margin of 25px, a right margin of 50px, a bottom margin of 75px, and a left margin of 100px.</div>
+<p class="ex1">This paragraph has an inherited left margin (from the div element).</p>
+<div class="class">This div element has a top padding of 50px, a right padding of 30px, a bottom padding of 50px, and a left padding of 80px.</div>
+<a href="shablonsite.html"> ссылка</a>
+</body>
+</html>
+

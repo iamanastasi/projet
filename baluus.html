@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en">    
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование текста</title>
+</head>
+<body>
+    <h1>Изменение текста</h1>
+    <input type="text" id="editableText" value="Этот текст можно изменить"/>
+    <button onclick="saveEdits()">Сохранить изменения</button>
+
+    <script>
+        function saveEdits() {
+            // Получаем значение текстового поля
+            const text = document.getElementById('editableText').value;
+            // Сохраняем измененный текст
+            localStorage.setItem('editedText', text);
+            alert("Текст сохранен!");
+        }
+
+        // При загрузке страницы проверяем, есть ли сохраненные данные
+        window.onload = () => {
+            const savedText = localStorage.getItem('editedText');
+            if (savedText) {
+                document.getElementById('editableText').value = savedText;
+            }
+        };
+    </script>
+</body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шапка сайта</title>
+    <style>
+        html {
+ box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+ box-sizing: inherit;
+}
+
+/* Убираем стандартное подчёркивание у ссылок */
+a {
+ text-decoration: none;
+}
+
+/* Устанавливаем минимальный размер экрана и добавляем фоновое изображение */
+body {
+ min-height: 100vh;
+ background-image: url(../images/bg.jpg);
+ background-repeat: no-repeat;
+ background-position: center center;
+ background-size: cover;
+ font-family: "Montserrat", sans-serif; 
+}
+
+.container {
+ max-width: 1190px;
+ padding: 0 15px; 
+ margin: 0 auto; 
+}
+.header {
+ padding-top: 30px; 
+}
+
+.header__inner {
+ display: flex; /* Выстраиваем элементы внутри контейнера в строку */
+ justify-content: space-between; /* Распределяем элементы по ширине контейнера */
+ align-items: center; /* Выравниваем элементы по вертикали */
+}
+
+/* Стилизуем логотип */
+.logo {
+ text-transform: uppercase; /* Преобразуем текст в верхний регистр */
+ font-size: 28px; /* Устанавливаем размер шрифта */
+ font-weight: 900; /* Устанавливаем жирное начертание шрифта */
+ color: #ccebfd; /* Устанавливаем цвет логотипа */
+}
+
+/* Стилизуем списки меню */
+.menu__list {
+ display: flex; /* Отображаем элементы списка в строку */
+ list-style: none; /* Убираем стандартные маркеры (чёрные точки) */
+}
+
+/* Стилизуем пункты меню */
+.menu__list-item {
+ margin-right: 20px; /* Добавляем отступ между пунктами меню */
+}
+
+/* Стилизуем ссылки в меню */
+.menu__list-link {
+ padding: 10px 20px; /* Увеличиваем вертикальный и горизонтальный отступы */
+ font-size: 20px; /* Уменьшаем размер шрифта */
+ color: #dcf5fe; /* Устанавливаем цвет ссылок */
+ cursor: pointer; /* Задаём изменение вида курсора при наведении на пункты меню */
+ transition: all 0.3s; /* Добавляем плавное изменение стилей при наведении */
+}
+
+/* Добавляем стилизацию ссылок в меню при наведении курсора */
+.menu__list-link:hover {
+ color: #eb3e30; /* Задаём изменение цвета ссылок при наведении курсора */
+}
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <h1>Мой Сайт</h1> <!-- Логотип -->
+    </div>
+    <nav>
+        <a href="#">Главная</a>
+        <a href="#">О нас</a>
+        <a href="#">Услуги</a>
+        <a href="#">Контакты</a>
+    </nav>
+</header>
+
+</body>
+</html>

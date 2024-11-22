@@ -2,43 +2,46 @@ body {
     background-color: rgb(250, 235, 242);
     margin: 0;
 }
-* {box-sizing: border-box;}
+   header {
+    box-sizing: border-box;
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     flex-wrap: wrap;
+     background-color: #FFEB3B;
+     padding: 20px 10px;
+   }
 
-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  background-color: #FFEB3B;
-  padding: 20px 10px;
-}
-header li {
-  color: #212121;
-  padding: 12px;
-  text-decoration: none;
-  list-style-type:none;
-  font-size: 18px; 
-  border-radius: 4px;
-}
+   header ul {
+     display: flex;
+     align-items: center;
+     width: 100%; 
+   }
 
-header li.logo {
-  font-size: 25px;
-  font-weight: bold;
-}
+   header li {
+     flex: 1;
+     color: #212121;
+     padding: 12px;
+     text-decoration: none;
+     list-style-type: none;
+     font-size: 18px;
+     border-radius: 4px;
+     text-align: center; 
+   }
 
-header li:hover {
-  background-color: #FBC02D;
-  color: #212121;
-}
+   header li.logo {
+     font-size: 25px;
+     font-weight: bold;
+   }
 
-header li.active {
-  background-color: #FBC02D;
-}
+   header li:hover {
+     background-color: #FBC02D;
+     color: #212121;
+   }
 
-ul {
-  display: flex;
-  align-items: center;
-  }
+   header li.active {
+     background-color: #FBC02D;
+   }
 main{
     margin-top: 70px;
 }

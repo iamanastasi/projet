@@ -2,8 +2,9 @@ body {
     background-color: rgb(250, 235, 242);
     margin: 0;
 }
-a{
+a, a:visited{
     text-decoration: none;
+    color: rgb(0, 0, 0);
 }
    header {
     box-sizing: border-box;
@@ -23,30 +24,23 @@ a{
 
    header li {
      flex: 1;
-     color: #212121;
+     color: rgb(0, 0, 0);
      padding: 12px;
-     text-decoration: none;
      list-style-type: none;
      font-size: 18px;
      border-radius: 4px;
      text-align: center; 
    }
+   header li:hover:not(:first-child) {
+     background-color: rgb(145, 14, 132);
+     color: rgb(0, 0, 0);
+       }
 
-   header li.logo {
-     font-size: 25px;
-     font-weight: bold;
-   }
-
-   header li:hover {
-     background-color: #FBC02D;
-     color: #212121;
-   }
-
-   header li.active {
-     background-color: #FBC02D;
-   }
+   header li.active:not(:first-child) {
+     background-color: rgb(145, 14, 132);
+       }
 main{
-    margin-top: 70px;
+    margin-top: 24px;
 }
 .carousel {
     position: relative;

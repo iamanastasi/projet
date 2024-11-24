@@ -2,49 +2,43 @@ body {
     background-color: rgb(250, 235, 242);
     margin: 0;
 }
-ul.pagehat {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: rgb(249, 190, 243);
-    position: fixed;
-    top: 0;
-    width: 100%;
-    display:flex;
-    align-items: center;
-}
-li.pagehat {
-flex: 1;
-}
-li.pagehat a{
-    display: block;
-    color: rgb(0,0,0);
-    text-align: center;
-    padding: 25px;
+a, a:visited{
     text-decoration: none;
+    color: rgb(0, 0, 0);
 }
-li.pagehat:not(:first-child) a:hover {
-    background-color: rgb(251, 121, 238);
-}
-li.pagehat:first-child a{
-    padding: 5px;
-}
+   header {
+    box-sizing: border-box;
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     flex-wrap: wrap;
+     background-color: rgb(249, 190, 243);
+     padding: 20px 10px;
+   }
 
-img.logo{
-    padding: 0;
-    height: 50px;
-    width:auto;
-}
-#button{
-    background-color: rgb(255,255,255);
-    padding: 10px;
-    border-style: hidden;
-    border-radius: 10px;
-}
-#button:hover{
-    background-color: rgb(207, 207, 207);
-}
+   header ul {
+     display: flex;
+     align-items: center;
+     width: 100%; 
+   }
+
+   header li {
+     flex: 1;
+     color: rgb(0, 0, 0);
+     padding: 12px;
+     list-style-type: none;
+     font-size: 18px;
+     border-radius: 4px;
+     text-align: center; 
+   }
+   header li:hover:not(:first-child) {
+     background-color: rgb(145, 14, 132);
+     color: rgb(0, 0, 0);
+       }
+
+   header li.active:not(:first-child) {
+     background-color: rgb(145, 14, 132);
+       }
 main{
     margin-top: 70px;
 }

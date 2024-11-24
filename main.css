@@ -51,72 +51,37 @@ main{
     margin-top: 24px;
 }
 .carousel {
-    position: relative;
-    margin: 0 auto; 
-    width: 100%;
-    padding: 10px 40px;
-    border: 1px solid #CCC;
-    border-radius: 15px;
-    background: #eee;
+  position: relative;
+  width: 1024px;
+  height: 768px;
+  margin: 50px auto 0;
 }
-
-.carousel img {
-    display: block;
-    width: 100%; 
-    height: auto; 
-}
-
-.arrow {
-    position: absolute;
-    top: 60px;
-    padding: 0;
-    background: #ddd;
-    border-radius: 15px;
-    border: 1px solid gray;
-    font-size: 24px;
-    line-height: 24px;
-    color: #444;
-    display: block;
-}
-
-.arrow:focus {
-    outline: none;
-}
-
-.arrow:hover {
-    background: #ccc;
-    cursor: pointer;
-}
-
-.prev {
-    left: 7px;
-}
-
-.next {
-    right: 7px;
-}
-
-.gallery {
+.carousel-list {
     width: 100%;
     overflow: hidden;
-}
-
-.gallery ul {
-    margin: 0;
+  }
+.carousel-track {
     display: flex;
-    padding: 0;
-    list-style: none;
-    transition: margin-left 250ms;
-    font-size: 0;
-}
-.gallery li {
-    display: inline-block;
-}
-.variant{
-    display: block;
-	width: 100%;
-	float: left;
-	transition: width .2s;
+  }
+  .slide {
+    width: 1024px;
+    height: 768px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #000;
+  }
+  .carousel-buttons {
+    margin-top: 15px;
+    text-align: center;
+  }
+  .next,
+.prev {
+  background: none;
+  border: none;
+  margin: 0 10px;
+  font-size: 30px;
+  cursor: pointer;
 }
 footer{
     background-color: rgb(249, 190, 243); 

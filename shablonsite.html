@@ -18,29 +18,26 @@
         </ul>
     </header>
     <main>
-      <div id="carousel" class="carousel">
-        <button class="arrow prev">⇦</button>
-        <div class="gallery">
-            <ul>
-                <li><img src="image-carusel.png"></li>
-                <li><img src="image-carusel.png"></li>
-                <li><img src="image-carusel.png"></li>
-                <li><img src="image-carusel.png"></li>
-                <li><img src="image-carusel.png"></li>
-                <li><img src="image-carusel.png"></li>
-                <li><img src="image-carusel.png"></li>
-                <li><img src="image-carusel.png"></li>
-                <li><img src="image-carusel.png"></li>
-            </ul>
+      <div class="carousel">
+        <div class="carousel-list">
+          <div class="carousel-track">  
+                <div class="slide"><img src="image-carusel.png"></div>
+                <div class="slide"><img src="image-carusel.png"></div>
+                <div class="slide"><img src="image-carusel.png"></div>
+                <div class="slide"><img src="image-carusel.png"></div>
+                <div class="slide"><img src="image-carusel.png"></div>
+                <div class="slide"><img src="image-carusel.png"></div>
+                <div class="slide"><img src="image-carusel.png"></div>
+                <div class="slide"><img src="image-carusel.png"></div>
+                <div class="slide"><img src="image-carusel.png"></div>
+            </div>
         </div>
-        <button class="arrow next">⇨</button>
+        <div class="carousel-buttons">
+        <button type="button" class="prev">&larr;</button>
+        <button class="arrow next">&rarr;</button>
+        </div>
     </div>
-    <style>
-        div.carousel{
-            display:none;
-        }
-    </style>
-    <script>
+    <!-- <script>
         const carousel = document.getElementById('carousel'); // Получаем элемент карусели
         let i = 1;
     
@@ -73,7 +70,7 @@
             }
             list.style.marginLeft = position + 'px';
         };
-    </script> 
+    </script> -->
         <section>
           <h2>Бееееееее овца</h2>
           <p>Описание описание описание описание описание описание описание описание описание 

@@ -38,39 +38,26 @@
         </div>
     </div>
      <script>
-       // Получаем элементы карусели
 const track = document.querySelector('.carousel-track');
 const slides = Array.from(track.children);
 const nextButton = document.querySelector('.next');
 const prevButton = document.querySelector('.prev');
-
-// Устанавливаем начальный индекс слайда
 let currentIndex = 0;
-
-// Функция для обновления отображаемого слайда
 function updateSlides() {
-    const slideWidth = slides[0].getBoundingClientRect().width; // Получаем ширину слайда
-    const newTransformValue = -currentIndex * slideWidth; // Рассчитываем новое значение трансформации
-    track.style.transform = `translateX(${newTransformValue}px)`; // Применяем трансформацию
+    const slideWidth = slides[0].getBoundingClientRect().width; 
+    const newTransformValue = -currentIndex * slideWidth;
+    track.style.transform = `translateX(${newTransformValue}px)`; 
 }
-
-// Функция для перехода на следующий слайд
 function moveToNextSlide() {
-    currentIndex = (currentIndex + 1) % slides.length; // Увеличиваем индекс, зацикливаем
+    currentIndex = (currentIndex + 1) % slides.length; 
     updateSlides();
 }
-
-// Функция для перехода на предыдущий слайд
 function moveToPrevSlide() {
-    currentIndex = (currentIndex - 1 + slides.length) % slides.length; // Уменьшаем индекс, зацикливаем
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length; 
     updateSlides();
 }
-
-// Добавляем обработчики событий для кнопок
 nextButton.addEventListener('click', moveToNextSlide);
 prevButton.addEventListener('click', moveToPrevSlide);
-
-// Изначально обновляем слайды
 updateSlides();
     </script> 
         <section>

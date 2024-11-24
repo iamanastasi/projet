@@ -113,3 +113,26 @@ div.footer {
 .footer-section {
     width: 30%;
 }
+
+.footer-section h4 {
+    margin-bottom: 10px;
+}
+
+.footer-section ul {
+    margin: 5px 0;
+    list-style-type: none;
+     padding: 0;
+}
+
+.footer-section a {
+  text-decoration: underline;
+}
+
+.footer-section a:visited {
+    color: rgb(0, 0, 0);
+}
+#logo-footer {
+    height: 80px;
+    width: auto;
+    margin: 20px;
+}

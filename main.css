@@ -42,6 +42,41 @@ a, a:visited{
 main{
     margin-top: 70px;
 }
-footer{
-    background-color: rgb(249, 190, 243); 
+footer {
+    background-color: rgb(249, 190, 243);
+    padding: 20px 0;
+}
+
+div.footer {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin: auto;
+}
+
+.footer-section {
+    width: 30%;
+}
+
+.footer-section h4 {
+    margin-bottom: 10px;
+}
+
+.footer-section ul {
+    margin: 5px 0;
+    list-style-type: none;
+     padding: 0;
+}
+
+.footer-section a {
+  text-decoration: underline;
+}
+
+.footer-section a:visited {
+    color: rgb(0, 0, 0);
+}
+#logo-footer {
+    height: 80px;
+    width: auto;
+    margin: 20px;
 }

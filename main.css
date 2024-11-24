@@ -2,46 +2,52 @@ body {
     background-color: rgb(250, 235, 242);
     margin: 0;
 }
-a, a:visited{
+
+a,
+a:visited {
     text-decoration: none;
     color: rgb(0, 0, 0);
 }
-   header {
+
+header {
     box-sizing: border-box;
-     display: flex;
-     flex-direction: row;
-     justify-content: space-between;
-     flex-wrap: wrap;
-     background-color: rgb(249, 190, 243);
-     padding: 20px 10px;
-   }
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    background-color: rgb(249, 190, 243);
+    padding: 20px 10px;
+}
 
-   header ul {
-     display: flex;
-     align-items: center;
-     width: 100%; 
-   }
+header ul {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
 
-   header li {
-     flex: 1;
-     color: rgb(0, 0, 0);
-     padding: 12px;
-     list-style-type: none;
-     font-size: 18px;
-     border-radius: 4px;
-     text-align: center; 
-   }
-   header li:hover:not(:first-child) {
-     background-color: rgb(145, 14, 132);
-     color: rgb(0, 0, 0);
-       }
+header li {
+    flex: 1;
+    color: rgb(0, 0, 0);
+    padding: 12px;
+    list-style-type: none;
+    font-size: 18px;
+    border-radius: 4px;
+    text-align: center;
+}
 
-   header li.active:not(:first-child) {
-     background-color: rgb(145, 14, 132);
-       }
-main{
+header li:hover:not(:first-child) {
+    background-color: rgb(145, 14, 132);
+    color: rgb(0, 0, 0);
+}
+
+header li.active:not(:first-child) {
+    background-color: rgb(145, 14, 132);
+}
+
+main {
     margin-top: 70px;
 }
+
 footer {
     background-color: rgb(249, 190, 243);
     padding: 20px 0;
@@ -65,16 +71,17 @@ div.footer {
 .footer-section ul {
     margin: 5px 0;
     list-style-type: none;
-     padding: 0;
+    padding: 0;
 }
 
 .footer-section a {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .footer-section a:visited {
     color: rgb(0, 0, 0);
 }
+
 #logo-footer {
     height: 80px;
     width: auto;

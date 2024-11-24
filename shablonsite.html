@@ -22,7 +22,7 @@
         <div class="carousel-list">
           <div class="carousel-track">  
                 <div class="slide"><img src="image-carusel.png"></div>
-                <div class="slide"><img src="image-carusel.png"></div>
+                <div class="slide"><img src="image-carusel.swin.png"></div>
                 <div class="slide"><img src="image-carusel.png"></div>
                 <div class="slide"><img src="image-carusel.png"></div>
                 <div class="slide"><img src="image-carusel.png"></div>
@@ -37,40 +37,42 @@
         <button class="arrow next">&rarr;</button>
         </div>
     </div>
-    <!-- <script>
-        const carousel = document.getElementById('carousel'); // Получаем элемент карусели
-        let i = 1;
-    
-        for (let li of carousel.querySelectorAll('li')) {
-            li.style.position = 'relative';
-            li.insertAdjacentHTML('beforeend', <span style="position:absolute;left:0;top:0">${i}</span>); // Исправлено добавление строки
-            i++;
-        }
-    
-        let width = carousel.offsetWidth; // ширина карусели
-        let count = 1; // видимое количество изображений
-    
-        let list = carousel.querySelector('ul');
-        let listElems = carousel.querySelectorAll('li');
-    
-        let position = 0; // положение ленты прокрутки
-    
-        carousel.querySelector('.prev').onclick = function() {
-            position += width * count;
-            if (position > 0) {
-                position = -width * (listElems.length - count); // зацикливание
-            }
-            list.style.marginLeft = position + 'px';
-        };
-    
-        carousel.querySelector('.next').onclick = function() {
-            position -= width * count;
-            if (position < -width * (listElems.length - count)) {
-                position = 0; // зацикливание
-            }
-            list.style.marginLeft = position + 'px';
-        };
-    </script> -->
+     <script>
+       // Получаем элементы карусели
+const track = document.querySelector('.carousel-track');
+const slides = Array.from(track.children);
+const nextButton = document.querySelector('.next');
+const prevButton = document.querySelector('.prev');
+
+// Устанавливаем начальный индекс слайда
+let currentIndex = 0;
+
+// Функция для обновления отображаемого слайда
+function updateSlides() {
+    const slideWidth = slides[0].getBoundingClientRect().width; // Получаем ширину слайда
+    const newTransformValue = -currentIndex * slideWidth; // Рассчитываем новое значение трансформации
+    track.style.transform = `translateX(${newTransformValue}px)`; // Применяем трансформацию
+}
+
+// Функция для перехода на следующий слайд
+function moveToNextSlide() {
+    currentIndex = (currentIndex + 1) % slides.length; // Увеличиваем индекс, зацикливаем
+    updateSlides();
+}
+
+// Функция для перехода на предыдущий слайд
+function moveToPrevSlide() {
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length; // Уменьшаем индекс, зацикливаем
+    updateSlides();
+}
+
+// Добавляем обработчики событий для кнопок
+nextButton.addEventListener('click', moveToNextSlide);
+prevButton.addEventListener('click', moveToPrevSlide);
+
+// Изначально обновляем слайды
+updateSlides();
+    </script> 
         <section>
           <h2>Бееееееее овца</h2>
           <p>Описание описание описание описание описание описание описание описание описание 

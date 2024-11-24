@@ -120,6 +120,84 @@ body {
         <a href="#">Контакты</a>
     </nav>
 </header>
+<footer>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>Контакты</h3>
+            <p>Адрес: Улица Примерная, 1, Город, Страна</p>
+            <p>Телефон: +123 456 7890</p>
+            <p>Email: info@hotel-example.com</p>
+        </div>
+        <div class="footer-section">
+            <h3>Навигация</h3>
+            <ul>
+                <li><a href="#home">Главная</a></li>
+                <li><a href="#about">О нас</a></li>
+                <li><a href="#services">Услуги</a></li>
+                <li><a href="#gallery">Галерея</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Следите за нами</h3>
+            <ul class="social-media">
+                <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
+                <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
+                <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+                <li><a href="https://linkedin.com" target="_blank">LinkedIn</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2023 Hotel Example. Все права защищены.</p>
+    </div>
+</footer>
+<style>
+    footer {
+    background-color: #212121;
+    color: #fafafa;
+    padding: 20px 0;
+}
 
+.footer-container {
+    display: flex;
+    justify-content: space-around;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.footer-section {
+    width: 30%;
+}
+
+.footer-section h3 {
+    margin-bottom: 10px;
+}
+
+.footer-section p, 
+.footer-section ul {
+    margin: 5px 0;
+}
+
+.footer-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.footer-section a {
+    color: #FFEB3B;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 15px;
+    border-top: 1px solid #FFEB3B;
+}
+</style>
 </body>
 </html>

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Шаблон</title>
-        <link rel="stylesheet" href="main.css">
-    </head>
-    <body>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шаблон</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
     <header class="pagehat">
         <ul class="pagehat">
             <li><a href="shablonsite.html"><img src="logo.png" alt="Логотип" class="logo"></a></li>
@@ -18,73 +20,78 @@
         </ul>
     </header>
     <main>
-      <div class="carousel">
-        <div class="carousel-list">
-          <div class="carousel-track">  
-                <div class="slide"><img src="image-carusel.png"></div>
-                <div class="slide"><img src="image-carusel.swin.png"></div>
-                <div class="slide"><img src="image-carusel.png"></div>
-                <div class="slide"><img src="image-carusel.png"></div>
-                <div class="slide"><img src="image-carusel.png"></div>
-                <div class="slide"><img src="image-carusel.png"></div>
-                <div class="slide"><img src="image-carusel.png"></div>
-                <div class="slide"><img src="image-carusel.png"></div>
-                <div class="slide"><img src="image-carusel.png"></div>
+        <div class="carousel">
+            <div class="carousel-list">
+                <div class="carousel-track">
+                    <div class="slide"><img src="image-carusel.png"></div>
+                    <div class="slide"><img src="image-carusel.swin.png"></div>
+                    <div class="slide"><img src="image-carusel.png"></div>
+                    <div class="slide"><img src="image-carusel.png"></div>
+                    <div class="slide"><img src="image-carusel.png"></div>
+                    <div class="slide"><img src="image-carusel.png"></div>
+                    <div class="slide"><img src="image-carusel.png"></div>
+                    <div class="slide"><img src="image-carusel.png"></div>
+                    <div class="slide"><img src="image-carusel.png"></div>
+                </div>
+            </div>
+            <div class="carousel-buttons">
+                <button type="button" class="prev">&larr;</button>
+                <button class="arrow next">&rarr;</button>
             </div>
         </div>
-        <div class="carousel-buttons">
-        <button type="button" class="prev">&larr;</button>
-        <button class="arrow next">&rarr;</button>
-        </div>
-    </div>
-     <script>
-const track = document.querySelector('.carousel-track');
-const slides = Array.from(track.children);
-const nextButton = document.querySelector('.next');
-const prevButton = document.querySelector('.prev');
-let currentIndex = 0;
-function updateSlides() {
-    const slideWidth = slides[0].getBoundingClientRect().width; 
-    const newTransformValue = -currentIndex * slideWidth;
-    track.style.transform = `translateX(${newTransformValue}px)`; 
-}
-function moveToNextSlide() {
-    currentIndex = (currentIndex + 1) % slides.length; 
-    updateSlides();
-}
-function moveToPrevSlide() {
-    currentIndex = (currentIndex - 1 + slides.length) % slides.length; 
-    updateSlides();
-}
-nextButton.addEventListener('click', moveToNextSlide);
-prevButton.addEventListener('click', moveToPrevSlide);
-updateSlides();
-    </script> 
+        <script>
+            const track = document.querySelector('.carousel-track');
+            const slides = Array.from(track.children);
+            const nextButton = document.querySelector('.next');
+            const prevButton = document.querySelector('.prev');
+            let currentIndex = 0;
+            function updateSlides() {
+                const slideWidth = slides[0].getBoundingClientRect().width;
+                const newTransformValue = -currentIndex * slideWidth;
+                track.style.transform = `translateX(${newTransformValue}px)`;
+            }
+            function moveToNextSlide() {
+                currentIndex = (currentIndex + 1) % slides.length;
+                updateSlides();
+            }
+            function moveToPrevSlide() {
+                currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                updateSlides();
+            }
+            nextButton.addEventListener('click', moveToNextSlide);
+            prevButton.addEventListener('click', moveToPrevSlide);
+            updateSlides();
+        </script>
         <section>
-          <h2>Бееееееее овца</h2>
-          <p>Описание описание описание описание описание описание описание описание описание 
-             описание описание описание описание описание описание описание описание описание
-             описание описание описание описание описание описание описание описание описание
-        </p>
+            <h2>Бееееееее овца</h2>
+            <p>Описание описание описание описание описание описание описание описание описание
+                описание описание описание описание описание описание описание описание описание
+                описание описание описание описание описание описание описание описание описание
+            </p>
         </section>
         <section>
-          <h4>Акции</h4>
-          <p>здесь должна быть карусель</p>
+            <h4>Акции</h4>
+            <p>здесь должна быть карусель</p>
         </section>
         <footer>
-            <div><img src="logo.png" alt="Логотип"></div>
-          <h5>Контакты</h5>
-          <ul>
-          <li class="footer">+7 999 000 00 00</p></li>
-          <li class="footer">mail@mail.ru</li>
-          </ul>
-          <h5>Мы в соц. сетях</h5>
-          <ul class="social-media">
-              <li><a href="https://vk.com">Вконтакте</a></li>
-              <li><a href="https://instagram.com">Instagram</a></li>
-              <li><a href="https://telegram.org">Телеграм</a></li>
-          </ul>
+            <div class="footer">
+                <div><img src="logo.png" alt="Логотип"></div>
+                <div class="footer-section">
+                    <h5>Контакты</h5>
+                    <ul>
+                        <li class="footer">+7 999 000 00 00</p>
+                        </li>
+                        <li class="footer">mail@mail.ru</li>
+                    </ul>
+                    <h5>Мы в соц. сетях</h5>
+                    <ul class="social-media">
+                        <li><a href="https://vk.com">Вконтакте</a></li>
+                        <li><a href="https://instagram.com">Instagram</a></li>
+                        <li><a href="https://telegram.org">Телеграм</a></li>
+                    </ul>
+                </div>
         </footer>
-    </main>  
-  </body>
+    </main>
+</body>
+
 </html>

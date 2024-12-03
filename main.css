@@ -85,9 +85,9 @@ div.slide {
     border: 1px solid #000;
 }
 img.slide {
-    min-width: 100%;
-    min-height: 100%;
-    flex-shrink: 0;
+    height: 768px;
+    width:auto;
+    overflow: hidden;
     }
 .carousel-buttons {
     margin-top: 15px;

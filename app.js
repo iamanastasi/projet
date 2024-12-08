@@ -11,3 +11,14 @@ function insertText(targetId, storageKey) {
         console.error(`Элемент с id '${targetId}' не найден.`);
     }
 }
+function saveEdits(targetId) {
+    const text = document.getElementById('editableText').value;
+    localStorage.setItem('editedText', text);
+    alert("Текст сохранен!");
+}
+window.onload = () => {
+    const savedText = localStorage.getItem('editedText');
+    if (savedText) {
+        document.getElementById('editableText').value = savedText;
+    }
+};

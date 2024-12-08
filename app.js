@@ -12,13 +12,13 @@ function insertText(targetId, storageKey) {
     }
 }
 function saveEdits(targetId) {
-    const text = document.getElementById('editableText').value;
-    localStorage.setItem('editedText', text);
+    const text = document.getElementById(targetId).value;
+    localStorage.setItem(targetId, text);
     alert("Текст сохранен!");
 }
 window.onload = () => {
-    const savedText = localStorage.getItem('editedText');
+    const savedText = localStorage.getItem(targetId);
     if (savedText) {
-        document.getElementById('editableText').value = savedText;
+        document.getElementById(targetId).value = savedText;
     }
 };

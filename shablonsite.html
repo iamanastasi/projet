@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Шаблон</title>
     <link rel="stylesheet" href="main.css">
+    <script type="text/javascript" src="app.js"></script>
 </head>
 
 <body>
@@ -64,14 +65,7 @@
         </script>
         <section>
             <h2>Бееееееее овца</h2>
-            <p id="description">Описание</p>
-            <script>
-                insertText(); 
-                function insertText() {
-                    const savedText = localStorage.getItem('editedText');
-                        document.getElementById('description').innerText = savedText; 
-                }
-            </script>
+            <p id="description">Описание</p><script>insertText('description', 'editedText'); </script>
         </section>
         <section>
             <h4>Акции</h4>

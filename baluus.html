@@ -13,14 +13,10 @@
 
     <script>
         function saveEdits() {
-            // Получаем значение текстового поля
             const text = document.getElementById('editableText').value;
-            // Сохраняем измененный текст
             localStorage.setItem('editedText', text);
             alert("Текст сохранен!");
         }
-
-        // При загрузке страницы проверяем, есть ли сохраненные данные
         window.onload = () => {
             const savedText = localStorage.getItem('editedText');
             if (savedText) {

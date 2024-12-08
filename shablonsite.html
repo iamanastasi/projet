@@ -64,10 +64,13 @@
         </script>
         <section>
             <h2>Бееееееее овца</h2>
-            <p>Описание описание описание описание описание описание описание описание описание
-                описание описание описание описание описание описание описание описание описание
-                описание описание описание описание описание описание описание описание описание
-            </p>
+            <script>
+                insertText(); 
+                function insertText() {
+                    const savedText = localStorage.getItem('editedText');
+                        document.getElementById('description').innerText = savedText; 
+                }
+            </script>
         </section>
         <section>
             <h4>Акции</h4>

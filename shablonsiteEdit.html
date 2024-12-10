@@ -64,8 +64,9 @@
             updateSlides();
         </script>
         <section>
-            <h2>Бееееееее овца</h2>
-           <input type="text" id="DescriptionMainEditable" value="Этот текст можно изменить" />
+            <input type="text" id="DescriptionMainEditable" value="Название" />
+                <button onclick="saveEdits('DescriptionMainEditable')">Сохранить изменения</button>
+                <textarea rows="10" id="DescriptionMainEditable" value="Описание"></textarea>
             <button onclick="saveEdits('DescriptionMainEditable')">Сохранить изменения</button>
         </section>
         <section>
@@ -86,8 +87,11 @@
                 <div class="footer-section">
                     <h4>Мы в соц. сетях</h4>
                     <ul class="social-media">
-                        <li><a href="https://vk.com">Вконтакте</a></li>
-                        <li><a href="https://instagram.com">Instagram</a></li>
+                        <li>
+                            <input type="text" id="VkontakteMainEditable" value="Вконтакте" />
+                            <button onclick="saveEdits('MainEditable')">Сохранить изменения</button></li>
+                        <li><input type="text" id="InstagramMainEditable" value="Instagram" />
+                            <button onclick="saveEdits('InstagramMainEditable')">Сохранить изменения</button></li>
                         <li><a href="https://telegram.org">Телеграм</a></li>
                     </ul>
                 </div>

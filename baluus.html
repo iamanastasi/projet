@@ -136,6 +136,91 @@
             <a href="#">Контакты</a>
         </nav>
     </header>
+<style>
+#textInput {
+    width: 100%;
+    height: 150px;
+    margin-bottom: 10px;
+    resize: none; /* Запрет на изменение размера */
+}
+</style>
+</head>
+<body>
+<h1>Введите текст</h1>
+<textarea id="textInput" placeholder="Введите ваш текст здесь..."></textarea><br>
+<button onclick="saveText()">Сохранить текст</button>
+
+<script>
+function saveText() {
+    const text = document.getElementById('textInput').value;
+    localStorage.setItem('savedText', text);
+    alert("Текст сохранен!");
+}
+
+// Функция для загрузки текста
+function loadText() {
+    const savedText = localStorage.getItem('savedText');
+    if (savedText) {
+        document.getElementById('textInput').value = savedText;
+    }
+}
+
+// Автоматическая загрузка текста при загрузке страницы
+window.onload = loadText;
+</script>
+<h1>Редактирование данных</h1>
+
+<input type="text" id="NameMainEditable" value="Название" />
+<button onclick="saveEdits('NameMainEditable')">Сохранить изменения</button>
+
+<textarea id="DescriptionMainEditable" placeholder="Описание"></textarea>
+<button onclick="saveEdits('DescriptionMainEditable')">Сохранить изменения</button>
+
+<h2 id="NameMain">Название</h2>
+<p id="DescriptionMain">Описание</p>
+
+<script>
+    // Функция для вставки текста из localStorage в указанный элемент
+    function insertText(targetId, storageKey) {
+        const savedText = localStorage.getItem(storageKey);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+            if (savedText) {
+                targetElement.value = savedText; 
+                // Если это заголовок или элемент <p>, используем innerText
+                if (targetElement.tagName === 'H2' || targetElement.tagName === 'P') {
+                    targetElement.innerText = savedText;
+                }
+            } else {
+                console.warn('Нет данных для вставки.');
+            }
+        } else {
+            console.error(`Элемент с id '${targetId}' не найден.`);
+        }
+    }
+
+    // Функция для сохранения изменений в localStorage
+    function saveEdits(targetId) {
+        const text = document.getElementById(targetId).value;
+        localStorage.setItem(targetId, text);
+        alert("Текст сохранен!");
+        // Обновить отображение текста сразу после сохранения
+        if (targetId === 'NameMainEditable') {
+            document.getElementById('NameMain').innerText = text;
+        } else if (targetId === 'DescriptionMainEditable') {
+            document.getElementById('DescriptionMain').innerText = text;
+        }
+    }
+
+    window.onload = () => {
+        insertText('NameMainEditable', 'NameMainEditable');
+        insertText('DescriptionMainEditable', 'DescriptionMainEditable');
+        // Обновить отображение элементов на странице
+        document.getElementById('NameMain').innerText = localStorage.getItem('NameMainEditable') || "Название";
+        document.getElementById('DescriptionMain').innerText = localStorage.getItem('DescriptionMainEditable') || "Описание";
+    };
+</script>
+
     <footer>
         <div class="footer-container">
             <div class="footer-section">

@@ -3,7 +3,7 @@ function insertText(targetId, storageKey) {
     const targetElement = document.getElementById(targetId);
     if (targetElement) {
         if (savedText) {
-            targetElement.innerText = savedText; 
+            targetElement.value = savedText; 
         } else {
             console.warn('Нет данных для вставки.');
         }

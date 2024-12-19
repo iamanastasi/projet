@@ -64,10 +64,10 @@
             updateSlides();
         </script>
         <section>
-            <input type="text" id="DescriptionMainEditable" value="Название" />
+            <input type="text" id="NameMainEditable" value="Название" />
+                <button onclick="saveEdits('NameMainEditable')">Сохранить изменения</button>
+            <textarea type="text" id="DescriptionMainEditable" placeholder="Описание"></textarea>
                 <button onclick="saveEdits('DescriptionMainEditable')">Сохранить изменения</button>
-                <textarea rows="10" id="DescriptionMainEditable" value="Описание"></textarea>
-            <button onclick="saveEdits('DescriptionMainEditable')">Сохранить изменения</button>
         </section>
         <section>
             <h4>Акции</h4>
@@ -79,9 +79,11 @@
                 <div class="footer-section">
                     <h4>Контакты</h4>
                     <ul>
-                        <li class="footer">+7 999 000 00 00</p>
-                        </li>
-                        <li class="footer">mail@mail.ru</li>
+                        <li class="footer"><input type="text" id="NomerMainEditable" value="+7 999 000 00 00" />
+                            <button onclick="saveEdits('NomerMainEditable')">Сохранить изменения</button></li>
+                        <li class="footer"><input type="text" id="MailMainEditable" value="+7 999 000 00 00" />
+                            <button onclick="saveEdits('MailMainEditable')">Сохранить изменения</button></li>
+                       </li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -89,10 +91,11 @@
                     <ul class="social-media">
                         <li>
                             <input type="text" id="VkontakteMainEditable" value="Вконтакте" />
-                            <button onclick="saveEdits('MainEditable')">Сохранить изменения</button></li>
+                            <button onclick="saveEdits('VkontakteMainEditable')">Сохранить изменения</button></li>
                         <li><input type="text" id="InstagramMainEditable" value="Instagram" />
                             <button onclick="saveEdits('InstagramMainEditable')">Сохранить изменения</button></li>
-                        <li><a href="https://telegram.org">Телеграм</a></li>
+                        <li><input type="text" id="TelegramMainEditable" value="Telegram" />
+                            <button onclick="saveEdits('TelegramMainEditable')">Сохранить изменения</button></li>
                     </ul>
                 </div>
                 </div>

@@ -1,0 +1,1011 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Календарь | Lite PMS</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=9; IE=10; IE=EDGE" />
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes" />
+<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png" />
+<link rel="stylesheet" type="text/css" href="table.css" />
+<link rel="stylesheet" type="text/css" href="/css/style_custom.css?v=1.7" />
+<script type="text/javascript" src="/js/lang/ru.js?v=2.7"></script>
+<script type="text/javascript" src="/js/jquery.js?v=5.6"></script>
+<script type="text/javascript" src="/js/lib.js?v=13"></script>
+</head>
+<body>
+<div class="container">
+<script type="text/javascript">notify_enabled = true;</script>
+<div class="logo" title="нажмите, чтобы включить ночной режим">Lite PMS</div><div class="userinfo"><b>test1</b>, info@litepms.ru | <a tabindex="-1" href="/login?action=logout">Выход</a></div>
+<div class="menu-icon"><p><span>Меню</span></p></div>
+<input id="menu-icon" type="checkbox">
+<ul class="menu">
+<li class="active"><a tabindex="-1" href="/booking">Календарь</a></li>
+<li><a tabindex="-1" href="/booking/list">Список броней<span class="sup black" title="Overbooking" onclick="location.href='/booking/list?search_type=booking&search_from_date=&search_to_date=&search_status_id[]=9'; return false;">11</span></a></li><li><a tabindex="-1" href="/room/cat">Номера</a></li><li><a tabindex="-1" href="/cleaning">Уборка</a></li><li><a tabindex="-1" href="/client">Клиенты</a></li><li><a tabindex="-1" href="/task">Задачи</a></li><li><a tabindex="-1" href="/cashbox">Касса</a></li><li><a tabindex="-1" href="/stat">Отчеты</a></li><li><a tabindex="-1" href="/notification">Уведомления</a></li><li><a tabindex="-1" href="/settings">Настройки</a></li>
+</ul>
+<div class="clear"></div>
+<div id="content">
+	<div class="main">
+	<style type="text/css">.calendar-table .payedlayer { background: repeating-linear-gradient(135deg, rgba(205, 30, 71, 0.5), rgba(205, 30, 71, 0.5) 2px, transparent 1px, transparent 3px); } </style>
+<script type="text/javascript">
+var hotel_booking_mode = 3,
+	roomnamefixed = 1,
+	swap_mode = false, move_mode = false,
+	booking_tooltip_click = 1,
+	user_id = 6,
+	access_add_booking = 1,
+	access_edit_booking = 1,
+	access_edit_room = 1,
+	access_delete_room = 1,
+	access_tariff_room = 1,
+	access_change_clean_status = 1,
+	access_edit_room_comment = 1,
+	access_view_room_comment = 1,
+	bookingpopup = 1,
+	timezone = 'Europe/Moscow',
+	from_date = '02-02-2025',
+	binotel = false,
+	prevScrollX = 0, fixedTop;
+var date_start, date_end, select = false, startTime, endTime,
+	cell = [], last_cell = [];
+</script>
+<script type="text/javascript" src="/js/booking_calendar.js?v=5.2"></script>
+<div class="booking-menu">
+<div class="calendar-button">
+	<a class="button" href="javascript:;" onclick="window.open('/booking/add?r=cal&d=02-02-2025&popup=1', '_blank', 'width=1100,height=600,scrollbars=1,toolbar=0,location=0,resizable=1')">Новое бронирование</a> 
+	<a class="button" href="/client/add">Новый клиент</a> 
+	<a class="button" href="/task/add">Новая задача</a> 
+	<a class="button" href="javascript:;" onclick="window.open('/client/sms', 'sms_form', 'height=450,width=550,scrollbars=1,toolbar=0,location=0,resizable=1')">Новое SMS</a>
+	<a class="button" href="javascript:;" onclick="window.open('/client/mail', 'mail_form', 'height=600,width=650,scrollbars=1,toolbar=0,location=0,resizable=1')">Новое письмо</a>
+	<span class="freeroom"><a class="button link" href="/booking/freeroom">Поиск свободных номеров</a><a class="button calendar" href="javascript:;"></a>
+		<div class="search-free-room hidden">
+		<form action="/booking" method="get">
+		<div class="form-row">
+		<label>Заезд:</label>
+		<input class="input date" type="text" name="date_in" value="" size="8" autocomplete="off">
+		</div>
+		<div class="form-row">
+		<label>Выезд:</label>
+		<input class="input date" type="text" name="date_out" value="" size="8" autocomplete="off">
+		</div>
+		<div class="form-row">
+		<input class="button button-sm" type="submit" value="Искать">
+		</div>
+		</form>		</div>
+	</span>
+	<a class="button shownotpayed" href="javascript:;">Показать неоплаченные номера</a> 
+</div>
+<div class="today-info">
+<div class="title">Сегодня, 4 февраля, <span class="clock" title="Измените часовой пояс в настройках">09:30:40</span></div>
+<div class="col1">
+<div><span class="label"><a href="/booking/list?search_type=checkin&search_from_date=04-02-2025&search_to_date=04-02-2025">Заезды</a></span><span class="value">1</span></div>
+<div><span class="label"><a href="/booking/list?search_type=checkout&search_from_date=04-02-2025&search_to_date=04-02-2025">Выезды</a></span><span class="value">2</span></div>
+<div><span class="label"><a href="/booking/list?search_type=stay&search_from_date=04-02-2025&search_to_date=04-02-2025&search_status_id[]=6">Проживания</a></span><span class="value">0</span></div>
+<div><span class="label"><a href="/client?birthday_from=04-02-2025&birthday_to=04-02-2025">Дни рождения</a></span><span class="value">0</span></div><div><span class="label"><a href="/task">Задачи</a></span><span class="value">0</span></div></div>
+<div class="col2">
+<div><span class="label">Всего номеров</span><span class="value">15 (<span title="спальных мест">76</span>)</span></div>
+<div><span class="label">Всего мест</span><span class="value">58 (<span title="дополнительных мест">18</span>)</span></div>
+<div><span class="label">Свободно номеров</span><span class="value">8 (45)</span></div>
+<div><span class="label">Занято номеров</span><span class="value">7 (31)</span></div>
+<div><span class="label">Загрузка</span><span class="value">47% (41%)</span></div>
+</div>
+</div>
+</div>
+<div class="info">Внимание! Это тестовый аккаунт, не оставляйте здесь реальные данные, используйте только для изучения возможностей сервиса. Чтобы создать свой аккаунт, нажмите <i>Выход</i>, затем <i>Регистрация</i>.</div><div class="hr"></div><div class="collapse-menu"><i title="скрыть меню"></i></div><div class="calendar-nav-wrap"><div class="calendar-nav clearfix">
+<div class="fleft"><div class="search-date"><form action="/booking" method="get"><input class="input date" name="d" type="text" value="02-02-2025" autocomplete="off"></form></div><div class="today"><a class="button" href="/booking">сегодня</a></div><div class="prev-next"><a class="button prev30" href="/booking?d=03-01-2025" title="30 дней назад"><i><<</i></a><a class="button prev7" href="/booking?d=26-01-2025" title="7 дней назад"><i><</i></a><a class="button next7" href="/booking?d=09-02-2025" title="7 дней вперед"><i>></i></a><a class="button next30" href="/booking?d=04-03-2025" title="30 дней вперед"><i>>></i></a></div></div>
+<div class="fleft"><div class="search-cat"><label>категория:</label><select name="cid" class="input"><option value="0">отображать все</option><option value="11165">2-х местный</option><option value="11246">Люкс</option><option value="11275">1 корпус</option></select></div></div><div class="fleft search-client-wrap"><div class="search-client-button"><a href="javascript:;" class="button">поиск</a></div><div class="search-client"><div class="search-client-input"><label>поиск:</label><input type="search" class="input" placeholder="ФИО клиента, название номера"></div><a title="искать предыдущее совпадение" class="button prev unselectable"><i>&darr;</i></a><a title="искать следующее совпадение" class="button next unselectable"><i>&uarr;</i></a><a class="button close" href="javascript:;">&times;</a></div></div>
+<div class="fright"><div class="show-period"><form action="/booking" method="get"><label>период:</label><select name="period" class="input"><option value="30" selected>30 дней</option><option value="14">14 дней</option><option value="7">7 дней</option><option value="1">1 день</option><option value="60">60 дней</option><option value="90">90 дней</option></select></form></div></div>
+</div></div>
+<div class="clear"></div>
+<div class="calendar-wrap">
+<table class="table calendar-table size3" id="calendar">
+<thead>
+<tr class="head">
+<th class="firstcol"></th>
+<th colspan="27" class="month"><div class="month-wrap" title="Февраль 2025">Февраль 2025</div></th>
+<th colspan="4" class="month"><div class="month-wrap" title="Март 2025">Март 2025</div></th>
+</tr>
+<tr class="head"><td></td>
+<th class="dayoff">Вс</th>
+<th>Пн</th>
+<th class="today" style="background-color: #b5cfe8 !important">Вт</th>
+<th>Ср</th>
+<th>Чт</th>
+<th>Пт</th>
+<th class="dayoff">Сб</th>
+<th class="dayoff">Вс</th>
+<th>Пн</th>
+<th>Вт</th>
+<th>Ср</th>
+<th>Чт</th>
+<th>Пт</th>
+<th class="dayoff">Сб</th>
+<th class="dayoff">Вс</th>
+<th>Пн</th>
+<th>Вт</th>
+<th>Ср</th>
+<th>Чт</th>
+<th>Пт</th>
+<th class="dayoff">Сб</th>
+<th class="dayoff">Вс</th>
+<th>Пн</th>
+<th>Вт</th>
+<th>Ср</th>
+<th>Чт</th>
+<th>Пт</th>
+<th class="dayoff">Сб</th>
+<th class="dayoff">Вс</th>
+<th>Пн</th>
+<th>Вт</th>
+</tr><tr class="head dates"><td class="rooms firstcol"><b>Номера</b></td>
+<th class="dayoff">2</th>
+<th>3</th>
+<th class="today" style="background-color: #b5cfe8 !important">4<div title="сегодня" class="line" style="border-color: #b5cfe8 !important"></div></th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th class="dayoff">8</th>
+<th class="dayoff">9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+<th>13</th>
+<th>14</th>
+<th class="dayoff">15</th>
+<th class="dayoff">16</th>
+<th>17</th>
+<th>18</th>
+<th>19</th>
+<th>20</th>
+<th>21</th>
+<th class="dayoff">22</th>
+<th class="dayoff">23</th>
+<th>24</th>
+<th>25</th>
+<th>26</th>
+<th>27</th>
+<th>28</th>
+<th class="dayoff">1</th>
+<th class="dayoff">2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody>
+<tr id="cat11165">
+<td class="firstcol cat" colspan="32"><span class="collapse" data-cat="11165"></span><span class="cat-name" data-id="11165"><i>2-х местный</i></span></td>
+</tr>
+<tr id="room66689" data-cat="11165" class="highlight room">
+<td class="firstcol cleanmode"><span title="С51 1" class="room-name" data-id="66689"><i>С51 1</i><span class="comment"></span></span><div class="room-status status0" data-room_id="66689"><a href="javascript:;" data-status_id="0">чистый</a></div></td>
+<td title="2 февраля 2025, Вс" class="freeday dayoff" data-id="r66689d1738443600"><div class="curday">02</div></td>
+<td class="booking"><div id="b4727511" style="width:calc(1600% + 18px - 3px);left:40%" class="dateline"><span class="status late" style="background-color: #8cff00"><div class="status-name-wrap"><div class="status-name bold"> Фролова Анастасия Павловна <i class="vip"></i></div></div></span><div class="info">
+<div><a title=открыть карточку клиента href="/client/info?id=3484503" > Фролова Анастасия Павловна</a> <i class="vip"></i> </div><div>заезд: 03-02-2025 13:00</div><div>выезд: 19-02-2025 18:00</div><div>суток: 16</div><div data-booking_id="4727511" class="change_status_link">статус: <a title="изменить статус брони" class="dashed" data-status_id="8" href="javascript:;">Резерв</a></div><div data-booking_id="4727511" class="change_label_link">метка: <a title="изменить метку брони" class="dashed" data-label_id="15102" href="javascript:;">Ждем оплату</a></div><div>мест: 2</div><div>к оплате: 376320 руб. (23520 руб. в сутки)</div> <div class="green">оплачено: 1000 руб. (суток: 0, до 03.02)</div><div class="red">долг: 375320 руб.</div><div class="phone-link">телефон: <a class="phone-click dashed" href="javascript:;">+79785643722</a></div><div class="channel">источник: Авито (354)</div><div class="bold">пожелания: Спа процедуры</div><div>автор: test1</div><div>дата создания: 29-01-2025 13:55:56</div><div>ID брони: <span class="booking_id">4951</span></div><div class="tooltip-nav"><a title="Информация" href="/booking/info?id=4727511"><img src="/img/admin/eye_icon.gif" /></a> <a title="Редактировать" href="javascript:;" onclick="window.open('/booking/edit?id=4727511&r=cal&popup=1', '_blank', 'width=1100,height=600,scrollbars=1,toolbar=0,location=0,resizable=1')"><img src="/img/admin/edit_icon.png" /></a> <a title="Копировать" href="javascript:;" onclick="copybooking(4727511)"><img src="/img/admin/copy_icon.png" /></a> <a class="tclose" title="Поменять местами брони" href="javascript:;" onclick="swapbooking(4727511, 4951)"><img src="/img/admin/swap_icon.png" /></a> <a class="tclose" title="Переместить бронь" href="javascript:;" onclick="movebooking(4727511,4951)"><img src="/img/admin/move_icon.png" /></a></div>
+</div>
+</div></td>
+<td title="4 февраля 2025, Вт" class="booking" data-id="r66689d1738616400"><div class="curday">04</div></td>
+<td title="5 февраля 2025, Ср" class="booking" data-id="r66689d1738702800"><div class="curday">05</div></td>
+<td title="6 февраля 2025, Чт" class="booking" data-id="r66689d1738789200"><div class="curday">06</div></td>
+<td title="7 февраля 2025, Пт" class="booking" data-id="r66689d1738875600"><div class="curday">07</div></td>
+<td title="8 февраля 2025, Сб" class="booking dayoff" data-id="r66689d1738962000"><div class="curday">08</div></td>
+<td title="9 февраля 2025, Вс" class="booking dayoff" data-id="r66689d1739048400"><div class="curday">09</div></td>
+<td title="10 февраля 2025, Пн" class="booking" data-id="r66689d1739134800"><div class="curday">10</div></td>
+<td title="11 февраля 2025, Вт" class="booking" data-id="r66689d1739221200"><div class="curday">11</div></td>
+<td title="12 февраля 2025, Ср" class="booking" data-id="r66689d1739307600"><div class="curday">12</div></td>
+<td title="13 февраля 2025, Чт" class="booking" data-id="r66689d1739394000"><div class="curday">13</div></td>
+<td title="14 февраля 2025, Пт" class="booking" data-id="r66689d1739480400"><div class="curday">14</div></td>
+<td title="15 февраля 2025, Сб" class="booking dayoff" data-id="r66689d1739566800"><div class="curday">15</div></td>
+<td title="16 февраля 2025, Вс" class="booking dayoff" data-id="r66689d1739653200"><div class="curday">16</div></td>
+<td title="17 февраля 2025, Пн" class="booking" data-id="r66689d1739739600"><div class="curday">17</div></td>
+<td title="18 февраля 2025, Вт" class="booking" data-id="r66689d1739826000"><div class="curday">18</div></td>
+<td title="19 февраля 2025, Ср" class="freeday" data-id="r66689d1739912400"><div class="curday">19</div></td>
+<td title="20 февраля 2025, Чт" class="freeday" data-id="r66689d1739998800"><div class="curday">20</div></td>
+<td title="21 февраля 2025, Пт" class="freeday" data-id="r66689d1740085200"><div class="curday">21</div></td>
+<td title="22 февраля 2025, Сб" class="freeday dayoff" data-id="r66689d1740171600"><div class="curday">22</div></td>
+<td title="23 февраля 2025, Вс" class="freeday dayoff" data-id="r66689d1740258000"><div class="curday">23</div></td>
+<td title="24 февраля 2025, Пн" class="freeday" data-id="r66689d1740344400"><div class="curday">24</div></td>
+<td title="25 февраля 2025, Вт" class="freeday" data-id="r66689d1740430800"><div class="curday">25</div></td>
+<td title="26 февраля 2025, Ср" class="freeday" data-id="r66689d1740517200"><div class="curday">26</div></td>
+<td title="27 февраля 2025, Чт" class="freeday" data-id="r66689d1740603600"><div class="curday">27</div></td>
+<td title="28 февраля 2025, Пт" class="freeday" data-id="r66689d1740690000"><div class="curday">28</div></td>
+<td title="1 марта 2025, Сб" class="freeday dayoff" data-id="r66689d1740776400"><div class="curday">01</div></td>
+<td title="2 марта 2025, Вс" class="freeday dayoff" data-id="r66689d1740862800"><div class="curday">02</div></td>
+<td title="3 марта 2025, Пн" class="freeday" data-id="r66689d1740949200"><div class="curday">03</div></td>
+<td title="4 марта 2025, Вт" class="freeday" data-id="r66689d1741035600"><div class="curday">04</div></td>
+</tr>
+<tr class="count-room">
+<td class="firstcol">Свободные номера</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr id="cat11246">
+<td class="firstcol cat" colspan="32"><span class="collapse" data-cat="11246"></span><span class="cat-name" data-id="11246"><i>Люкс</i></span></td>
+</tr>
+<tr id="room67196" data-cat="11246" class="highlight room">
+<td class="firstcol cleanmode"><span title="вид на сад 1" class="room-name" data-id="67196"><i>вид на сад 1</i></span><div class="room-status status1" data-room_id="67196"><a href="javascript:;" data-status_id="1">уборка</a></div></td>
+<td class="booking notpeyed dayoff"><div id="b4723399" style="width:calc(140% + 3px - 3px + 1px);left:0" class="dateline leftoffset0"><span class="status" style="background-color: #000000"><div class="status-name-wrap"><div class="status-name white"> Иванов Михаил</div></div></span><div class="info">
+<div><a title=открыть карточку клиента href="/client/info?id=3457043" > Иванов Михаил </a></div><div>заезд: 01-02-2025 13:00</div><div>выезд: 03-02-2025 12:00</div><div>суток: 2</div><div data-booking_id="4723399" class="change_status_link">статус: <a title="изменить статус брони" class="dashed" data-status_id="2" href="javascript:;">Подтверждено</a></div><div data-booking_id="4723399" class="change_label_link">метка: <a title="изменить метку брони" class="dashed" data-label_id="4095" href="javascript:;">подтверждено</a></div><div>мест: 2</div><div>к оплате: 12000 руб. (6000 руб. в сутки)</div> <div class="green">оплачено: 1000 руб. (суток: 0.2, до 01.02)</div><div class="red">долг: 11000 руб.</div><div class="phone-link">телефон: <a class="phone-click dashed" href="javascript:;">+79242506666</a></div><div class="channel">источник: Стойка </div><div>автор: test1</div><div>дата создания: 27-01-2025 20:50:52</div><div>ID брони: <span class="booking_id">4947</span></div><div class="tooltip-nav"><a title="Информация" href="/booking/info?id=4723399"><img src="/img/admin/eye_icon.gif" /></a> <a title="Редактировать" href="javascript:;" onclick="window.open('/booking/edit?id=4723399&r=cal&popup=1', '_blank', 'width=1100,height=600,scrollbars=1,toolbar=0,location=0,resizable=1')"><img src="/img/admin/edit_icon.png" /></a> <a title="Копировать" href="javascript:;" onclick="copybooking(4723399)"><img src="/img/admin/copy_icon.png" /></a> <a class="tclose" title="Поменять местами брони" href="javascript:;" onclick="swapbooking(4723399, 4947)"><img src="/img/admin/swap_icon.png" /></a> <a class="tclose" title="Переместить бронь" href="javascript:;" onclick="movebooking(4723399,4947)"><img src="/img/admin/move_icon.png" /></a></div>
+</div>
+</div></td>
+<td title="3 февраля 2025, Пн" class="freeday" data-id="r67196d1738530000"><div class="curday">03</div></td>
+<td title="4 февраля 2025, Вт" class="freeday" data-id="r67196d1738616400"><div class="curday">04</div></td>
+<td title="5 февраля 2025, Ср" class="freeday" data-id="r67196d1738702800"><div class="curday">05</div></td>
+<td title="6 февраля 2025, Чт" class="freeday" data-id="r67196d1738789200"><div class="curday">06</div></td>
+<td class="booking"><div id="b4727577" style="width:calc(400% + 6px - 3px);left:40%" class="dateline"><span class="status" style="background-color: #ffd966"><div class="status-name-wrap"><div class="status-name"> Маслякова Александра Андреевна</div></div></span><div class="info">
+<div><a title=открыть карточку клиента href="/client/info?id=2940911" > Маслякова Александра Андреевна</a></div><div>заезд: 07-02-2025 13:00</div><div>выезд: 11-02-2025 12:00</div><div>суток: 4</div><div data-booking_id="4727577" class="change_status_link">статус: <a title="изменить статус брони" class="dashed" data-status_id="1" href="javascript:;">Не подтверждено</a></div><div data-booking_id="4727577" class="change_label_link">метка: <a title="изменить метку брони" class="dashed" data-label_id="0" href="javascript:;">не выбрана</a></div><div>мест: 3+1</div><div>к оплате: 56300 руб. (14075 руб. в сутки)</div> <div class="green">оплачено: 0 руб.</div><div class="red">долг: 56300 руб.</div><div class="phone-link">телефон: <a class="phone-click dashed" href="javascript:;">+37536997461</a></div><div>почта: <span class="email">mslsash@gmail.com</span></div><div class="channel">источник: Авито (99988)</div><div>автор: test1</div><div>дата создания: 29-01-2025 14:08:57</div><div>ID брони: <span class="booking_id">4954</span></div><div class="tooltip-nav"><a title="Информация" href="/booking/info?id=4727577"><img src="/img/admin/eye_icon.gif" /></a> <a title="Редактировать" href="javascript:;" onclick="window.open('/booking/edit?id=4727577&r=cal&popup=1', '_blank', 'width=1100,height=600,scrollbars=1,toolbar=0,location=0,resizable=1')"><img src="/img/admin/edit_icon.png" /></a> <a title="Копировать" href="javascript:;" onclick="copybooking(4727577)"><img src="/img/admin/copy_icon.png" /></a> <a class="tclose" title="Поменять местами брони" href="javascript:;" onclick="swapbooking(4727577, 4954)"><img src="/img/admin/swap_icon.png" /></a> <a class="tclose" title="Переместить бронь" href="javascript:;" onclick="movebooking(4727577,4954)"><img src="/img/admin/move_icon.png" /></a></div>
+</div>
+</div></td>
+<td title="8 февраля 2025, Сб" class="booking dayoff" data-id="r67196d1738962000"><div class="curday">08</div></td>
+<td title="9 февраля 2025, Вс" class="booking dayoff" data-id="r67196d1739048400"><div class="curday">09</div></td>
+<td title="10 февраля 2025, Пн" class="booking" data-id="r67196d1739134800"><div class="curday">10</div></td>
+<td title="11 февраля 2025, Вт" class="freeday" data-id="r67196d1739221200"><div class="curday">11</div></td>
+<td title="12 февраля 2025, Ср" class="freeday" data-id="r67196d1739307600"><div class="curday">12</div></td>
+<td title="13 февраля 2025, Чт" class="freeday" data-id="r67196d1739394000"><div class="curday">13</div></td>
+<td title="14 февраля 2025, Пт" class="freeday" data-id="r67196d1739480400"><div class="curday">14</div></td>
+<td title="15 февраля 2025, Сб" class="freeday dayoff" data-id="r67196d1739566800"><div class="curday">15</div></td>
+<td title="16 февраля 2025, Вс" class="freeday dayoff" data-id="r67196d1739653200"><div class="curday">16</div></td>
+<td title="17 февраля 2025, Пн" class="freeday" data-id="r67196d1739739600"><div class="curday">17</div></td>
+<td title="18 февраля 2025, Вт" class="freeday" data-id="r67196d1739826000"><div class="curday">18</div></td>
+<td title="19 февраля 2025, Ср" class="freeday" data-id="r67196d1739912400"><div class="curday">19</div></td>
+<td title="20 февраля 2025, Чт" class="freeday" data-id="r67196d1739998800"><div class="curday">20</div></td>
+<td title="21 февраля 2025, Пт" class="freeday" data-id="r67196d1740085200"><div class="curday">21</div></td>
+<td title="22 февраля 2025, Сб" class="freeday dayoff" data-id="r67196d1740171600"><div class="curday">22</div></td>
+<td title="23 февраля 2025, Вс" class="freeday dayoff" data-id="r67196d1740258000"><div class="curday">23</div></td>
+<td title="24 февраля 2025, Пн" class="freeday" data-id="r67196d1740344400"><div class="curday">24</div></td>
+<td title="25 февраля 2025, Вт" class="freeday" data-id="r67196d1740430800"><div class="curday">25</div></td>
+<td title="26 февраля 2025, Ср" class="freeday" data-id="r67196d1740517200"><div class="curday">26</div></td>
+<td title="27 февраля 2025, Чт" class="freeday" data-id="r67196d1740603600"><div class="curday">27</div></td>
+<td title="28 февраля 2025, Пт" class="freeday" data-id="r67196d1740690000"><div class="curday">28</div></td>
+<td title="1 марта 2025, Сб" class="freeday dayoff" data-id="r67196d1740776400"><div class="curday">01</div></td>
+<td title="2 марта 2025, Вс" class="freeday dayoff" data-id="r67196d1740862800"><div class="curday">02</div></td>
+<td title="3 марта 2025, Пн" class="freeday" data-id="r67196d1740949200"><div class="curday">03</div></td>
+<td title="4 марта 2025, Вт" class="freeday" data-id="r67196d1741035600"><div class="curday">04</div></td>
+</tr>
+<tr id="room67197" data-cat="11246" class="highlight room">
+<td class="firstcol cleanmode"><span title="вид на сад 2" class="room-name" data-id="67197"><i>вид на сад 2</i></span><div class="room-status status0" data-room_id="67197"><a href="javascript:;" data-status_id="0">чистый</a></div></td>
+<td class="booking dayoff"><div id="b4723436" style="width:calc(240% + 4px - 3px + 1px);left:0" class="dateline leftoffset0"><span class="status" style="background-color: #8cff00"><div class="status-name-wrap"><div class="status-name"> Иванов</div></div></span><div class="info">
+<div><a title=открыть карточку клиента href="/client/info?id=3481865" >  Иванов </a></div><div>заезд: 01-02-2025 13:00</div><div>выезд: 04-02-2025 12:00</div><div>суток: 3</div><div data-booking_id="4723436" class="change_status_link">статус: <a title="изменить статус брони" class="dashed" data-status_id="8" href="javascript:;">Резерв</a></div><div data-booking_id="4723436" class="change_label_link">метка: <a title="изменить метку брони" class="dashed" data-label_id="15102" href="javascript:;">Ждем оплату</a></div><div>мест: 1</div><div>к оплате: 0 руб. (0 руб. в сутки)</div> <div class="green">оплачено: 0 руб.</div><div class="red">долг: 0 руб.</div><div class="phone-link">телефон: <a class="phone-click dashed" href="javascript:;">5555555</a></div><div class="channel">источник: Стойка </div><div>автор: test1</div><div>дата создания: 27-01-2025 21:06:56</div><div>ID брони: <span class="booking_id">4948</span></div><div class="tooltip-nav"><a title="Информация" href="/booking/info?id=4723436"><img src="/img/admin/eye_icon.gif" /></a> <a title="Редактировать" href="javascript:;" onclick="window.open('/booking/edit?id=4723436&r=cal&popup=1', '_blank', 'width=1100,height=600,scrollbars=1,toolbar=0,location=0,resizable=1')"><img src="/img/admin/edit_icon.png" /></a> <a title="Копировать" href="javascript:;" onclick="copybooking(4723436)"><img src="/img/admin/copy_icon.png" /></a> <a class="tclose" title="Поменять местами брони" href="javascript:;" onclick="swapbooking(4723436, 4948)"><img src="/img/admin/swap_icon.png" /></a> <a class="tclose" title="Переместить бронь" href="javascript:;" onclick="movebooking(4723436,4948)"><img src="/img/admin/move_icon.png" /></a></div>
+</div>
+</div></td>
+<td title="3 февраля 2025, Пн" class="booking" data-id="r67197d1738530000"><div class="curday">03</div></td>
+<td title="4 февраля 2025, Вт" class="freeday" data-id="r67197d1738616400"><div class="curday">04</div></td>
+<td class="booking"><div id="b4722666" style="width:calc(200% + 4px - 3px);left:40%" class="dateline"><span class="status late" style="background-color: #ffd966"><div class="status-name-wrap"><div class="status-name"> Савушкин Игорь</div></div></span><div class="info">
+<div><a title=открыть карточку клиента href="/client/info?id=3481320" > Савушкин Игорь </a></div><div>заезд: 05-02-2025 18:00</div><div>выезд: 07-02-2025 17:00</div><div>суток: 2</div><div data-booking_id="4722666" class="change_status_link">статус: <a title="изменить статус брони" class="dashed" data-status_id="1" href="javascript:;">Не подтверждено</a></div><div data-booking_id="4722666" class="change_label_link">метка: <a title="изменить метку брони" class="dashed" data-label_id="0" href="javascript:;">не выбрана</a></div><div>мест: 2</div><div>к оплате: 12000 руб. (6000 руб. в сутки)</div> <div class="green">оплачено: 0 руб.</div><div class="red">долг: 12000 руб.</div><div class="phone-link">телефон: <a class="phone-click dashed" href="javascript:;">+79624753002</a></div><div>почта: <span class="email">Garri72@mail.ru</span></div><div class="channel">источник: Агентство </div><div>автор: test1</div><div>дата создания: 27-01-2025 15:08:20</div><div>ID брони: <span class="booking_id">4946</span></div><div class="tooltip-nav"><a title="Информация" href="/booking/info?id=4722666"><img src="/img/admin/eye_icon.gif" /></a> <a title="Редактировать" href="javascript:;" onclick="window.open('/booking/edit?id=4722666&r=cal&popup=1', '_blank', 'width=1100,height=600,scrollbars=1,toolbar=0,location=0,resizable=1')"><img src="/img/admin/edit_icon.png" /></a> <a title="Копировать" href="javascript:;" onclick="copybooking(4722666)"><img src="/img/admin/copy_icon.png" /></a> <a class="tclose" title="Поменять местами брони" href="javascript:;" onclick="swapbooking(4722666, 4946)"><img src="/img/admin/swap_icon.png" /></a> <a class="tclose" title="Переместить бронь" href="javascript:;" onclick="movebooking(4722666,4946)"><img src="/img/admin/move_icon.png" /></a></div>
+</div>
+</div></td>
+<td title="6 февраля 2025, Чт" class="booking" data-id="r67197d1738789200"><div class="curday">06</div></td>
+<td title="7 февраля 2025, Пт" class="freeday" data-id="r67197d1738875600"><div class="curday">07</div></td>
+<td title="8 февраля 2025, Сб" class="freeday dayoff" data-id="r67197d1738962000"><div class="curday">08</div></td>
+<td title="9 февраля 2025, Вс" class="freeday dayoff" data-id="r67197d1739048400"><div class="curday">09</div></td>
+<td title="10 февраля 2025, Пн" class="freeday" data-id="r67197d1739134800"><div class="curday">10</div></td>
+<td title="11 февраля 2025, Вт" class="freeday" data-id="r67197d1739221200"><div class="curday">11</div></td>
+<td title="12 февраля 2025, Ср" class="freeday" data-id="r67197d1739307600"><div class="curday">12</div></td>
+<td title="13 февраля 2025, Чт" class="freeday" data-id="r67197d1739394000"><div class="curday">13</div></td>
+<td title="14 февраля 2025, Пт" class="freeday" data-id="r67197d1739480400"><div class="curday">14</div></td>
+<td title="15 февраля 2025, Сб" class="freeday dayoff" data-id="r67197d1739566800"><div class="curday">15</div></td>
+<td title="16 февраля 2025, Вс" class="freeday dayoff" data-id="r67197d1739653200"><div class="curday">16</div></td>
+<td title="17 февраля 2025, Пн" class="freeday" data-id="r67197d1739739600"><div class="curday">17</div></td>
+<td title="18 февраля 2025, Вт" class="freeday" data-id="r67197d1739826000"><div class="curday">18</div></td>
+<td title="19 февраля 2025, Ср" class="freeday" data-id="r67197d1739912400"><div class="curday">19</div></td>
+<td title="20 февраля 2025, Чт" class="freeday" data-id="r67197d1739998800"><div class="curday">20</div></td>
+<td title="21 февраля 2025, Пт" class="freeday" data-id="r67197d1740085200"><div class="curday">21</div></td>
+<td title="22 февраля 2025, Сб" class="freeday dayoff" data-id="r67197d1740171600"><div class="curday">22</div></td>
+<td title="23 февраля 2025, Вс" class="freeday dayoff" data-id="r67197d1740258000"><div class="curday">23</div></td>
+<td title="24 февраля 2025, Пн" class="freeday" data-id="r67197d1740344400"><div class="curday">24</div></td>
+<td title="25 февраля 2025, Вт" class="freeday" data-id="r67197d1740430800"><div class="curday">25</div></td>
+<td title="26 февраля 2025, Ср" class="freeday" data-id="r67197d1740517200"><div class="curday">26</div></td>
+<td title="27 февраля 2025, Чт" class="freeday" data-id="r67197d1740603600"><div class="curday">27</div></td>
+<td title="28 февраля 2025, Пт" class="freeday" data-id="r67197d1740690000"><div class="curday">28</div></td>
+<td title="1 марта 2025, Сб" class="freeday dayoff" data-id="r67197d1740776400"><div class="curday">01</div></td>
+<td title="2 марта 2025, Вс" class="freeday dayoff" data-id="r67197d1740862800"><div class="curday">02</div></td>
+<td title="3 марта 2025, Пн" class="freeday" data-id="r67197d1740949200"><div class="curday">03</div></td>
+<td title="4 марта 2025, Вт" class="freeday" data-id="r67197d1741035600"><div class="curday">04</div></td>
+</tr>
+<tr id="room67198" data-cat="11246" class="highlight room">
+<td class="firstcol cleanmode"><span title="вид на сад 3" class="room-name" data-id="67198"><i>вид на сад 3</i></span><div class="room-status status0" data-room_id="67198"><a href="javascript:;" data-status_id="0">чистый</a></div></td>
+<td title="2 февраля 2025, Вс" class="freeday dayoff" data-id="r67198d1738443600"><div class="curday">02</div></td>
+<td title="3 февраля 2025, Пн" class="freeday" data-id="r67198d1738530000"><div class="curday">03</div></td>
+<td title="4 февраля 2025, Вт" class="freeday" data-id="r67198d1738616400"><div class="curday">04</div></td>
+<td title="5 февраля 2025, Ср" class="freeday" data-id="r67198d1738702800"><div class="curday">05</div></td>
+<td title="6 февраля 2025, Чт" class="freeday" data-id="r67198d1738789200"><div class="curday">06</div></td>
+<td title="7 февраля 2025, Пт" class="freeday" data-id="r67198d1738875600"><div class="curday">07</div></td>
+<td title="8 февраля 2025, Сб" class="freeday dayoff" data-id="r67198d1738962000"><div class="curday">08</div></td>
+<td title="9 февраля 2025, Вс" class="freeday dayoff" data-id="r67198d1739048400"><div class="curday">09</div></td>
+<td title="10 февраля 2025, Пн" class="freeday" data-id="r67198d1739134800"><div class="curday">10</div></td>
+<td title="11 февраля 2025, Вт" class="freeday" data-id="r67198d1739221200"><div class="curday">11</div></td>
+<td title="12 февраля 2025, Ср" class="freeday" data-id="r67198d1739307600"><div class="curday">12</div></td>
+<td title="13 февраля 2025, Чт" class="freeday" data-id="r67198d1739394000"><div class="curday">13</div></td>
+<td title="14 февраля 2025, Пт" class="freeday" data-id="r67198d1739480400"><div class="curday">14</div></td>
+<td title="15 февраля 2025, Сб" class="freeday dayoff" data-id="r67198d1739566800"><div class="curday">15</div></td>
+<td class="booking dayoff"><div id="b4727521" style="width:calc(200% + 4px - 3px);left:40%" class="dateline"><span class="status" style="background-color: #b6b6b6"><div class="status-name-wrap"><div class="status-name"> Ремонт</div></div></span><div class="info">
+<div>начало ремонта: 16-02-2025 13:00</div><div>завершение ремонта: 18-02-2025 12:00</div><div>суток: 2</div>
+<div>автор: test1</div><div>дата создания: 29-01-2025 13:57:45</div>
+<div class="tooltip-nav"><a class="link-edit" title="Редактировать" href="/booking/edit?id=4727521&r=cal">изменить</a> <a class="link-delete" title="Удалить" href="javascript:;" onclick="showconfirm('Вы уверены, что хотите удалить период ремонта?', '/booking/delete?id=4727521&r=cal')">удалить</a></div>
+</div>
+</div></td>
+<td title="17 февраля 2025, Пн" class="booking" data-id="r67198d1739739600"><div class="curday">17</div></td>
+<td title="18 февраля 2025, Вт" class="freeday" data-id="r67198d1739826000"><div class="curday">18</div></td>
+<td title="19 февраля 2025, Ср" class="freeday" data-id="r67198d1739912400"><div class="curday">19</div></td>
+<td title="20 февраля 2025, Чт" class="freeday" data-id="r67198d1739998800"><div class="curday">20</div></td>
+<td title="21 февраля 2025, Пт" class="freeday" data-id="r67198d1740085200"><div class="curday">21</div></td>
+<td title="22 февраля 2025, Сб" class="freeday dayoff" data-id="r67198d1740171600"><div class="curday">22</div></td>
+<td title="23 февраля 2025, Вс" class="freeday dayoff" data-id="r67198d1740258000"><div class="curday">23</div></td>
+<td title="24 февраля 2025, Пн" class="freeday" data-id="r67198d1740344400"><div class="curday">24</div></td>
+<td title="25 февраля 2025, Вт" class="freeday" data-id="r67198d1740430800"><div class="curday">25</div></td>
+<td title="26 февраля 2025, Ср" class="freeday" data-id="r67198d1740517200"><div class="curday">26</div></td>
+<td title="27 февраля 2025, Чт" class="freeday" data-id="r67198d1740603600"><div class="curday">27</div></td>
+<td title="28 февраля 2025, Пт" class="freeday" data-id="r67198d1740690000"><div class="curday">28</div></td>
+<td title="1 марта 2025, Сб" class="freeday dayoff" data-id="r67198d1740776400"><div class="curday">01</div></td>
+<td title="2 марта 2025, Вс" class="freeday dayoff" data-id="r67198d1740862800"><div class="curday">02</div></td>
+<td title="3 марта 2025, Пн" class="freeday" data-id="r67198d1740949200"><div class="curday">03</div></td>
+<td title="4 марта 2025, Вт" class="freeday" data-id="r67198d1741035600"><div class="curday">04</div></td>
+</tr>
+<tr class="count-room">
+<td class="firstcol">Свободные номера</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr id="cat0"><td class="firstcol cat" colspan="32"><span class="collapse" data-cat="0"></span><span class="cat-name nolink">Без категории</span></td></tr>
+<tr id="room65247" class="highlight room" data-cat="0">
+<td class="firstcol cleanmode"><span title="дом2" class="room-name" data-id="65247"><i>дом2</i><span class="comment"></span></span><div class="room-status status1" data-room_id="65247"><a href="javascript:;" data-status_id="1">уборка</a></div></td>
+<td title="2 февраля 2025, Вс" class="freeday dayoff" data-id="r65247d1738443600"><div class="curday">02</div></td>
+<td title="3 февраля 2025, Пн" class="freeday" data-id="r65247d1738530000"><div class="curday">03</div></td>
+<td class="booking"><div id="b4714944" style="width:calc(400% + 6px - 3px);left:40%" class="dateline"><span class="status early" style="background-color: #70ad47"><div class="status-name-wrap"><div class="status-name"> Жора Иванов</div></div></span><div class="info">
+<div><a title=открыть карточку клиента href="/client/info?id=3476479" > Жора Иванов </a></div><div>заезд: 04-02-2025 13:00</div><div>выезд: 08-02-2025 12:00</div><div>суток: 4</div><div data-booking_id="4714944" class="change_status_link">статус: <a title="изменить статус брони" class="dashed" data-status_id="2" href="javascript:;">Подтверждено</a></div><div data-booking_id="4714944" class="change_label_link">метка: <a title="изменить метку брони" class="dashed" data-label_id="0" href="javascript:;">не выбрана</a></div><div>мест: 2</div><div>к оплате: 160000 руб. (40000 руб. в сутки)</div> <div class="green">оплачено: 0 руб.</div><div class="red">долг: 160000 руб.</div><div class="phone-link">телефон: <a class="phone-click dashed" href="javascript:;">+79007687643</a></div><div class="channel">источник: Телефонный звонок </div><div>автор: test1</div><div>дата создания: 24-01-2025 03:25:06</div><div>ID брони: <span class="booking_id">4940</span></div><div class="tooltip-nav"><a title="Информация" href="/booking/info?id=4714944"><img src="/img/admin/eye_icon.gif" /></a> <a title="Редактировать" href="javascript:;" onclick="window.open('/booking/edit?id=4714944&r=cal&popup=1', '_blank', 'width=1100,height=600,scrollbars=1,toolbar=0,location=0,resizable=1')"><img src="/img/admin/edit_icon.png" /></a> <a title="Копировать" href="javascript:;" onclick="copybooking(4714944)"><img src="/img/admin/copy_icon.png" /></a> <a class="tclose" title="Поменять местами брони" href="javascript:;" onclick="swapbooking(4714944, 4940)"><img src="/img/admin/swap_icon.png" /></a> <a class="tclose" title="Переместить бронь" href="javascript:;" onclick="movebooking(4714944,4940)"><img src="/img/admin/move_icon.png" /></a></div>
+</div>
+</div></td>
+<td title="5 февраля 2025, Ср" class="booking" data-id="r65247d1738702800"><div class="curday">05</div></td>
+<td title="6 февраля 2025, Чт" class="booking" data-id="r65247d1738789200"><div class="curday">06</div></td>
+<td title="7 февраля 2025, Пт" class="booking" data-id="r65247d1738875600"><div class="curday">07</div></td>
+<td title="8 февраля 2025, Сб" class="freeday dayoff" data-id="r65247d1738962000"><div class="curday">08</div></td>
+<td title="9 февраля 2025, Вс" class="freeday dayoff" data-id="r65247d1739048400"><div class="curday">09</div></td>
+<td title="10 февраля 2025, Пн" class="freeday" data-id="r65247d1739134800"><div class="curday">10</div></td>
+<td title="11 февраля 2025, Вт" class="freeday" data-id="r65247d1739221200"><div class="curday">11</div></td>
+<td title="12 февраля 2025, Ср" class="freeday" data-id="r65247d1739307600"><div class="curday">12</div></td>
+<td title="13 февраля 2025, Чт" class="freeday" data-id="r65247d1739394000"><div class="curday">13</div></td>
+<td title="14 февраля 2025, Пт" class="freeday" data-id="r65247d1739480400"><div class="curday">14</div></td>
+<td title="15 февраля 2025, Сб" class="freeday dayoff" data-id="r65247d1739566800"><div class="curday">15</div></td>
+<td title="16 февраля 2025, Вс" class="freeday dayoff" data-id="r65247d1739653200"><div class="curday">16</div></td>
+<td title="17 февраля 2025, Пн" class="freeday" data-id="r65247d1739739600"><div class="curday">17</div></td>
+<td title="18 февраля 2025, Вт" class="freeday" data-id="r65247d1739826000"><div class="curday">18</div></td>
+<td title="19 февраля 2025, Ср" class="freeday" data-id="r65247d1739912400"><div class="curday">19</div></td>
+<td title="20 февраля 2025, Чт" class="freeday" data-id="r65247d1739998800"><div class="curday">20</div></td>
+<td title="21 февраля 2025, Пт" class="freeday" data-id="r65247d1740085200"><div class="curday">21</div></td>
+<td title="22 февраля 2025, Сб" class="freeday dayoff" data-id="r65247d1740171600"><div class="curday">22</div></td>
+<td title="23 февраля 2025, Вс" class="freeday dayoff" data-id="r65247d1740258000"><div class="curday">23</div></td>
+<td title="24 февраля 2025, Пн" class="freeday" data-id="r65247d1740344400"><div class="curday">24</div></td>
+<td title="25 февраля 2025, Вт" class="freeday" data-id="r65247d1740430800"><div class="curday">25</div></td>
+<td title="26 февраля 2025, Ср" class="freeday" data-id="r65247d1740517200"><div class="curday">26</div></td>
+<td title="27 февраля 2025, Чт" class="freeday" data-id="r65247d1740603600"><div class="curday">27</div></td>
+<td title="28 февраля 2025, Пт" class="freeday" data-id="r65247d1740690000"><div class="curday">28</div></td>
+<td title="1 марта 2025, Сб" class="freeday dayoff" data-id="r65247d1740776400"><div class="curday">01</div></td>
+<td title="2 марта 2025, Вс" class="freeday dayoff" data-id="r65247d1740862800"><div class="curday">02</div></td>
+<td title="3 марта 2025, Пн" class="freeday" data-id="r65247d1740949200"><div class="curday">03</div></td>
+<td title="4 марта 2025, Вт" class="freeday" data-id="r65247d1741035600"><div class="curday">04</div></td>
+</tr>
+<tr id="room65248" class="highlight room" data-cat="0">
+<td class="firstcol cleanmode"><span title="дом3" class="room-name" data-id="65248"><i>дом3</i></span><div class="room-status status2" data-room_id="65248"><a href="javascript:;" data-status_id="2">грязный</a></div></td>
+<td title="2 февраля 2025, Вс" class="freeday dayoff" data-id="r65248d1738443600"><div class="curday">02</div></td>
+<td title="3 февраля 2025, Пн" class="freeday" data-id="r65248d1738530000"><div class="curday">03</div></td>
+<td title="4 февраля 2025, Вт" class="freeday" data-id="r65248d1738616400"><div class="curday">04</div></td>
+<td title="5 февраля 2025, Ср" class="freeday" data-id="r65248d1738702800"><div class="curday">05</div></td>
+<td title="6 февраля 2025, Чт" class="freeday" data-id="r65248d1738789200"><div class="curday">06</div></td>
+<td title="7 февраля 2025, Пт" class="freeday" data-id="r65248d1738875600"><div class="curday">07</div></td>
+<td title="8 февраля 2025, Сб" class="freeday dayoff" data-id="r65248d1738962000"><div class="curday">08</div></td>
+<td title="9 февраля 2025, Вс" class="freeday dayoff" data-id="r65248d1739048400"><div class="curday">09</div></td>
+<td title="10 февраля 2025, Пн" class="freeday" data-id="r65248d1739134800"><div class="curday">10</div></td>
+<td title="11 февраля 2025, Вт" class="freeday" data-id="r65248d1739221200"><div class="curday">11</div></td>
+<td title="12 февраля 2025, Ср" class="freeday" data-id="r65248d1739307600"><div class="curday">12</div></td>
+<td title="13 февраля 2025, Чт" class="freeday" data-id="r65248d1739394000"><div class="curday">13</div></td>
+<td title="14 февраля 2025, Пт" class="freeday" data-id="r65248d1739480400"><div class="curday">14</div></td>
+<td title="15 февраля 2025, Сб" class="freeday dayoff" data-id="r65248d1739566800"><div class="curday">15</div></td>
+<td title="16 февраля 2025, Вс" class="freeday dayoff" data-id="r65248d1739653200"><div class="curday">16</div></td>
+<td title="17 февраля 2025, Пн" class="freeday" data-id="r65248d1739739600"><div class="curday">17</div></td>
+<td title="18 февраля 2025, Вт" class="freeday" data-id="r65248d1739826000"><div class="curday">18</div></td>
+<td title="19 февраля 2025, Ср" class="freeday" data-id="r65248d1739912400"><div class="curday">19</div></td>
+<td title="20 февраля 2025, Чт" class="freeday" data-id="r65248d1739998800"><div class="curday">20</div></td>
+<td title="21 февраля 2025, Пт" class="freeday" data-id="r65248d1740085200"><div class="curday">21</div></td>
+<td title="22 февраля 2025, Сб" class="freeday dayoff" data-id="r65248d1740171600"><div class="curday">22</div></td>
+<td title="23 февраля 2025, Вс" class="freeday dayoff" data-id="r65248d1740258000"><div class="curday">23</div></td>
+<td title="24 февраля 2025, Пн" class="freeday" data-id="r65248d1740344400"><div class="curday">24</div></td>
+<td title="25 февраля 2025, Вт" class="freeday" data-id="r65248d1740430800"><div class="curday">25</div></td>
+<td title="26 февраля 2025, Ср" class="freeday" data-id="r65248d1740517200"><div class="curday">26</div></td>
+<td title="27 февраля 2025, Чт" class="freeday" data-id="r65248d1740603600"><div class="curday">27</div></td>
+<td title="28 февраля 2025, Пт" class="freeday" data-id="r65248d1740690000"><div class="curday">28</div></td>
+<td title="1 марта 2025, Сб" class="freeday dayoff" data-id="r65248d1740776400"><div class="curday">01</div></td>
+<td title="2 марта 2025, Вс" class="freeday dayoff" data-id="r65248d1740862800"><div class="curday">02</div></td>
+<td title="3 марта 2025, Пн" class="freeday" data-id="r65248d1740949200"><div class="curday">03</div></td>
+<td title="4 марта 2025, Вт" class="freeday" data-id="r65248d1741035600"><div class="curday">04</div></td>
+</tr>
+<tr id="room65727" class="highlight room" data-cat="0">
+<td class="firstcol cleanmode"><span title="1 нмер" class="room-name" data-id="65727"><i>1 нмер</i></span><div class="room-status status0" data-room_id="65727"><a href="javascript:;" data-status_id="0">чистый</a></div></td>
+<td title="2 февраля 2025, Вс" class="freeday dayoff" data-id="r65727d1738443600"><div class="curday">02</div></td>
+<td title="3 февраля 2025, Пн" class="freeday" data-id="r65727d1738530000"><div class="curday">03</div></td>
+<td title="4 февраля 2025, Вт" class="freeday" data-id="r65727d1738616400"><div class="curday">04</div></td>
+<td title="5 февраля 2025, Ср" class="freeday" data-id="r65727d1738702800"><div class="curday">05</div></td>
+<td title="6 февраля 2025, Чт" class="freeday" data-id="r65727d1738789200"><div class="curday">06</div></td>
+<td title="7 февраля 2025, Пт" class="freeday" data-id="r65727d1738875600"><div class="curday">07</div></td>
+<td title="8 февраля 2025, Сб" class="freeday dayoff" data-id="r65727d1738962000"><div class="curday">08</div></td>
+<td title="9 февраля 2025, Вс" class="freeday dayoff" data-id="r65727d1739048400"><div class="curday">09</div></td>
+<td title="10 февраля 2025, Пн" class="freeday" data-id="r65727d1739134800"><div class="curday">10</div></td>
+<td title="11 февраля 2025, Вт" class="freeday" data-id="r65727d1739221200"><div class="curday">11</div></td>
+<td title="12 февраля 2025, Ср" class="freeday" data-id="r65727d1739307600"><div class="curday">12</div></td>
+<td title="13 февраля 2025, Чт" class="freeday" data-id="r65727d1739394000"><div class="curday">13</div></td>
+<td title="14 февраля 2025, Пт" class="freeday" data-id="r65727d1739480400"><div class="curday">14</div></td>
+<td title="15 февраля 2025, Сб" class="freeday dayoff" data-id="r65727d1739566800"><div class="curday">15</div></td>
+<td title="16 февраля 2025, Вс" class="freeday dayoff" data-id="r65727d1739653200"><div class="curday">16</div></td>
+<td title="17 февраля 2025, Пн" class="freeday" data-id="r65727d1739739600"><div class="curday">17</div></td>
+<td title="18 февраля 2025, Вт" class="freeday" data-id="r65727d1739826000"><div class="curday">18</div></td>
+<td title="19 февраля 2025, Ср" class="freeday" data-id="r65727d1739912400"><div class="curday">19</div></td>
+<td title="20 февраля 2025, Чт" class="freeday" data-id="r65727d1739998800"><div class="curday">20</div></td>
+<td title="21 февраля 2025, Пт" class="freeday" data-id="r65727d1740085200"><div class="curday">21</div></td>
+<td title="22 февраля 2025, Сб" class="freeday dayoff" data-id="r65727d1740171600"><div class="curday">22</div></td>
+<td title="23 февраля 2025, Вс" class="freeday dayoff" data-id="r65727d1740258000"><div class="curday">23</div></td>
+<td title="24 февраля 2025, Пн" class="freeday" data-id="r65727d1740344400"><div class="curday">24</div></td>
+<td title="25 февраля 2025, Вт" class="freeday" data-id="r65727d1740430800"><div class="curday">25</div></td>
+<td title="26 февраля 2025, Ср" class="freeday" data-id="r65727d1740517200"><div class="curday">26</div></td>
+<td title="27 февраля 2025, Чт" class="freeday" data-id="r65727d1740603600"><div class="curday">27</div></td>
+<td title="28 февраля 2025, Пт" class="freeday" data-id="r65727d1740690000"><div class="curday">28</div></td>
+<td title="1 марта 2025, Сб" class="freeday dayoff" data-id="r65727d1740776400"><div class="curday">01</div></td>
+<td title="2 марта 2025, Вс" class="freeday dayoff" data-id="r65727d1740862800"><div class="curday">02</div></td>
+<td title="3 марта 2025, Пн" class="freeday" data-id="r65727d1740949200"><div class="curday">03</div></td>
+<td title="4 марта 2025, Вт" class="freeday" data-id="r65727d1741035600"><div class="curday">04</div></td>
+</tr>
+<tr id="room65930" class="highlight room" data-cat="0">
+<td style="background-color: #18c442" class="firstcol cleanmode"><span title="2 номер" class="room-name" data-id="65930"><i>2 номер</i></span><div class="room-status status1" data-room_id="65930"><a href="javascript:;" data-status_id="1">уборка</a></div></td>
+<td title="2 февраля 2025, Вс" class="freeday dayoff" data-id="r65930d1738443600"><div class="curday">02</div></td>
+<td title="3 февраля 2025, Пн" class="freeday" data-id="r65930d1738530000"><div class="curday">03</div></td>
+<td title="4 февраля 2025, Вт" class="freeday" data-id="r65930d1738616400"><div class="curday">04</div></td>
+<td title="5 февраля 2025, Ср" class="freeday" data-id="r65930d1738702800"><div class="curday">05</div></td>
+<td title="6 февраля 2025, Чт" class="freeday" data-id="r65930d1738789200"><div class="curday">06</div></td>
+<td title="7 февраля 2025, Пт" class="freeday" data-id="r65930d1738875600"><div class="curday">07</div></td>
+<td title="8 февраля 2025, Сб" class="freeday dayoff" data-id="r65930d1738962000"><div class="curday">08</div></td>
+<td title="9 февраля 2025, Вс" class="freeday dayoff" data-id="r65930d1739048400"><div class="curday">09</div></td>
+<td title="10 февраля 2025, Пн" class="freeday" data-id="r65930d1739134800"><div class="curday">10</div></td>
+<td title="11 февраля 2025, Вт" class="freeday" data-id="r65930d1739221200"><div class="curday">11</div></td>
+<td title="12 февраля 2025, Ср" class="freeday" data-id="r65930d1739307600"><div class="curday">12</div></td>
+<td title="13 февраля 2025, Чт" class="freeday" data-id="r65930d1739394000"><div class="curday">13</div></td>
+<td title="14 февраля 2025, Пт" class="freeday" data-id="r65930d1739480400"><div class="curday">14</div></td>
+<td title="15 февраля 2025, Сб" class="freeday dayoff" data-id="r65930d1739566800"><div class="curday">15</div></td>
+<td title="16 февраля 2025, Вс" class="freeday dayoff" data-id="r65930d1739653200"><div class="curday">16</div></td>
+<td title="17 февраля 2025, Пн" class="freeday" data-id="r65930d1739739600"><div class="curday">17</div></td>
+<td title="18 февраля 2025, Вт" class="freeday" data-id="r65930d1739826000"><div class="curday">18</div></td>
+<td title="19 февраля 2025, Ср" class="freeday" data-id="r65930d1739912400"><div class="curday">19</div></td>
+<td title="20 февраля 2025, Чт" class="freeday" data-id="r65930d1739998800"><div class="curday">20</div></td>
+<td title="21 февраля 2025, Пт" class="freeday" data-id="r65930d1740085200"><div class="curday">21</div></td>
+<td title="22 февраля 2025, Сб" class="freeday dayoff" data-id="r65930d1740171600"><div class="curday">22</div></td>
+<td title="23 февраля 2025, Вс" class="freeday dayoff" data-id="r65930d1740258000"><div class="curday">23</div></td>
+<td title="24 февраля 2025, Пн" class="freeday" data-id="r65930d1740344400"><div class="curday">24</div></td>
+<td title="25 февраля 2025, Вт" class="freeday" data-id="r65930d1740430800"><div class="curday">25</div></td>
+<td title="26 февраля 2025, Ср" class="freeday" data-id="r65930d1740517200"><div class="curday">26</div></td>
+<td title="27 февраля 2025, Чт" class="freeday" data-id="r65930d1740603600"><div class="curday">27</div></td>
+<td title="28 февраля 2025, Пт" class="freeday" data-id="r65930d1740690000"><div class="curday">28</div></td>
+<td title="1 марта 2025, Сб" class="freeday dayoff" data-id="r65930d1740776400"><div class="curday">01</div></td>
+<td title="2 марта 2025, Вс" class="freeday dayoff" data-id="r65930d1740862800"><div class="curday">02</div></td>
+<td title="3 марта 2025, Пн" class="freeday" data-id="r65930d1740949200"><div class="curday">03</div></td>
+<td title="4 марта 2025, Вт" class="freeday" data-id="r65930d1741035600"><div class="curday">04</div></td>
+</tr>
+<tr id="room65931" class="highlight room" data-cat="0">
+<td class="firstcol cleanmode"><span title="4 номер" class="room-name" data-id="65931"><i>4 номер</i></span><div class="room-status status0" data-room_id="65931"><a href="javascript:;" data-status_id="0">чистый</a></div></td>
+<td class="booking dayoff"><div id="b4697602" style="width:calc(440% + 6px - 3px + 1px);left:0" class="dateline leftoffset0"><span class="status" style="background-color: #ffd966"><div class="status-name-wrap"><div class="status-name"> Ридель Павел Владимирович</div></div></span><div class="info">
+<div><a title=открыть карточку клиента href="/client/info?id=3465331" > Ридель Павел Владимирович</a></div><div>заезд: 01-02-2025 13:00</div><div>выезд: 06-02-2025 12:00</div><div>суток: 5</div><div data-booking_id="4697602" class="change_status_link">статус: <a title="изменить статус брони" class="dashed" data-status_id="1" href="javascript:;">Не подтверждено</a></div><div data-booking_id="4697602" class="change_label_link">метка: <a title="изменить метку брони" class="dashed" data-label_id="10366" href="javascript:;">оплаченая бронь</a></div><div>мест: 8</div><div>к оплате: 0 руб. (0 руб. в сутки)</div> <div class="green">оплачено: 10000 руб. (суток: 0, до 01.02)</div><div class="red">долг: -10000 руб.</div><div class="phone-link">телефон: <a class="phone-click dashed" href="javascript:;">+79082216007</a></div><div class="channel">источник: Телефонный звонок </div><div>автор: test1</div><div>дата создания: 16-01-2025 17:59:07</div><div>ID брони: <span class="booking_id">4934</span></div><div class="tooltip-nav"><a title="Информация" href="/booking/info?id=4697602"><img src="/img/admin/eye_icon.gif" /></a> <a title="Редактировать" href="javascript:;" onclick="window.open('/booking/edit?id=4697602&r=cal&popup=1', '_blank', 'width=1100,height=600,scrollbars=1,toolbar=0,location=0,resizable=1')"><img src="/img/admin/edit_icon.png" /></a> <a title="Копировать" href="javascript:;" onclick="copybooking(4697602)"><img src="/img/admin/copy_icon.png" /></a> <a class="tclose" title="Поменять местами брони" href="javascript:;" onclick="swapbooking(4697602, 4934)"><img src="/img/admin/swap_icon.png" /></a> <a class="tclose" title="Переместить бронь" href="javascript:;" onclick="movebooking(4697602,4934)"><img src="/img/admin/move_icon.png" /></a></div>
+</div>
+</div></td>
+<td title="3 февраля 2025, Пн" class="booking" data-id="r65931d1738530000"><div class="curday">03</div></td>
+<td title="4 февраля 2025, Вт" class="booking" data-id="r65931d1738616400"><div class="curday">04</div></td>
+<td title="5 февраля 2025, Ср" class="booking" data-id="r65931d1738702800"><div class="curday">05</div></td>
+<td title="6 февраля 2025, Чт" class="freeday" data-id="r65931d1738789200"><div class="curday">06</div></td>
+<td title="7 февраля 2025, Пт" class="freeday" data-id="r65931d1738875600"><div class="curday">07</div></td>
+<td class="booking dayoff"><div id="b4704018" style="width:calc(300% + 5px - 3px);left:40%" class="dateline"><span class="status" style="background-color: #8cff00"><div class="status-name-wrap"><div class="status-name"> Фаридун</div></div></span><div class="info">
+<div><a title=открыть карточку клиента href="/client/info?id=3352935" >  Фаридун </a></div><div>заезд: 08-02-2025 19:00</div><div>выезд: 11-02-2025 12:00</div><div>суток: 3</div><div data-booking_id="4704018" class="change_status_link">статус: <a title="изменить статус брони" class="dashed" data-status_id="2" href="javascript:;">Подтверждено</a></div><div data-booking_id="4704018" class="change_label_link">метка: <a title="изменить метку брони" class="dashed" data-label_id="15102" href="javascript:;">Ждем оплату</a></div><div>мест: 8</div><div>к оплате: 0 руб. (0 руб. в сутки)</div> <div class="green">оплачено: 0 руб.</div><div class="red">долг: 0 руб.</div><div class="phone-link">телефон: <a class="phone-click dashed" href="javascript:;">+71111111111111</a></div><div class="channel">источник: Баннерная реклама </div><div>автор: test1</div><div>дата создания: 19-01-2025 18:37:44</div><div>ID брони: <span class="booking_id">4936</span></div><div class="tooltip-nav"><a title="Информация" href="/booking/info?id=4704018"><img src="/img/admin/eye_icon.gif" /></a> <a title="Редактировать" href="javascript:;" onclick="window.open('/booking/edit?id=4704018&r=cal&popup=1', '_blank', 'width=1100,height=600,scrollbars=1,toolbar=0,location=0,resizable=1')"><img src="/img/admin/edit_icon.png" /></a> <a title="Копировать" href="javascript:;" onclick="copybooking(4704018)"><img src="/img/admin/copy_icon.png" /></a> <a class="tclose" title="Поменять местами брони" href="javascript:;" onclick="swapbooking(4704018, 4936)"><img src="/img/admin/swap_icon.png" /></a> <a class="tclose" title="Переместить бронь" href="javascript:;" onclick="movebooking(4704018,4936)"><img src="/img/admin/move_icon.png" /></a></div>
+</div>
+</div></td>
+<td title="9 февраля 2025, Вс" class="booking dayoff" data-id="r65931d1739048400"><div class="curday">09</div></td>
+<td title="10 февраля 2025, Пн" class="booking" data-id="r65931d1739134800"><div class="curday">10</div></td>
+<td title="11 февраля 2025, Вт" class="freeday" data-id="r65931d1739221200"><div class="curday">11</div></td>
+<td title="12 февраля 2025, Ср" class="freeday" data-id="r65931d1739307600"><div class="curday">12</div></td>
+<td title="13 февраля 2025, Чт" class="freeday" data-id="r65931d1739394000"><div class="curday">13</div></td>
+<td title="14 февраля 2025, Пт" class="freeday" data-id="r65931d1739480400"><div class="curday">14</div></td>
+<td title="15 февраля 2025, Сб" class="freeday dayoff" data-id="r65931d1739566800"><div class="curday">15</div></td>
+<td title="16 февраля 2025, Вс" class="freeday dayoff" data-id="r65931d1739653200"><div class="curday">16</div></td>
+<td title="17 февраля 2025, Пн" class="freeday" data-id="r65931d1739739600"><div class="curday">17</div></td>
+<td title="18 февраля 2025, Вт" class="freeday" data-id="r65931d1739826000"><div class="curday">18</div></td>
+<td title="19 февраля 2025, Ср" class="freeday" data-id="r65931d1739912400"><div class="curday">19</div></td>
+<td title="20 февраля 2025, Чт" class="freeday" data-id="r65931d1739998800"><div class="curday">20</div></td>
+<td title="21 февраля 2025, Пт" class="freeday" data-id="r65931d1740085200"><div class="curday">21</div></td>
+<td title="22 февраля 2025, Сб" class="freeday dayoff" data-id="r65931d1740171600"><div class="curday">22</div></td>
+<td title="23 февраля 2025, Вс" class="freeday dayoff" data-id="r65931d1740258000"><div class="curday">23</div></td>
+<td title="24 февраля 2025, Пн" class="freeday" data-id="r65931d1740344400"><div class="curday">24</div></td>
+<td title="25 февраля 2025, Вт" class="freeday" data-id="r65931d1740430800"><div class="curday">25</div></td>
+<td title="26 февраля 2025, Ср" class="freeday" data-id="r65931d1740517200"><div class="curday">26</div></td>
+<td title="27 февраля 2025, Чт" class="freeday" data-id="r65931d1740603600"><div class="curday">27</div></td>
+<td title="28 февраля 2025, Пт" class="freeday" data-id="r65931d1740690000"><div class="curday">28</div></td>
+<td title="1 марта 2025, Сб" class="freeday dayoff" data-id="r65931d1740776400"><div class="curday">01</div></td>
+<td title="2 марта 2025, Вс" class="freeday dayoff" data-id="r65931d1740862800"><div class="curday">02</div></td>
+<td title="3 марта 2025, Пн" class="freeday" data-id="r65931d1740949200"><div class="curday">03</div></td>
+<td title="4 марта 2025, Вт" class="freeday" data-id="r65931d1741035600"><div class="curday">04</div></td>
+</tr>
+<tr id="room66453" class="highlight room" data-cat="0">
+<td style="background-color: #b93737" class="firstcol cleanmode"><span title="1" class="room-name white" data-id="66453"><i>1</i></span><div class="room-status status0" data-room_id="66453"><a href="javascript:;" data-status_id="0">чистый</a></div></td>
+<td class="booking dayoff"><div id="b4724585" style="width:calc(240% + 4px - 3px + 1px);left:0" class="dateline leftoffset0"><span class="status" style="background-color: #f1f1f1"><div class="status-name-wrap"><div class="status-name bold"> test2 test3 <i class="vip"></i></div></div></span><div class="info">
+<div><a title=открыть карточку клиента href="/client/info?id=3172169" > test2 test3 </a> <i class="vip"></i> </div><div>заезд: 28-01-2025 13:00</div><div>выезд: 04-02-2025 12:00</div><div>суток: 7</div><div data-booking_id="4724585" class="change_status_link">статус: <a title="изменить статус брони" class="dashed" data-status_id="8" href="javascript:;">Резерв</a></div><div data-booking_id="4724585" class="change_label_link">метка: <a title="изменить метку брони" class="dashed" data-label_id="0" href="javascript:;">не выбрана</a></div><div>мест: 4</div><div>к оплате: 70000 руб. (10000 руб. в сутки)</div> <div class="green">оплачено: 80000 руб. (суток: 8, до 05.02)</div><div class="red">долг: -10000 руб.</div><div class="phone-link">телефон: <a class="phone-click dashed" href="javascript:;">+777777777777777777777777777777</a></div><div class="channel">источник: Телефонный звонок </div><div>автор: test1</div><div>дата создания: 28-01-2025 12:02:34</div><div>ID брони: <span class="booking_id">4950</span></div><div class="tooltip-nav"><a title="Информация" href="/booking/info?id=4724585"><img src="/img/admin/eye_icon.gif" /></a> <a title="Редактировать" href="javascript:;" onclick="window.open('/booking/edit?id=4724585&r=cal&popup=1', '_blank', 'width=1100,height=600,scrollbars=1,toolbar=0,location=0,resizable=1')"><img src="/img/admin/edit_icon.png" /></a> <a title="Копировать" href="javascript:;" onclick="copybooking(4724585)"><img src="/img/admin/copy_icon.png" /></a> <a class="tclose" title="Поменять местами брони" href="javascript:;" onclick="swapbooking(4724585, 4950)"><img src="/img/admin/swap_icon.png" /></a> <a class="tclose" title="Переместить бронь" href="javascript:;" onclick="movebooking(4724585,4950)"><img src="/img/admin/move_icon.png" /></a></div>
+</div>
+</div></td>
+<td title="3 февраля 2025, Пн" class="booking" data-id="r66453d1738530000"><div class="curday">03</div></td>
+<td title="4 февраля 2025, Вт" class="freeday" data-id="r66453d1738616400"><div class="curday">04</div></td>
+<td title="5 февраля 2025, Ср" class="freeday" data-id="r66453d1738702800"><div class="curday">05</div></td>
+<td title="6 февраля 2025, Чт" class="freeday" data-id="r66453d1738789200"><div class="curday">06</div></td>
+<td title="7 февраля 2025, Пт" class="freeday" data-id="r66453d1738875600"><div class="curday">07</div></td>
+<td title="8 февраля 2025, Сб" class="freeday dayoff" data-id="r66453d1738962000"><div class="curday">08</div></td>
+<td title="9 февраля 2025, Вс" class="freeday dayoff" data-id="r66453d1739048400"><div class="curday">09</div></td>
+<td title="10 февраля 2025, Пн" class="freeday" data-id="r66453d1739134800"><div class="curday">10</div></td>
+<td title="11 февраля 2025, Вт" class="freeday" data-id="r66453d1739221200"><div class="curday">11</div></td>
+<td title="12 февраля 2025, Ср" class="freeday" data-id="r66453d1739307600"><div class="curday">12</div></td>
+<td title="13 февраля 2025, Чт" class="freeday" data-id="r66453d1739394000"><div class="curday">13</div></td>
+<td title="14 февраля 2025, Пт" class="freeday" data-id="r66453d1739480400"><div class="curday">14</div></td>
+<td title="15 февраля 2025, Сб" class="freeday dayoff" data-id="r66453d1739566800"><div class="curday">15</div></td>
+<td title="16 февраля 2025, Вс" class="freeday dayoff" data-id="r66453d1739653200"><div class="curday">16</div></td>
+<td title="17 февраля 2025, Пн" class="freeday" data-id="r66453d1739739600"><div class="curday">17</div></td>
+<td title="18 февраля 2025, Вт" class="freeday" data-id="r66453d1739826000"><div class="curday">18</div></td>
+<td title="19 февраля 2025, Ср" class="freeday" data-id="r66453d1739912400"><div class="curday">19</div></td>
+<td title="20 февраля 2025, Чт" class="freeday" data-id="r66453d1739998800"><div class="curday">20</div></td>
+<td title="21 февраля 2025, Пт" class="freeday" data-id="r66453d1740085200"><div class="curday">21</div></td>
+<td title="22 февраля 2025, Сб" class="freeday dayoff" data-id="r66453d1740171600"><div class="curday">22</div></td>
+<td title="23 февраля 2025, Вс" class="freeday dayoff" data-id="r66453d1740258000"><div class="curday">23</div></td>
+<td title="24 февраля 2025, Пн" class="freeday" data-id="r66453d1740344400"><div class="curday">24</div></td>
+<td title="25 февраля 2025, Вт" class="freeday" data-id="r66453d1740430800"><div class="curday">25</div></td>
+<td title="26 февраля 2025, Ср" class="freeday" data-id="r66453d1740517200"><div class="curday">26</div></td>
+<td title="27 февраля 2025, Чт" class="freeday" data-id="r66453d1740603600"><div class="curday">27</div></td>
+<td title="28 февраля 2025, Пт" class="freeday" data-id="r66453d1740690000"><div class="curday">28</div></td>
+<td title="1 марта 2025, Сб" class="freeday dayoff" data-id="r66453d1740776400"><div class="curday">01</div></td>
+<td title="2 марта 2025, Вс" class="freeday dayoff" data-id="r66453d1740862800"><div class="curday">02</div></td>
+<td title="3 марта 2025, Пн" class="freeday" data-id="r66453d1740949200"><div class="curday">03</div></td>
+<td title="4 марта 2025, Вт" class="freeday" data-id="r66453d1741035600"><div class="curday">04</div></td>
+</tr>
+<tr id="room66482" class="highlight room" data-cat="0">
+<td class="firstcol cleanmode"><span title="номер1" class="room-name" data-id="66482"><i>номер1</i></span><div class="room-status status2" data-room_id="66482"><a href="javascript:;" data-status_id="2">грязный</a></div></td>
+<td title="2 февраля 2025, Вс" class="freeday dayoff" data-id="r66482d1738443600"><div class="curday">02</div></td>
+<td title="3 февраля 2025, Пн" class="freeday" data-id="r66482d1738530000"><div class="curday">03</div></td>
+<td title="4 февраля 2025, Вт" class="freeday" data-id="r66482d1738616400"><div class="curday">04</div></td>
+<td title="5 февраля 2025, Ср" class="freeday" data-id="r66482d1738702800"><div class="curday">05</div></td>
+<td title="6 февраля 2025, Чт" class="freeday" data-id="r66482d1738789200"><div class="curday">06</div></td>
+<td title="7 февраля 2025, Пт" class="freeday" data-id="r66482d1738875600"><div class="curday">07</div></td>
+<td title="8 февраля 2025, Сб" class="freeday dayoff" data-id="r66482d1738962000"><div class="curday">08</div></td>
+<td title="9 февраля 2025, Вс" class="freeday dayoff" data-id="r66482d1739048400"><div class="curday">09</div></td>
+<td title="10 февраля 2025, Пн" class="freeday" data-id="r66482d1739134800"><div class="curday">10</div></td>
+<td title="11 февраля 2025, Вт" class="freeday" data-id="r66482d1739221200"><div class="curday">11</div></td>
+<td title="12 февраля 2025, Ср" class="freeday" data-id="r66482d1739307600"><div class="curday">12</div></td>
+<td title="13 февраля 2025, Чт" class="freeday" data-id="r66482d1739394000"><div class="curday">13</div></td>
+<td title="14 февраля 2025, Пт" class="freeday" data-id="r66482d1739480400"><div class="curday">14</div></td>
+<td title="15 февраля 2025, Сб" class="freeday dayoff" data-id="r66482d1739566800"><div class="curday">15</div></td>
+<td title="16 февраля 2025, Вс" class="freeday dayoff" data-id="r66482d1739653200"><div class="curday">16</div></td>
+<td title="17 февраля 2025, Пн" class="freeday" data-id="r66482d1739739600"><div class="curday">17</div></td>
+<td title="18 февраля 2025, Вт" class="freeday" data-id="r66482d1739826000"><div class="curday">18</div></td>
+<td title="19 февраля 2025, Ср" class="freeday" data-id="r66482d1739912400"><div class="curday">19</div></td>
+<td title="20 февраля 2025, Чт" class="freeday" data-id="r66482d1739998800"><div class="curday">20</div></td>
+<td title="21 февраля 2025, Пт" class="freeday" data-id="r66482d1740085200"><div class="curday">21</div></td>
+<td title="22 февраля 2025, Сб" class="freeday dayoff" data-id="r66482d1740171600"><div class="curday">22</div></td>
+<td title="23 февраля 2025, Вс" class="freeday dayoff" data-id="r66482d1740258000"><div class="curday">23</div></td>
+<td title="24 февраля 2025, Пн" class="freeday" data-id="r66482d1740344400"><div class="curday">24</div></td>
+<td title="25 февраля 2025, Вт" class="freeday" data-id="r66482d1740430800"><div class="curday">25</div></td>
+<td title="26 февраля 2025, Ср" class="freeday" data-id="r66482d1740517200"><div class="curday">26</div></td>
+<td title="27 февраля 2025, Чт" class="freeday" data-id="r66482d1740603600"><div class="curday">27</div></td>
+<td title="28 февраля 2025, Пт" class="freeday" data-id="r66482d1740690000"><div class="curday">28</div></td>
+<td title="1 марта 2025, Сб" class="freeday dayoff" data-id="r66482d1740776400"><div class="curday">01</div></td>
+<td title="2 марта 2025, Вс" class="freeday dayoff" data-id="r66482d1740862800"><div class="curday">02</div></td>
+<td title="3 марта 2025, Пн" class="freeday" data-id="r66482d1740949200"><div class="curday">03</div></td>
+<td title="4 марта 2025, Вт" class="freeday" data-id="r66482d1741035600"><div class="curday">04</div></td>
+</tr>
+<tr id="room66523" class="highlight room" data-cat="0">
+<td class="firstcol cleanmode"><span title="Сканди домик 1" class="room-name" data-id="66523"><i>Сканди домик 1</i><span class="comment"></span></span><div class="room-status status0" data-room_id="66523"><a href="javascript:;" data-status_id="0">чистый</a></div></td>
+<td class="booking dayoff"><div id="b4707977" style="width:calc(540% + 7px - 3px + 1px);left:0" class="dateline leftoffset0"><span class="status" style="background-color: #ffd966"><div class="status-name-wrap"><div class="status-name"> 1111</div></div></span><div class="info">
+<div><a title=открыть карточку клиента href="/client/info?id=3472296" >  1111 </a></div><div>заезд: 22-01-2025 13:00</div><div>выезд: 07-02-2025 12:00</div><div>суток: 16</div><div data-booking_id="4707977" class="change_status_link">статус: <a title="изменить статус брони" class="dashed" data-status_id="1" href="javascript:;">Не подтверждено</a></div><div data-booking_id="4707977" class="change_label_link">метка: <a title="изменить метку брони" class="dashed" data-label_id="0" href="javascript:;">не выбрана</a></div><div>мест: 2</div><div>к оплате: 0 руб. (0 руб. в сутки)</div> <div class="green">оплачено: 0 руб.</div><div class="red">долг: 0 руб.</div><div class="phone-link">телефон: <a class="phone-click dashed" href="javascript:;">+711111111111111</a></div><div class="channel">источник: Циан </div><div>автор: test1</div><div>дата создания: 21-01-2025 11:55:22</div><div>ID брони: <span class="booking_id">4938</span></div><div class="tooltip-nav"><a title="Информация" href="/booking/info?id=4707977"><img src="/img/admin/eye_icon.gif" /></a> <a title="Редактировать" href="javascript:;" onclick="window.open('/booking/edit?id=4707977&r=cal&popup=1', '_blank', 'width=1100,height=600,scrollbars=1,toolbar=0,location=0,resizable=1')"><img src="/img/admin/edit_icon.png" /></a> <a title="Копировать" href="javascript:;" onclick="copybooking(4707977)"><img src="/img/admin/copy_icon.png" /></a> <a class="tclose" title="Поменять местами брони" href="javascript:;" onclick="swapbooking(4707977, 4938)"><img src="/img/admin/swap_icon.png" /></a> <a class="tclose" title="Переместить бронь" href="javascript:;" onclick="movebooking(4707977,4938)"><img src="/img/admin/move_icon.png" /></a></div>
+</div>
+</div></td>
+<td title="3 февраля 2025, Пн" class="booking" data-id="r66523d1738530000"><div class="curday">03</div></td>
+<td title="4 февраля 2025, Вт" class="booking" data-id="r66523d1738616400"><div class="curday">04</div></td>
+<td title="5 февраля 2025, Ср" class="booking" data-id="r66523d1738702800"><div class="curday">05</div></td>
+<td title="6 февраля 2025, Чт" class="booking" data-id="r66523d1738789200"><div class="curday">06</div></td>
+<td class="booking"><div id="b4707985" style="width:calc(800% + 10px - 3px);left:40%" class="dateline"><span class="status" style="background-color: #ffd966"><div class="status-name-wrap"><div class="status-name"> 11111</div></div></span><div class="info">
+<div><a title=открыть карточку клиента href="/client/info?id=3472300" >  11111 </a></div><div>заезд: 07-02-2025 13:00</div><div>выезд: 15-02-2025 12:00</div><div>суток: 8</div><div data-booking_id="4707985" class="change_status_link">статус: <a title="изменить статус брони" class="dashed" data-status_id="1" href="javascript:;">Не подтверждено</a></div><div data-booking_id="4707985" class="change_label_link">метка: <a title="изменить метку брони" class="dashed" data-label_id="0" href="javascript:;">не выбрана</a></div><div>мест: 2</div><div>к оплате: 0 руб. (0 руб. в сутки)</div> <div class="green">оплачено: 0 руб.</div><div class="red">долг: 0 руб.</div><div class="phone-link">телефон: <a class="phone-click dashed" href="javascript:;">+711111111111111111</a></div><div class="channel">источник: Циан </div><div>автор: test1</div><div>дата создания: 21-01-2025 11:56:05</div><div>ID брони: <span class="booking_id">4939</span></div><div class="tooltip-nav"><a title="Информация" href="/booking/info?id=4707985"><img src="/img/admin/eye_icon.gif" /></a> <a title="Редактировать" href="javascript:;" onclick="window.open('/booking/edit?id=4707985&r=cal&popup=1', '_blank', 'width=1100,height=600,scrollbars=1,toolbar=0,location=0,resizable=1')"><img src="/img/admin/edit_icon.png" /></a> <a title="Копировать" href="javascript:;" onclick="copybooking(4707985)"><img src="/img/admin/copy_icon.png" /></a> <a class="tclose" title="Поменять местами брони" href="javascript:;" onclick="swapbooking(4707985, 4939)"><img src="/img/admin/swap_icon.png" /></a> <a class="tclose" title="Переместить бронь" href="javascript:;" onclick="movebooking(4707985,4939)"><img src="/img/admin/move_icon.png" /></a></div>
+</div>
+</div></td>
+<td title="8 февраля 2025, Сб" class="booking dayoff" data-id="r66523d1738962000"><div class="curday">08</div></td>
+<td title="9 февраля 2025, Вс" class="booking dayoff" data-id="r66523d1739048400"><div class="curday">09</div></td>
+<td title="10 февраля 2025, Пн" class="booking" data-id="r66523d1739134800"><div class="curday">10</div></td>
+<td title="11 февраля 2025, Вт" class="booking" data-id="r66523d1739221200"><div class="curday">11</div></td>
+<td title="12 февраля 2025, Ср" class="booking" data-id="r66523d1739307600"><div class="curday">12</div></td>
+<td title="13 февраля 2025, Чт" class="booking" data-id="r66523d1739394000"><div class="curday">13</div></td>
+<td title="14 февраля 2025, Пт" class="booking" data-id="r66523d1739480400"><div class="curday">14</div></td>
+<td title="15 февраля 2025, Сб" class="freeday dayoff" data-id="r66523d1739566800"><div class="curday">15</div></td>
+<td title="16 февраля 2025, Вс" class="freeday dayoff" data-id="r66523d1739653200"><div class="curday">16</div></td>
+<td title="17 февраля 2025, Пн" class="freeday" data-id="r66523d1739739600"><div class="curday">17</div></td>
+<td title="18 февраля 2025, Вт" class="freeday" data-id="r66523d1739826000"><div class="curday">18</div></td>
+<td title="19 февраля 2025, Ср" class="freeday" data-id="r66523d1739912400"><div class="curday">19</div></td>
+<td title="20 февраля 2025, Чт" class="freeday" data-id="r66523d1739998800"><div class="curday">20</div></td>
+<td title="21 февраля 2025, Пт" class="freeday" data-id="r66523d1740085200"><div class="curday">21</div></td>
+<td title="22 февраля 2025, Сб" class="freeday dayoff" data-id="r66523d1740171600"><div class="curday">22</div></td>
+<td title="23 февраля 2025, Вс" class="freeday dayoff" data-id="r66523d1740258000"><div class="curday">23</div></td>
+<td title="24 февраля 2025, Пн" class="freeday" data-id="r66523d1740344400"><div class="curday">24</div></td>
+<td title="25 февраля 2025, Вт" class="freeday" data-id="r66523d1740430800"><div class="curday">25</div></td>
+<td title="26 февраля 2025, Ср" class="freeday" data-id="r66523d1740517200"><div class="curday">26</div></td>
+<td title="27 февраля 2025, Чт" class="freeday" data-id="r66523d1740603600"><div class="curday">27</div></td>
+<td title="28 февраля 2025, Пт" class="freeday" data-id="r66523d1740690000"><div class="curday">28</div></td>
+<td title="1 марта 2025, Сб" class="freeday dayoff" data-id="r66523d1740776400"><div class="curday">01</div></td>
+<td title="2 марта 2025, Вс" class="freeday dayoff" data-id="r66523d1740862800"><div class="curday">02</div></td>
+<td title="3 марта 2025, Пн" class="freeday" data-id="r66523d1740949200"><div class="curday">03</div></td>
+<td title="4 марта 2025, Вт" class="freeday" data-id="r66523d1741035600"><div class="curday">04</div></td>
+</tr>
+<tr id="room66688" class="highlight room" data-cat="0">
+<td style="background-color: #1eccd3" class="firstcol cleanmode"><span title="Н39" class="room-name" data-id="66688"><i>Н39</i></span><div class="room-status status0" data-room_id="66688"><a href="javascript:;" data-status_id="0">чистый</a></div></td>
+<td title="2 февраля 2025, Вс" class="freeday dayoff" data-id="r66688d1738443600"><div class="curday">02</div></td>
+<td title="3 февраля 2025, Пн" class="freeday" data-id="r66688d1738530000"><div class="curday">03</div></td>
+<td title="4 февраля 2025, Вт" class="freeday" data-id="r66688d1738616400"><div class="curday">04</div></td>
+<td title="5 февраля 2025, Ср" class="freeday" data-id="r66688d1738702800"><div class="curday">05</div></td>
+<td title="6 февраля 2025, Чт" class="freeday" data-id="r66688d1738789200"><div class="curday">06</div></td>
+<td title="7 февраля 2025, Пт" class="freeday" data-id="r66688d1738875600"><div class="curday">07</div></td>
+<td title="8 февраля 2025, Сб" class="freeday dayoff" data-id="r66688d1738962000"><div class="curday">08</div></td>
+<td title="9 февраля 2025, Вс" class="freeday dayoff" data-id="r66688d1739048400"><div class="curday">09</div></td>
+<td title="10 февраля 2025, Пн" class="freeday" data-id="r66688d1739134800"><div class="curday">10</div></td>
+<td title="11 февраля 2025, Вт" class="freeday" data-id="r66688d1739221200"><div class="curday">11</div></td>
+<td title="12 февраля 2025, Ср" class="freeday" data-id="r66688d1739307600"><div class="curday">12</div></td>
+<td title="13 февраля 2025, Чт" class="freeday" data-id="r66688d1739394000"><div class="curday">13</div></td>
+<td title="14 февраля 2025, Пт" class="freeday" data-id="r66688d1739480400"><div class="curday">14</div></td>
+<td title="15 февраля 2025, Сб" class="freeday dayoff" data-id="r66688d1739566800"><div class="curday">15</div></td>
+<td title="16 февраля 2025, Вс" class="freeday dayoff" data-id="r66688d1739653200"><div class="curday">16</div></td>
+<td title="17 февраля 2025, Пн" class="freeday" data-id="r66688d1739739600"><div class="curday">17</div></td>
+<td title="18 февраля 2025, Вт" class="freeday" data-id="r66688d1739826000"><div class="curday">18</div></td>
+<td title="19 февраля 2025, Ср" class="freeday" data-id="r66688d1739912400"><div class="curday">19</div></td>
+<td title="20 февраля 2025, Чт" class="freeday" data-id="r66688d1739998800"><div class="curday">20</div></td>
+<td title="21 февраля 2025, Пт" class="freeday" data-id="r66688d1740085200"><div class="curday">21</div></td>
+<td title="22 февраля 2025, Сб" class="freeday dayoff" data-id="r66688d1740171600"><div class="curday">22</div></td>
+<td title="23 февраля 2025, Вс" class="freeday dayoff" data-id="r66688d1740258000"><div class="curday">23</div></td>
+<td title="24 февраля 2025, Пн" class="freeday" data-id="r66688d1740344400"><div class="curday">24</div></td>
+<td title="25 февраля 2025, Вт" class="freeday" data-id="r66688d1740430800"><div class="curday">25</div></td>
+<td title="26 февраля 2025, Ср" class="freeday" data-id="r66688d1740517200"><div class="curday">26</div></td>
+<td title="27 февраля 2025, Чт" class="freeday" data-id="r66688d1740603600"><div class="curday">27</div></td>
+<td title="28 февраля 2025, Пт" class="freeday" data-id="r66688d1740690000"><div class="curday">28</div></td>
+<td title="1 марта 2025, Сб" class="freeday dayoff" data-id="r66688d1740776400"><div class="curday">01</div></td>
+<td title="2 марта 2025, Вс" class="freeday dayoff" data-id="r66688d1740862800"><div class="curday">02</div></td>
+<td title="3 марта 2025, Пн" class="freeday" data-id="r66688d1740949200"><div class="curday">03</div></td>
+<td title="4 марта 2025, Вт" class="freeday" data-id="r66688d1741035600"><div class="curday">04</div></td>
+</tr>
+<tr id="room66780" class="highlight room" data-cat="0">
+<td class="firstcol cleanmode"><span title="2х местный" class="room-name" data-id="66780"><i>2х местный</i></span><div class="room-status status0" data-room_id="66780"><a href="javascript:;" data-status_id="0">чистый</a></div></td>
+<td title="2 февраля 2025, Вс" class="freeday dayoff" data-id="r66780d1738443600"><div class="curday">02</div></td>
+<td title="3 февраля 2025, Пн" class="freeday" data-id="r66780d1738530000"><div class="curday">03</div></td>
+<td title="4 февраля 2025, Вт" class="freeday" data-id="r66780d1738616400"><div class="curday">04</div></td>
+<td title="5 февраля 2025, Ср" class="freeday" data-id="r66780d1738702800"><div class="curday">05</div></td>
+<td title="6 февраля 2025, Чт" class="freeday" data-id="r66780d1738789200"><div class="curday">06</div></td>
+<td title="7 февраля 2025, Пт" class="freeday" data-id="r66780d1738875600"><div class="curday">07</div></td>
+<td title="8 февраля 2025, Сб" class="freeday dayoff" data-id="r66780d1738962000"><div class="curday">08</div></td>
+<td title="9 февраля 2025, Вс" class="freeday dayoff" data-id="r66780d1739048400"><div class="curday">09</div></td>
+<td title="10 февраля 2025, Пн" class="freeday" data-id="r66780d1739134800"><div class="curday">10</div></td>
+<td title="11 февраля 2025, Вт" class="freeday" data-id="r66780d1739221200"><div class="curday">11</div></td>
+<td title="12 февраля 2025, Ср" class="freeday" data-id="r66780d1739307600"><div class="curday">12</div></td>
+<td title="13 февраля 2025, Чт" class="freeday" data-id="r66780d1739394000"><div class="curday">13</div></td>
+<td title="14 февраля 2025, Пт" class="freeday" data-id="r66780d1739480400"><div class="curday">14</div></td>
+<td title="15 февраля 2025, Сб" class="freeday dayoff" data-id="r66780d1739566800"><div class="curday">15</div></td>
+<td title="16 февраля 2025, Вс" class="freeday dayoff" data-id="r66780d1739653200"><div class="curday">16</div></td>
+<td title="17 февраля 2025, Пн" class="freeday" data-id="r66780d1739739600"><div class="curday">17</div></td>
+<td title="18 февраля 2025, Вт" class="freeday" data-id="r66780d1739826000"><div class="curday">18</div></td>
+<td title="19 февраля 2025, Ср" class="freeday" data-id="r66780d1739912400"><div class="curday">19</div></td>
+<td title="20 февраля 2025, Чт" class="freeday" data-id="r66780d1739998800"><div class="curday">20</div></td>
+<td title="21 февраля 2025, Пт" class="freeday" data-id="r66780d1740085200"><div class="curday">21</div></td>
+<td title="22 февраля 2025, Сб" class="freeday dayoff" data-id="r66780d1740171600"><div class="curday">22</div></td>
+<td title="23 февраля 2025, Вс" class="freeday dayoff" data-id="r66780d1740258000"><div class="curday">23</div></td>
+<td title="24 февраля 2025, Пн" class="freeday" data-id="r66780d1740344400"><div class="curday">24</div></td>
+<td title="25 февраля 2025, Вт" class="freeday" data-id="r66780d1740430800"><div class="curday">25</div></td>
+<td title="26 февраля 2025, Ср" class="freeday" data-id="r66780d1740517200"><div class="curday">26</div></td>
+<td title="27 февраля 2025, Чт" class="freeday" data-id="r66780d1740603600"><div class="curday">27</div></td>
+<td title="28 февраля 2025, Пт" class="freeday" data-id="r66780d1740690000"><div class="curday">28</div></td>
+<td title="1 марта 2025, Сб" class="freeday dayoff" data-id="r66780d1740776400"><div class="curday">01</div></td>
+<td title="2 марта 2025, Вс" class="freeday dayoff" data-id="r66780d1740862800"><div class="curday">02</div></td>
+<td title="3 марта 2025, Пн" class="freeday" data-id="r66780d1740949200"><div class="curday">03</div></td>
+<td title="4 марта 2025, Вт" class="freeday" data-id="r66780d1741035600"><div class="curday">04</div></td>
+</tr>
+<tr id="room67365" class="highlight room" data-cat="0">
+<td style="background-color: #14b929" class="firstcol cleanmode"><span title="301" class="room-name white" data-id="67365"><i>301</i></span><div class="room-status status0" data-room_id="67365"><a href="javascript:;" data-status_id="0">чистый</a></div></td>
+<td title="2 февраля 2025, Вс" class="freeday dayoff" data-id="r67365d1738443600"><div class="curday">02</div></td>
+<td class="booking"><div id="b4740109" style="width:calc(3000% + 32px - 3px);left:40%" class="dateline"><span class="status" style="background-color: #70ad47"><div class="payedlayer" style="width: 4%;"></div><div class="status-name-wrap"><div class="status-name"> Тетовый</div></div></span><div class="info">
+<div><a title=открыть карточку клиента href="/client/info?id=2873660" >  Тетовый </a></div><div>заезд: 03-02-2025 23:05</div><div>выезд: 31-03-2025 12:00</div><div>суток: 56</div><div data-booking_id="4740109" class="change_status_link">статус: <a title="изменить статус брони" class="dashed" data-status_id="2" href="javascript:;">Подтверждено</a></div><div data-booking_id="4740109" class="change_label_link">метка: <a title="изменить метку брони" class="dashed" data-label_id="0" href="javascript:;">не выбрана</a></div><div>мест: 12</div><div>к оплате: 235200 руб. (4200 руб. в сутки)</div> <div class="green">оплачено: 5000 руб. (суток: 1.2, до 04.02)</div><div class="red">долг: 230200 руб.</div><div class="phone-link">телефон: <a class="phone-click dashed" href="javascript:;">+7999999999</a></div><div class="channel">источник: Сайт Хостела </div><div>автор: test1</div><div>дата создания: 03-02-2025 23:05:14</div><div>ID брони: <span class="booking_id">4956</span></div><div class="tooltip-nav"><a title="Информация" href="/booking/info?id=4740109"><img src="/img/admin/eye_icon.gif" /></a> <a title="Редактировать" href="javascript:;" onclick="window.open('/booking/edit?id=4740109&r=cal&popup=1', '_blank', 'width=1100,height=600,scrollbars=1,toolbar=0,location=0,resizable=1')"><img src="/img/admin/edit_icon.png" /></a> <a title="Копировать" href="javascript:;" onclick="copybooking(4740109)"><img src="/img/admin/copy_icon.png" /></a> <a class="tclose" title="Поменять местами брони" href="javascript:;" onclick="swapbooking(4740109, 4956)"><img src="/img/admin/swap_icon.png" /></a> <a class="tclose" title="Переместить бронь" href="javascript:;" onclick="movebooking(4740109,4956)"><img src="/img/admin/move_icon.png" /></a></div>
+</div>
+</div></td>
+<td title="4 февраля 2025, Вт" class="booking" data-id="r67365d1738616400"><div class="curday">04</div></td>
+<td title="5 февраля 2025, Ср" class="booking" data-id="r67365d1738702800"><div class="curday">05</div></td>
+<td title="6 февраля 2025, Чт" class="booking" data-id="r67365d1738789200"><div class="curday">06</div></td>
+<td title="7 февраля 2025, Пт" class="booking" data-id="r67365d1738875600"><div class="curday">07</div></td>
+<td title="8 февраля 2025, Сб" class="booking dayoff" data-id="r67365d1738962000"><div class="curday">08</div></td>
+<td title="9 февраля 2025, Вс" class="booking dayoff" data-id="r67365d1739048400"><div class="curday">09</div></td>
+<td title="10 февраля 2025, Пн" class="booking" data-id="r67365d1739134800"><div class="curday">10</div></td>
+<td title="11 февраля 2025, Вт" class="booking" data-id="r67365d1739221200"><div class="curday">11</div></td>
+<td title="12 февраля 2025, Ср" class="booking" data-id="r67365d1739307600"><div class="curday">12</div></td>
+<td title="13 февраля 2025, Чт" class="booking" data-id="r67365d1739394000"><div class="curday">13</div></td>
+<td title="14 февраля 2025, Пт" class="booking" data-id="r67365d1739480400"><div class="curday">14</div></td>
+<td title="15 февраля 2025, Сб" class="booking dayoff" data-id="r67365d1739566800"><div class="curday">15</div></td>
+<td title="16 февраля 2025, Вс" class="booking dayoff" data-id="r67365d1739653200"><div class="curday">16</div></td>
+<td title="17 февраля 2025, Пн" class="booking" data-id="r67365d1739739600"><div class="curday">17</div></td>
+<td title="18 февраля 2025, Вт" class="booking" data-id="r67365d1739826000"><div class="curday">18</div></td>
+<td title="19 февраля 2025, Ср" class="booking" data-id="r67365d1739912400"><div class="curday">19</div></td>
+<td title="20 февраля 2025, Чт" class="booking" data-id="r67365d1739998800"><div class="curday">20</div></td>
+<td title="21 февраля 2025, Пт" class="booking" data-id="r67365d1740085200"><div class="curday">21</div></td>
+<td title="22 февраля 2025, Сб" class="booking dayoff" data-id="r67365d1740171600"><div class="curday">22</div></td>
+<td title="23 февраля 2025, Вс" class="booking dayoff" data-id="r67365d1740258000"><div class="curday">23</div></td>
+<td title="24 февраля 2025, Пн" class="booking" data-id="r67365d1740344400"><div class="curday">24</div></td>
+<td title="25 февраля 2025, Вт" class="booking" data-id="r67365d1740430800"><div class="curday">25</div></td>
+<td title="26 февраля 2025, Ср" class="booking" data-id="r67365d1740517200"><div class="curday">26</div></td>
+<td title="27 февраля 2025, Чт" class="booking" data-id="r67365d1740603600"><div class="curday">27</div></td>
+<td title="28 февраля 2025, Пт" class="booking" data-id="r67365d1740690000"><div class="curday">28</div></td>
+<td title="1 марта 2025, Сб" class="booking dayoff" data-id="r67365d1740776400"><div class="curday">01</div></td>
+<td title="2 марта 2025, Вс" class="booking dayoff" data-id="r67365d1740862800"><div class="curday">02</div></td>
+<td title="3 марта 2025, Пн" class="booking" data-id="r67365d1740949200"><div class="curday">03</div></td>
+<td title="4 марта 2025, Вт" class="booking" data-id="r67365d1741035600"><div class="curday">04</div></td>
+</tr>
+</tbody>
+<tfoot>
+<tr><td class="rooms firstcol"><b>Номера</b></td>
+<th class="dayoff">2</th>
+<th>3</th>
+<th class="today" style="background-color: #b5cfe8 !important">4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th class="dayoff">8</th>
+<th class="dayoff">9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+<th>13</th>
+<th>14</th>
+<th class="dayoff">15</th>
+<th class="dayoff">16</th>
+<th>17</th>
+<th>18</th>
+<th>19</th>
+<th>20</th>
+<th>21</th>
+<th class="dayoff">22</th>
+<th class="dayoff">23</th>
+<th>24</th>
+<th>25</th>
+<th>26</th>
+<th>27</th>
+<th>28</th>
+<th class="dayoff">1</th>
+<th class="dayoff">2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+<tr><td></td>
+<th class="dayoff">Вс</th>
+<th>Пн</th>
+<th class="today" style="background-color: #b5cfe8 !important">Вт</th>
+<th>Ср</th>
+<th>Чт</th>
+<th>Пт</th>
+<th class="dayoff">Сб</th>
+<th class="dayoff">Вс</th>
+<th>Пн</th>
+<th>Вт</th>
+<th>Ср</th>
+<th>Чт</th>
+<th>Пт</th>
+<th class="dayoff">Сб</th>
+<th class="dayoff">Вс</th>
+<th>Пн</th>
+<th>Вт</th>
+<th>Ср</th>
+<th>Чт</th>
+<th>Пт</th>
+<th class="dayoff">Сб</th>
+<th class="dayoff">Вс</th>
+<th>Пн</th>
+<th>Вт</th>
+<th>Ср</th>
+<th>Чт</th>
+<th>Пт</th>
+<th class="dayoff">Сб</th>
+<th class="dayoff">Вс</th>
+<th>Пн</th>
+<th>Вт</th>
+</tr><tr>
+<th class="firstcol"></th>
+<th colspan="27" class="month"><div class="month-wrap" title="Февраль 2025">Февраль 2025</div></th>
+<th colspan="4" class="month"><div class="month-wrap" title="Март 2025">Март 2025</div></th>
+</tr>
+</tfoot>
+</table>
+</div>
+<div class="nav-link"><a class="link-print" href="javascript:window.print()">печать</a></div>
+<div class="status-nav">
+<div class="status-color" style="background-color: #ffd966">Не подтверждено</div>
+<div class="status-color" style="background-color: #70ad47">Подтверждено</div>
+<div class="status-color" style="background-color: #539bfd">Выезд</div>
+<div class="status-color" style="background-color: #d68bda">Проживание</div>
+<div class="status-color" style="background-color: #b6b6b6">Ремонт</div>
+<div class="status-color" style="background-color: #f1f1f1">Резерв</div>
+<div class="status-color white" style="background-color: #ff0000">Overbooking</div>
+</div>
+<div class="clear"></div>
+<div class="status-nav">
+<div class="status-color white" style="background-color: #000000">подтверждено</div>
+<div class="status-color white" style="background-color: #f40b0b">отменено</div>
+<div class="status-color" style="background-color: #f1eb8e">под залогом</div>
+<div class="status-color" style="background-color: #30ec0f">залог вернул</div>
+<div class="status-color" style="background-color: #8cff00">Ждем оплату</div>
+<div class="status-color white" style="background-color: #a01818">Новое</div>
+</div><div class="clear"></div>
+<div id="new-booking">
+	<div class="wrap">
+	<form id="new-booking-form" action="/booking/add">
+	<input type="hidden" name="r" value="cal">
+	<input type="hidden" name="d" value="02-02-2025">
+	<input type="hidden" name="rm" value="">
+	<input type="hidden" name="b" value="">
+	<input type="hidden" name="popup" value="1">	<div class="center title">Новое бронирование</div>
+	<div class="col1">
+	<div class="form-row">
+	<label>Заезд: </label>
+	<input class="input from_date date" type="text" name="f" value="" size="8" autocomplete="off">
+		</div>
+	</div>
+		<div class="col2">
+	<div class="form-row">
+	<label>Выезд: <div class="dayscount-link"><a class="dashed small" href="javascript:;">количество суток</a><div class="dayscount-box hidden"><input type="text" class="input" size="1"> <input type="button" class="button button-sm" value="Задать"></div></div></label>
+	<input class="input to_date date" type="text" name="t" value="" size="8" autocomplete="off"></div>
+	</div>
+		<div class="form-row center"><input class="submit" type="submit" value="Забронировать"> <input class="submit" type="button" onclick="$('#new-booking .reserv').toggleClass('hidden')" value="Резерв"> <input class="submit" type="button" onclick="$('#new-booking-form').attr('action', '/booking/repair').submit()" value="Закрыть на ремонт"> <input class="submit close-booking-form" type="button" value="Отмена"></div>
+	</form>
+	<div class="reserv hidden">
+	<form id="new-reserv-form" action="/booking/add?popup=1" method="post">
+	<input type="hidden" name="Post" value="1">
+	<input type="hidden" name="reserv" value="1">
+	<input type="hidden" name="return" value="cal">
+	<input type="hidden" name="d" value="02-02-2025">
+	<input type="hidden" name="date_in" value="">
+	<input type="hidden" name="date_out" value="">
+		<input type="hidden" name="room_id" value="">
+	<input type="hidden" name="bed_id" value="">
+	<input type="hidden" name="is_bed" value="">
+	<div class="col1">
+	<div class="form-row">
+	<label>Имя:</label>
+	<input class="input" type="text" name="client_name" value="">
+	</div>
+	</div>
+	<div class="col2">
+	<div class="form-row">
+	<label>Телефон:</label>
+	<input class="input" type="text" name="client_phone" size="" value="">
+	</div>
+	</div>
+	<div class="form-row">
+	<label>Комментарий:</label>
+	<textarea class="input" name="comment" cols="60" rows="1"></textarea>
+	</div>
+	<div class="form-row">
+	<label>Метка:</label>
+	<select name="label_id" class="input"><option data-color="" value="0">без метки</option><option value="4095" data-color="#000000" data-textcolor="white">подтверждено</option><option value="5749" data-color="#f40b0b" data-textcolor="white">отменено</option><option value="10364" data-color="#f1eb8e" data-textcolor="black">под залогом</option><option value="10365" data-color="#30ec0f" data-textcolor="black">залог вернул</option><option value="10366" data-color="transparent" data-textcolor="black">оплаченая бронь</option><option value="15102" data-color="#8cff00" data-textcolor="black">Ждем оплату</option><option value="17631" data-color="#a01818" data-textcolor="white">Новое</option></select>
+	</div>
+	<div class="form-row">
+		<input class="submit" type="submit" value="Подтвердить">
+	</div>
+	</form>
+	</div>
+	</div>
+</div>
+<div id="swap-booking">
+<div class="wrap">
+<form id="swap-form">
+<input type="hidden" name="d" value="02-02-2025">
+<input type="hidden" name="booking_from" value="">
+<input type="hidden" name="booking_to" value="">
+<div class="center title">Поменять местами брони</div>
+<div class="form-row">
+	Первая бронь: <span class="bold" id="booking_from">№</span>
+</div>
+<div class="form-row">
+	Вторая бронь: <span class="bold" id="booking_to">выберите бронь для обмена</span>
+</div>
+<div class="form-row">
+	<div class="checkbox-row"><input type="checkbox" class="input" id="onlyroom-input" name="onlyroom" value="1"><label for="onlyroom-input" class="checkbox-label">не изменять даты заезда и выезда</label></div>
+</div>
+<div class="form-row">
+	<input class="submit" type="submit" value="Подтвердить"> <input class="submit close-swap-form" type="button" value="Отмена">
+</div>
+</form>
+</div>
+</div>
+<div id="move-booking">
+<div class="wrap">
+<form id="move-form">
+<input type="hidden" name="d" value="02-02-2025">
+<input type="hidden" name="booking_id" value="">
+<input type="hidden" name="day_info" value="">
+<div class="center title">Переместить бронь</div>
+<div class="form-row">
+	 Выбранная бронь: <span class="bold" id="booking_id">№</span>
+</div>
+<div class="form-row">
+Выберите ячейку на шахматке.
+</div>
+<div class="form-row">
+	<input class="submit hidden" type="submit" value="Подтвердить"> <input class="submit close-move-form" type="button" value="Отмена">
+</div>
+</form>
+</div>
+</div>
+<div class="change_status_box"><ul><li><a data-status_id="1" href="javascript:;">Не подтверждено</a></li><li><a data-status_id="2" href="javascript:;">Подтверждено</a></li><li><a data-status_id="3" href="javascript:;">Отменено</a></li><li><a data-status_id="5" href="javascript:;">Незаезд</a></li><li><a data-status_id="4" href="javascript:;">Выезд</a></li><li><a data-status_id="6" href="javascript:;">Проживание</a></li><li><a data-status_id="8" href="javascript:;">Резерв</a></li><li><a data-status_id="9" href="javascript:;">Overbooking</a></li></ul></div>
+<div class="change_label_box"><ul><li><a data-label_id="0" href="javascript:;">не выбрана</a></li><li><a data-label_id="4095" href="javascript:;">подтверждено</a></li><li><a data-label_id="5749" href="javascript:;">отменено</a></li><li><a data-label_id="10364" href="javascript:;">под залогом</a></li><li><a data-label_id="10365" href="javascript:;">залог вернул</a></li><li><a data-label_id="10366" href="javascript:;">оплаченая бронь</a></li><li><a data-label_id="15102" href="javascript:;">Ждем оплату</a></li><li><a data-label_id="17631" href="javascript:;">Новое</a></li></ul></div><div class="room_status_box"><ul><li><a data-status_id="0" href="javascript:;">чистый</a></li><li><a data-status_id="1" href="javascript:;">уборка</a></li><li><a data-status_id="2" href="javascript:;">грязный</a></li></ul></div>
+	</div>
+</div>
+<div class="clear"></div>
+<div class="footer">
+Служба поддержки: <a target="_blank" href="mailto:info@litepms.ru?subject=%D0%A1%D0%BE%D0%BE%D0%B1%D1%89%D0%B5%D0%BD%D0%B8%D0%B5%20%D1%81%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0%20Lite%20PMS%2C%20%D0%BB%D0%BE%D0%B3%D0%B8%D0%BD%20test1">info@litepms.ru</a><br /><a href="/welcome/help">Справочные материалы</a> | <a href="http://litepms.reformal.ru" onclick="window.open('https://reformal.ru/widget/976801', 'reformal', 'height=505,width=650,scrollbars=0,toolbar=0,location=0,resizable=1'); return false;">Oтзывы и предложения</a></div>
+</div>
+<div title="наверх" class="scrollToTop"></div>
+<div id="opaco" class="hidden"></div>
+<div id="popup" class="hidden"></div>
+<div id="popup_div" class="hidden"></div>
+<script type="text/javascript">scrollPosition();</script><!-- Yandex.Metrika counter --> <script type="text/javascript" > (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)}; m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}) (window, document, "script", "https://cdn.jsdelivr.net/npm/yandex-metrica-watch/tag.js", "ym"); ym(27088613, "init", { clickmap:false, trackLinks:false, accurateTrackBounce:false }); </script> <noscript><div><img src="https://mc.yandex.ru/watch/27088613" style="position:absolute; left:-9999px;" alt="" /></div></noscript> <!-- /Yandex.Metrika counter -->
+</body>
+</html>

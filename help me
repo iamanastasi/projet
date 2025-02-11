@@ -1,0 +1,62 @@
+const sqlite3 = require('sqlite3').verbose();
+
+// Создание подключения к базе данных
+let db = new sqlite3.Database('database_name.db', (err) => {
+    if (err) {
+        console.error(err.message);
+    }
+    console.log('Подключение успешно!');
+});
+
+// Создание таблицы
+db.serialize(() => {
+    db.run(`CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL
+    )`, (err) => {
+        if (err) {
+            console.error(err.message);
+        }
+    });
+
+    // Вставка данных
+    const stmt = db.prepare(`INSERT INTO users (name) VALUES (?)`);
+    stmt.run('Alice');
+    stmt.run('Bob');
+    stmt.finalize();
+
+    // Выполнение запроса для получения данных
+    db.all(`SELECT * FROM users`, [], (err, rows) => {
+        if (err) {
+            console.error(err.message);
+        }
+        rows.forEach((row) => {
+            console.log(row.id + ': ' + row.name);
+        });
+    });
+});
+
+// Закрытие подключения
+db.close((err) => {
+    if (err) {
+        console.error(err.message);
+    }
+    console.log('Соединение закрыто.');
+});
+
+const sqlite3 = require('sqlite3').verbose();
+
+// Создание подключения
+let db = new sqlite3.Database('database_name.db', (err) => {
+    if (err) {
+        console.error(err.message);
+    }
+    console.log('Подключение успешно!');
+});
+
+// Закрытие подключения
+db.close((err) => {
+    if (err) {
+        console.error(err.message);
+    }
+});

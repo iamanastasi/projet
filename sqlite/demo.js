@@ -2,19 +2,24 @@
 const sqlite3 = require('sqlite3').verbose();
 
 // Создаем или открываем базу данных
-const db = new sqlite3.Database('mydatabase.db', (err) => {
+const db = new sqlite3.Database('PMSdemo.db', (err) => {
     if (err) {
         console.error(err.message);
     }
-    console.log('Connected to the mydatabase.db SQlite database.');
+    console.log('Connected to the PMSdemo.db SQlite database.');
 });
 
 // Создаем таблицу
 db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        email TEXT NOT NULL UNIQUE
+        TenantID INTEGER PRIMARY KEY AUTOINCREMENT,
+        SecondName TEXT NOT NULL,
+        FirstName TEXT NOT NULL,
+        ThirdName TEXT,
+        email TEXT NOT NULL UNIQUE,
+        telephone TEXT NOT NULL UNIQUE,
+        TenantNumber INTEGER
+
     )`, (err) => {
         if (err) {
             console.error(err.message);
@@ -22,9 +27,9 @@ db.serialize(() => {
     });
 
     // Вставляем данные
-    const stmt = db.prepare(`INSERT INTO users (name, email) VALUES (?, ?)`);
-    stmt.run('John Doe', 'john@example.com');
-    stmt.run('Jane Doe', 'jane@example.com');
+    const stmt = db.prepare(`INSERT INTO tenants ( SecondName, FirstName, ThirdName, email, telephone, TenantNumber VALUES (?, ?)`);
+    stmt.run('Scufsky', 'Milf', 'Hunter', 'lol@example.com', '7952812', 1);
+    stmt.run('Ikari', 'Shinji', 'AAAAAA', 'kek@example.com', '7952812', 52);
     stmt.finalize();
 
     // Читаем данные

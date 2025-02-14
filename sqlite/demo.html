@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Tenant</title>
+</head>
+<body>
+    <h1>Add Tenant</h1>
+    <form action="/add-tenant" method="POST">
+        <label for="secondName">Second Name:</label>
+        <input type="text" id="secondName" name="secondName" required><br>
+
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" required><br>
+
+        <label for="thirdName">Third Name:</label>
+        <input type="text" id="thirdName" name="thirdName"><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="telephone">Telephone:</label>
+        <input type="text" id="telephone" name="telephone" required><br>
+
+        <label for="tenantNumber">Tenant Number:</label>
+        <input type="number" id="tenantNumber" name="tenantNumber"><br>
+
+        <button type="submit">Add Tenant</button>
+    </form>
+</body>
+</html>

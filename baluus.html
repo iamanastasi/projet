@@ -9,6 +9,58 @@
 <body>
     <table>
         <caption>
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col" rowspan="2">Недвижимость</th>
+            <th scope="col" colspan="30">месяц</th>
+          </tr>
+          <tr>
+             <th id="day1"></th>
+             <th id="day2"></th>
+             <th id="day3"></th>
+             <th id="day4"></th>
+             <th id="day5"></th>
+             <th id="day6"></th>
+             <th id="day7"></th>
+             <th id="day8"></th>
+             <th id="day9"></th>
+             <th id="day10"></th>
+             <th id="day11"></th>
+             <th id="day12"></th>
+             <th id="day13"></th>
+             <th id="day14"></th>
+             <th id="day15"></th>
+             <th id="day16"></th>
+             <th id="day17"></th>
+             <th id="day18"></th>
+             <th id="day19"></th>
+             <th id="day20"></th>
+             <th id="day21"></th>
+             <th id="day22"></th>
+             <th id="day23"></th>
+             <th id="day24"></th>
+             <th id="day25"></th>
+             <th id="day26"></th>
+             <th id="day27"></th>
+             <th id="day28"></th>
+             <th id="day29"></th>
+             <th id="day30"></th>
+          </tr>
+        </thead>
+        <script>
+        let currentDate = new Date();
+    const MonthArr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    today=currentDate.getDate();
+    month=currentDate.getMonth();
+    for(let i=today; i<=MonthArr[month]; i++)
+    {
+    document.getElementById('day'+count.toString()).textContent= i;
+    count++;
+    }
+            </script>
+<!--    <table>
+        <caption>
           Front-end web developer course 2021
         </caption>
         <thead>
@@ -208,9 +260,8 @@ tfoot td {
             /* Задаём изменение цвета ссылок при наведении курсора */
         }
     </style>
+-->
 </head>
-
-<body>
 
     <header>
         <div class="logo">

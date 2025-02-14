@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,6 +18,20 @@
             <li><a id="button" href="booking.html">Забронировать</a></li>
         </ul>
     </header>
+    <script>
+    let currentDate = new Date();
+    const MonthArr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    today=currentDate.getDate();
+    month=currentDate.getMonth();
+    for(count =1;count<=30; month)
+    {
+    for(let i=today; i<=MonthArr[month]; i++)
+    {
+    document.getElementById('day'+count.toString()).textContent= i;
+    count++;
+    }
+    }
+    </script>
     <table>
         <caption>
         </caption>
@@ -28,36 +41,36 @@
             <th scope="col" colspan="30">месяц</th>
           </tr>
           <tr>
-             <th>1</th>
-             <th>2</th>
-             <th>3</th>
-             <th>4</th>
-             <th>5</th>
-             <th>6</th>
-             <th>7</th>
-             <th>8</th>
-             <th>9</th>
-             <th>10</th>
-             <th>11</th>
-             <th>12</th>
-             <th>13</th>
-             <th>14</th>
-             <th>15</th>
-             <th>16</th>
-             <th>17</th>
-             <th>18</th>
-             <th>19</th>
-             <th>20</th>
-             <th>21</th>
-             <th>22</th>
-             <th>23</th>
-             <th>24</th>
-             <th>25</th>
-             <th>26</th>
-             <th>27</th>
-             <th>28</th>
-             <th>29</th>
-             <th>30</th>
+             <th id="day1"></th>
+             <th id="day2"></th>
+             <th id="day3"></th>
+             <th id="day4"></th>
+             <th id="day5"></th>
+             <th id="day6"></th>
+             <th id="day7"></th>
+             <th id="day8"></th>
+             <th id="day9"></th>
+             <th id="day10"></th>
+             <th id="day11"></th>
+             <th id="day12"></th>
+             <th id="day13"></th>
+             <th id="day14"></th>
+             <th id="day15"></th>
+             <th id="day16"></th>
+             <th id="day17"></th>
+             <th id="day18"></th>
+             <th id="day19"></th>
+             <th id="day20"></th>
+             <th id="day21"></th>
+             <th id="day22"></th>
+             <th id="day23"></th>
+             <th id="day24"></th>
+             <th id="day25"></th>
+             <th id="day26"></th>
+             <th id="day27"></th>
+             <th id="day28"></th>
+             <th id="day29"></th>
+             <th id="day30"></th>
           </tr>
         </thead>
         <tbody>

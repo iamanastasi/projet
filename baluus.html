@@ -53,11 +53,18 @@
     const MonthArr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     today=currentDate.getDate();
     month=currentDate.getMonth();
+    let count=1;
     for(let i=today; i<=MonthArr[month]; i++)
     {
     document.getElementById('day'+count.toString()).textContent= i;
     count++;
     }
+    for(let i=1; i<=MonthArr[month+1]&&count<=30; i++)
+    {
+    document.getElementById('day'+count.toString()).textContent= i;
+    count++;
+    }
+
             </script>
 <!--    <table>
         <caption>

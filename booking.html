@@ -25,7 +25,8 @@
         <thead>
           <tr>
             <th scope="col" rowspan="2">Недвижимость</th>
-            <th scope="col" colspan="30">месяц</th>
+            <th scope="col" colspan="15" id="month1">месяц1</th>
+            <th scope="col" colspan="15" id="month2">месяц2</th>
           </tr>
           <tr>
             <th class="day1"></th>
@@ -232,8 +233,15 @@
       <script>
         let currentDate = new Date();
         const MonthArr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        const MonthArrStr = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
         const today = currentDate.getDate();
         const month = currentDate.getMonth();
+        const month1 = document.getElementById('month1');
+        month1.textContent = MonthArrStr[month];
+        month1.colSpan = MonthArr[month]-today +1;
+        const month2 = document.getElementById('month2');
+        month2.textContent = MonthArrStr[month+1];
+        month2.colSpan = 31-MonthArr[month]+today;
         let count=1;
            let headerCount = 1;
         for (let i = today; i <= MonthArr[month]; i++) {

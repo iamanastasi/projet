@@ -42,3 +42,24 @@ let countend=count;
     }
 }
 }
+
+const dateRanges = [
+    { start: '17.02', end: '19.02', status: 'занято' }
+];
+
+
+function CellsStatus() {
+    const cells = document.querySelectorAll('tbody tr.row1 td'); 
+    const month1 = document.getElementById('month1');
+    const month2 = document.getElementById('month2');
+    cells.forEach(cell => {
+        const cellDate = cell.textContent; 
+
+        dateRanges.forEach(range => {
+            if (cellDate >= range.start && cellDate <= range.end) {
+                cell.style.backgroundColor = 'rgb(255, 117, 117)'; 
+                cell.textContent += ` (${range.status})`; 
+            }
+        });
+    });
+}

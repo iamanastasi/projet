@@ -1,4 +1,4 @@
-function printTable(){
+function kalendar(){
 let currentDate = new Date();
 const MonthArr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const MonthArrStr = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];

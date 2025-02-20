@@ -44,15 +44,17 @@ let countend=count;
 }
 function mesac(){
 const month1=document.getElementById('month1');
-const monthColspan = month1.getAttribute('colspan');
+const monthColspan = parseInt(month1.getAttribute('colspan'), 10);
 var month1Number;
 var month2Number;
+const rows = document.querySelectorAll('tbody tr');
 for(let i=0; i<12; i++)
     {
-        if(month1.textContent.equals(MonthArrStr[i]))
+        if(month1.textContent===(MonthArrStr[i]))
         {
             month1Number=i+1;
             month2Number=i+2;
+            break;
         }
     } 
     rows.forEach(row => {
@@ -67,7 +69,7 @@ for(let i=0; i<12; i++)
             }
     });
 }
-const dateRanges = [
+const range = [
     { start: '23.02', end: '28.02', status: 'занято' }
 ];
 
@@ -88,7 +90,7 @@ function CellsStatus() {
     if(startMonth==endMonth)
     {
     startCells.forEach(cell => {
-        const cellDay = cell.textContent; 
+        const cellDay = parseInt(cell.textContent, 10);
         dateRanges.forEach(range => {
             if (cellDay >= getDayFromDate(range.start) && cellDay <= getDayFromDate(range.end)) {
                 cell.style.backgroundColor = 'rgb(255, 117, 117)'; 

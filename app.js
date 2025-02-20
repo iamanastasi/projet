@@ -42,7 +42,7 @@ let countend=count;
     }
 }
 }
-
+function mesac(){
 const month1=document.getElementById('month1');
 const monthColspan = month1.getAttribute('colspan');
 var month1Number;
@@ -66,23 +66,35 @@ for(let i=0; i<12; i++)
             cells[i].classList.add(month2Number); 
             }
     });
+}
 const dateRanges = [
-    { start: '17.02', end: '19.02', status: 'занято' }
+    { start: '23.02', end: '28.02', status: 'занято' }
 ];
 
- 
-function CellsStatus() {
-    const cells = document.querySelectorAll('tbody tr.row1 td'); 
-    const month1 = document.getElementById('month1');
-    const month2 = document.getElementById('month2');
-    cells.forEach(cell => {
-        const cellDate = cell.textContent; 
+function getMonthFromDate(dateString) {
+    const [day, month] = dateString.split('.'); 
+    return Number(month); 
+}
+function getDayFromDate(dateString) {
+    const [day, month] = dateString.split('.'); 
+    return Number(day); 
+}
 
+function CellsStatus() {
+    const startMonth = getMonthFromDate(range.start);
+    const endMonth = getMonthFromDate(range.end);
+    const startCells = document.querySelectorAll('tbody tr.row1 td.'+ startMonth); 
+    const endCells = document.querySelectorAll('tbody tr.row1 td.'+ endMonth); 
+    if(startMonth==endMonth)
+    {
+    startCells.forEach(cell => {
+        const cellDay = cell.textContent; 
         dateRanges.forEach(range => {
-            if (cellDate >= range.start && cellDate <= range.end) {
+            if (cellDay >= getDayFromDate(range.start) && cellDay <= getDayFromDate(range.end)) {
                 cell.style.backgroundColor = 'rgb(255, 117, 117)'; 
                 cell.textContent += ` (${range.status})`; 
             }
         });
     });
+}
 }

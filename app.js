@@ -1,7 +1,7 @@
-function kalendar(){
-let currentDate = new Date();
 const MonthArr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const MonthArrStr = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+function kalendar(){
+let currentDate = new Date();
 const today = currentDate.getDate();
 const month = currentDate.getMonth();
 const month1 = document.getElementById('month1');
@@ -43,11 +43,34 @@ let countend=count;
 }
 }
 
+const month1=document.getElementById('month1');
+const monthColspan = month1.getAttribute('colspan');
+var month1Number;
+var month2Number;
+for(let i=0; i<12; i++)
+    {
+        if(month1.textContent.equals(MonthArrStr[i]))
+        {
+            month1Number=i+1;
+            month2Number=i+2;
+        }
+    } 
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        for(let i=1; i<=monthColspan; i++)
+        {
+        cells[i].classList.add(month1Number); 
+        }
+        for(let i=monthColspan+1; i<=30; i++)
+            {
+            cells[i].classList.add(month2Number); 
+            }
+    });
 const dateRanges = [
     { start: '17.02', end: '19.02', status: 'занято' }
 ];
 
-
+ 
 function CellsStatus() {
     const cells = document.querySelectorAll('tbody tr.row1 td'); 
     const month1 = document.getElementById('month1');

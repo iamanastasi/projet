@@ -1,9 +1,11 @@
 const MonthArr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const MonthArrStr = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-function kalendar(){
+const rows = document.querySelectorAll('tbody tr');
 let currentDate = new Date();
 const today = currentDate.getDate();
 const month = currentDate.getMonth();
+console.log(today, month);
+function kalendar(){
 const month1 = document.getElementById('month1');
 month1.textContent = MonthArrStr[month];
 month1.colSpan = MonthArr[month]-today +1;
@@ -47,7 +49,6 @@ const month1=document.getElementById('month1');
 const monthColspan = parseInt(month1.getAttribute('colspan'), 10);
 var month1Number;
 var month2Number;
-const rows = document.querySelectorAll('tbody tr');
 for(let i=0; i<12; i++)
     {
         if(month1.textContent===(MonthArrStr[i]))
@@ -61,17 +62,37 @@ for(let i=0; i<12; i++)
         const cells = row.querySelectorAll('td');
         for(let i=1; i<=monthColspan; i++)
         {
-        cells[i].classList.add(month1Number); 
+        cells[i].classList.add(month1Number.toString()); 
         }
         for(let i=monthColspan+1; i<=30; i++)
             {
-            cells[i].classList.add(month2Number); 
+            cells[i].classList.add(month2Number.toString()); 
             }
     });
+    console.log("succes");
+    const flag=document.getElementById('flag');
+    console.log(flag.className);
+rows.forEach(row => {
+    const cells = row.querySelectorAll('td');
+    for (let i = 1; i <= monthColspan; i++) {
+        if (cells[i].classList.contains(month1Number)) {
+            console.log(`Класс ${month1Number} добавлен к ячейке ${i} в строке.`);
+        } else {
+            console.log(`Класс ${month1Number} не добавлен к ячейке ${i} в строке.`);
+        }
+    }
+    for (let i = monthColspan + 1; i < cells.length; i++) {
+        if (cells[i].classList.contains(month2Number)) {
+            console.log(`Класс ${month2Number} добавлен к ячейке ${i} в строке.`);
+        } else {
+            console.log(`Класс ${month2Number} не добавлен к ячейке ${i} в строке.`);
+        }
+    }
+});
 }
-const range = [
-    { start: '23.02', end: '28.02', status: 'занято' }
-];
+const rangestart= '23.01.2024'; 
+const rangeend= '28.01.2024';
+const rangestatus='занято';
 
 function getMonthFromDate(dateString) {
     const [day, month] = dateString.split('.'); 
@@ -83,20 +104,19 @@ function getDayFromDate(dateString) {
 }
 
 function CellsStatus() {
-    const startMonth = getMonthFromDate(range.start);
-    const endMonth = getMonthFromDate(range.end);
+    const startMonth = getMonthFromDate(rangestart);
+    const endMonth = getMonthFromDate(rangeend);
+    const startDay = getMonthFromDate(rangestart);
+    const endDay = getMonthFromDate(rangeend);
     const startCells = document.querySelectorAll('tbody tr.row1 td.'+ startMonth); 
     const endCells = document.querySelectorAll('tbody tr.row1 td.'+ endMonth); 
     if(startMonth==endMonth)
     {
-    startCells.forEach(cell => {
-        const cellDay = parseInt(cell.textContent, 10);
-        dateRanges.forEach(range => {
-            if (cellDay >= getDayFromDate(range.start) && cellDay <= getDayFromDate(range.end)) {
-                cell.style.backgroundColor = 'rgb(255, 117, 117)'; 
-                cell.textContent += ` (${range.status})`; 
-            }
-        });
-    });
-}
+        const startNomer =startDay-today;
+        const endNomer =endDay-today;
+        for(let i=startNomer; i<=endNomer; i++)
+        {
+            cell.style.backgroundColor = 'rgb(255, 117, 117)'; 
+        }
+    }
 }

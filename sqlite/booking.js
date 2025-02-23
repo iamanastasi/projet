@@ -10,7 +10,7 @@ app.use(express.static('public'));
 
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/demo.html'); 
+    res.sendFile(__dirname + '/demo2.html'); 
 }); 
 
 const db = new sqlite3.Database('mydatabase.db', (err) => {
@@ -21,26 +21,26 @@ const db = new sqlite3.Database('mydatabase.db', (err) => {
 });
 
 db.serialize(() => {
-    db.run(`CREATE TABLE IF NOT EXISTS tenants (
-        TenantID INTEGER PRIMARY KEY AUTOINCREMENT,
-        SecondName TEXT NOT NULL,
-        FirstName TEXT NOT NULL,
-        ThirdName TEXT,
-        email TEXT NOT NULL UNIQUE,
-        telephone TEXT NOT NULL UNIQUE,
-        TenantNumber INTEGER
+    db.run(`CREATE TABLE IF NOT EXISTS bookings (
+        BookingID INTEGER PRIMARY KEY AUTOINCREMENT,
+        UserID INTEGER NOT NULL,
+        PropertyID INTEGER NOT NULL,
+        StartDate TEXT,
+        EndDate TEXT,
+        Amount INTEGER,
+        NumberPers INTEGER
     )`);
 });
 
-app.post('/add-tenant', (req, res) => {
-    const { secondName, firstName, thirdName, email, telephone, tenantNumber } = req.body;
-    const stmt = db.prepare(`INSERT INTO tenants (SecondName, FirstName, ThirdName, email, telephone, TenantNumber) VALUES (?, ?, ?, ?, ?, ?)`);
+app.post('/add-booking', (req, res) => {
+    const { UserID, PropertyID, StartDate, EndDate, Amount, NumberPers } = req.body;
+    const stmt = db.prepare(`INSERT INTO bookings (UserID, PropertyID, StartDate, EndDate, Amount, NumberPers ) VALUES (?, ?, ?, ?, ?, ?)`);
     
-    stmt.run(secondName, firstName, thirdName, email, telephone, tenantNumber, function(err) {
+    stmt.run(UserID, PropertyID, StartDate, EndDate, Amount, NumberPers , function(err) {
         if (err) {
             return res.status(400).send(err.message);
         }
-        res.send('Tenant added successfully!');
+        res.send('Booking added successfully!');
     });
     
     stmt.finalize();

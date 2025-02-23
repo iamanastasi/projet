@@ -5,6 +5,7 @@ let currentDate = new Date();
 const today = currentDate.getDate();
 const month = currentDate.getMonth();
 console.log(today, month);
+
 function kalendar(){
 const month1 = document.getElementById('month1');
 month1.textContent = MonthArrStr[month];
@@ -47,6 +48,7 @@ let countend=count;
 function mesac(){
 const month1=document.getElementById('month1');
 const monthColspan = parseInt(month1.getAttribute('colspan'), 10);
+console.log(monthColspan);
 var month1Number;
 var month2Number;
 for(let i=0; i<12; i++)
@@ -55,6 +57,7 @@ for(let i=0; i<12; i++)
         {
             month1Number=i+1;
             month2Number=i+2;
+            console.log(month1Number, month2Number);
             break;
         }
     } 
@@ -72,25 +75,8 @@ for(let i=0; i<12; i++)
     console.log("succes");
     const flag=document.getElementById('flag');
     console.log(flag.className);
-rows.forEach(row => {
-    const cells = row.querySelectorAll('td');
-    for (let i = 1; i <= monthColspan; i++) {
-        if (cells[i].classList.contains(month1Number)) {
-            console.log(`Класс ${month1Number} добавлен к ячейке ${i} в строке.`);
-        } else {
-            console.log(`Класс ${month1Number} не добавлен к ячейке ${i} в строке.`);
-        }
-    }
-    for (let i = monthColspan + 1; i < cells.length; i++) {
-        if (cells[i].classList.contains(month2Number)) {
-            console.log(`Класс ${month2Number} добавлен к ячейке ${i} в строке.`);
-        } else {
-            console.log(`Класс ${month2Number} не добавлен к ячейке ${i} в строке.`);
-        }
-    }
-});
 }
-const rangestart= '23.01.2024'; 
+const rangestart= '26.01.2024'; 
 const rangeend= '28.01.2024';
 const rangestatus='занято';
 
@@ -104,19 +90,19 @@ function getDayFromDate(dateString) {
 }
 
 function CellsStatus() {
-    const startMonth = getMonthFromDate(rangestart);
-    const endMonth = getMonthFromDate(rangeend);
-    const startDay = getMonthFromDate(rangestart);
-    const endDay = getMonthFromDate(rangeend);
-    const startCells = document.querySelectorAll('tbody tr.row1 td.'+ startMonth); 
-    const endCells = document.querySelectorAll('tbody tr.row1 td.'+ endMonth); 
+    const startMonth = getMonthFromDate(rangestart)+1;
+    const endMonth = getMonthFromDate(rangeend)+1;
+    const startDay = getDayFromDate(rangestart);
+    const endDay = getDayFromDate(rangeend);
+    const cells = document.querySelectorAll('tbody tr.row1 td'); 
     if(startMonth==endMonth)
     {
         const startNomer =startDay-today;
         const endNomer =endDay-today;
-        for(let i=startNomer; i<=endNomer; i++)
+        console.log(today, startDay, endDay, startNomer, endNomer);
+        for(let i=startNomer+1; i<=endNomer+1; i++)
         {
-            cell.style.backgroundColor = 'rgb(255, 117, 117)'; 
+            cells[i].style.backgroundColor = 'rgb(255, 117, 117)'; 
         }
     }
 }

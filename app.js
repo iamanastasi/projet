@@ -76,6 +76,49 @@ for(let i=0; i<12; i++)
     const flag=document.getElementById('flag');
     console.log(flag.className);
 }
+
+const sqlite3 = require('sqlite3').verbose();
+function getDates() {
+
+let db = new sqlite3.Database('mydatabase.db', (err) => {
+    if (err) {
+        console.error(err.message);
+    }
+    console.log('Connected to the database.');
+});
+
+    const sql = `
+        SELECT 
+            BookingID,
+            UserID,
+            PropertyID,
+            StartDate,
+            EndDate,
+            Amount,
+            NumberPers
+        FROM 
+            bookings;
+    `;
+
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            throw err;
+        }
+        rows.forEach((row) => {
+            const StartDate=sql[1];
+            const EndDate=sql[1];
+            console.log(`BookingID: ${row.BookingID}, Start: ${row.StartDate}, End: ${row.EndDate} `);
+        });
+    });
+
+db.close((err) => {
+    if (err) {
+        console.error(err.message);
+    }
+    console.log('Closed the database connection.');
+});
+
+}
 const rangestart= '26.01.2024'; 
 const rangeend= '28.01.2024';
 const rangestatus='занято';

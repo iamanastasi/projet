@@ -35,3 +35,12 @@ db.close((err) => {
     }
     console.log('Closed the database connection.');
 });
+//** 
+/*
+*var sqlite = require('sqlite-sync');
+*sqlite.connect(':memory:');
+*sqlite.run("CREATE TABLE TableName(Id INTEGER PRIMARY KEY, Key INTEGER NOT NULL)");
+*sqlite.run("INSERT INTO TableName VALUES(1, 892)");
+*var result = sqlite.run("SELECT Key FROM TableName WHERE Id = 1");
+*console.log(result[0].Key);
+*/

@@ -80,7 +80,7 @@ for(let i=0; i<12; i++)
 let rangestart, rangeend;
 
 function getDates(){
-fetch('http://localhost:3000/api/bookings')
+fetch('http://localhost:3000/api/mydatabase')
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -96,6 +96,7 @@ fetch('http://localhost:3000/api/bookings')
         console.error('There was a problem with the fetch operation:', error);
     });
 }
+getDates();
 console.log(rangestart, rangeend );
 
 function getMonthFromDate(dateString) {

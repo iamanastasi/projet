@@ -14,7 +14,16 @@ const db = new sqlite3.Database('./mydatabase.db', (err) => {
 });
 
 app.get('/api/mydatabase', (req, res) => {
-    const sql = `SELECT StartDate, EndDate FROM bookings LIMIT 1;`;
+    const sql = `SELECT 
+    BookingID,
+    UserID, 
+    PropertyID, 
+    StartDate, 
+    EndDate, 
+    Amount, 
+    NumberPers
+    FROM bookings 
+    LIMIT 1;`;
     db.get(sql, [], (err, row) => {
         if (err) {
             res.status(500).json({ error: err.message });

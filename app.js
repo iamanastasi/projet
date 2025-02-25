@@ -77,51 +77,26 @@ for(let i=0; i<12; i++)
     console.log(flag.className);
 }
 
-function getDates() {
+let rangestart, rangeend;
 
-    const sqlite3 = require('sqlite3').verbose();
-let db = new sqlite3.Database('mydatabase.db', (err) => {
-    if (err) {
-        console.error(err.message);
-    }
-    console.log('Connected to the database.');
-});
-
-    const sql = `
-        SELECT 
-            BookingID,
-            UserID,
-            PropertyID,
-            StartDate,
-            EndDate,
-            Amount,
-            NumberPers
-        FROM 
-            bookings;
-    `;
-
-    db.all(sql, [], (err, rows) => {
-        if (err) {
-            throw err;
+function getDates(){
+fetch('http://localhost:3000/api/bookings')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-        rows.forEach((row) => {
-            const StartDate=sql[1];
-            const EndDate=sql[1];
-            console.log(`BookingID: ${row.BookingID}, Start: ${row.StartDate}, End: ${row.EndDate} `);
-        });
+        return response.json();
+    })
+    .then(data => {
+        rangestart = data.StartDate; 
+        rangeend = data.EndDate; 
+        CellsStatus();
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
     });
-
-db.close((err) => {
-    if (err) {
-        console.error(err.message);
-    }
-    console.log('Closed the database connection.');
-});
-
 }
-const rangestart= '26.02.2024'; 
-const rangeend= '08.03.2024';
-const rangestatus='занято';
+console.log(rangestart, rangeend );
 
 function getMonthFromDate(dateString) {
     const [day, month] = dateString.split('.'); 

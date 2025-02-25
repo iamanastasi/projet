@@ -1,46 +1,63 @@
+const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
+const app = express();
+const port = 3000;
 
-let db = new sqlite3.Database('mydatabase.db', (err) => {
+let db = new sqlite3.Database('./mydatabase.db', (err) => {
     if (err) {
         console.error(err.message);
     }
     console.log('Connected to the database.');
 });
 
+function getFirstBookingDates(callback) {
     const sql = `
-        SELECT 
-            BookingID,
-            UserID,
-            PropertyID,
-            StartDate,
-            EndDate,
-            Amount,
-            NumberPers
-        FROM 
-            bookings;
-    `;
+        SELECT StartDate, EndDate
+        FROM bookings
+        LIMIT 1;`;
 
-    db.all(sql, [], (err, rows) => {
+    db.get(sql, [], (err, row) => {
         if (err) {
-            throw err;
+            callback(err, null);
+            return;
         }
-        rows.forEach((row) => {
-            console.log(`BookingID: ${row.BookingID}, Start: ${row.StartDate}, End: ${row.EndDate} `);
-        });
+        if (row) {
+            callback(null, row); 
+        } else {
+            callback(null, null); 
+        }
     });
+}
 
-db.close((err) => {
-    if (err) {
-        console.error(err.message);
-    }
-    console.log('Closed the database connection.');
+app.get('/', (req, res) => {
+    getFirstBookingDates((err, row) => {
+        if (err) {
+            res.status(500).send('Error retrieving booking dates');
+            return;
+        }
+        if (row) {
+            const { StartDate, EndDate } = row;
+            res.send(`
+                <h1>Booking Dates</h1>
+                <p>Start Date: ${StartDate}</p>
+                <p>End Date: ${EndDate}</p>
+            `);
+        } else {
+            res.send('<h1>No bookings found.</h1>');
+        }
+    });
 });
-//** 
-/*
-*var sqlite = require('sqlite-sync');
-*sqlite.connect(':memory:');
-*sqlite.run("CREATE TABLE TableName(Id INTEGER PRIMARY KEY, Key INTEGER NOT NULL)");
-*sqlite.run("INSERT INTO TableName VALUES(1, 892)");
-*var result = sqlite.run("SELECT Key FROM TableName WHERE Id = 1");
-*console.log(result[0].Key);
-*/
+
+app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+});
+
+process.on('SIGINT', () => {
+    db.close((err) => {
+        if (err) {
+            console.error(err.message);
+        }
+        console.log('Closed the database connection.');
+        process.exit(0);
+    });
+});

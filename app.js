@@ -90,6 +90,7 @@ fetch('http://localhost:3000/api/mydatabase')
     .then(data => {
         rangestart = data.StartDate; 
         rangeend = data.EndDate; 
+        propertyrow = data.PropertyID;
         CellsStatus();
     })
     .catch(error => {
@@ -97,7 +98,6 @@ fetch('http://localhost:3000/api/mydatabase')
     });
 }
 getDates();
-console.log(rangestart, rangeend );
 
 function getMonthFromDate(dateString) {
     const [day, month] = dateString.split('.'); 
@@ -113,7 +113,7 @@ function CellsStatus() {
     const endMonth = getMonthFromDate(rangeend);
     const startDay = getDayFromDate(rangestart);
     const endDay = getDayFromDate(rangeend);
-    const cells = document.querySelectorAll('tbody tr.row1 td'); 
+    const cells = document.querySelectorAll('tbody tr.row'+propertyrow+' td'); 
     if(startMonth==endMonth)
     {
         const startNomer =startDay-today;
@@ -125,7 +125,7 @@ function CellsStatus() {
             }
         if(startMonth==month+2&&endDay>30+MonthArr[month]-today)
             {
-                endNomer =30;
+                endNomer =29;
             }
         console.log(today, startDay, endDay, startNomer, endNomer);
         for(let i=startNomer+1; i<=endNomer+1; i++)

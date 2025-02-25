@@ -77,9 +77,9 @@ for(let i=0; i<12; i++)
     console.log(flag.className);
 }
 
-const sqlite3 = require('sqlite3').verbose();
 function getDates() {
 
+    const sqlite3 = require('sqlite3').verbose();
 let db = new sqlite3.Database('mydatabase.db', (err) => {
     if (err) {
         console.error(err.message);
@@ -119,8 +119,8 @@ db.close((err) => {
 });
 
 }
-const rangestart= '26.01.2024'; 
-const rangeend= '28.01.2024';
+const rangestart= '26.02.2024'; 
+const rangeend= '08.03.2024';
 const rangestatus='занято';
 
 function getMonthFromDate(dateString) {
@@ -133,8 +133,8 @@ function getDayFromDate(dateString) {
 }
 
 function CellsStatus() {
-    const startMonth = getMonthFromDate(rangestart)+1;
-    const endMonth = getMonthFromDate(rangeend)+1;
+    const startMonth = getMonthFromDate(rangestart);
+    const endMonth = getMonthFromDate(rangeend);
     const startDay = getDayFromDate(rangestart);
     const endDay = getDayFromDate(rangeend);
     const cells = document.querySelectorAll('tbody tr.row1 td'); 
@@ -144,6 +144,16 @@ function CellsStatus() {
         const endNomer =endDay-today;
         console.log(today, startDay, endDay, startNomer, endNomer);
         for(let i=startNomer+1; i<=endNomer+1; i++)
+        {
+            cells[i].style.backgroundColor = 'rgb(255, 117, 117)'; 
+        }
+    }
+    else if(startMonth!=endMonth) 
+    {
+        const startNomer =startDay-today;
+        const endNomer =endDay-today+MonthArr[endMonth-1];
+        console.log(today, startDay, endDay, startNomer, endNomer);
+        for(let i=startNomer+1; i<endNomer+1 ; i++)
         {
             cells[i].style.backgroundColor = 'rgb(255, 117, 117)'; 
         }

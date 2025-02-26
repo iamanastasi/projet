@@ -23,13 +23,22 @@ app.get('/api/mydatabase', (req, res) => {
     Amount, 
     NumberPers
     FROM bookings 
-    LIMIT 1;`;
-    db.get(sql, [], (err, row) => {
-        if (err) {
-            res.status(500).json({ error: err.message });
-            return;
-        }
-        res.json(row);
+   WHERE StartDate BETWEEN DATE('now') AND DATE('now', '+30 days')
+OR EndDate BETWEEN DATE('now') AND DATE('now', '+30 days')
+OR (StartDate < DATE('now') AND EndDate > DATE('now', '+30 days'));`;
+
+    db.all(sql, [], (err, rows) => {
+        db.all(sql, [], (err, rows) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            if (rows.length === 0) { // Handle empty result set
+                res.status(200).json([]); // Return an empty array
+                return;
+            }
+            res.json(rows);
+        });
     });
 });
 

@@ -88,10 +88,13 @@ fetch('http://localhost:3000/api/mydatabase')
         return response.json();
     })
     .then(data => {
-        rangestart = data.StartDate; 
-        rangeend = data.EndDate; 
-        propertyrow = data.PropertyID;
-        CellsStatus();
+        data.forEach(booking => {
+            const rangestart = booking.StartDate;
+            const rangeend = booking.EndDate;
+            const propertyrow = booking.PropertyID;
+            console.log(rangestart, rangeend, propertyrow);
+            CellsStatus(rangestart, rangeend, propertyrow);
+        });
     })
     .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
@@ -100,15 +103,15 @@ fetch('http://localhost:3000/api/mydatabase')
 getDates();
 
 function getMonthFromDate(dateString) {
-    const [day, month] = dateString.split('.'); 
+    const [year, month, day] = dateString.split('-'); 
     return Number(month); 
 }
 function getDayFromDate(dateString) {
-    const [day, month] = dateString.split('.'); 
+    const [year, month, day] = dateString.split('-'); 
     return Number(day); 
 }
 
-function CellsStatus() {
+function CellsStatus(rangestart, rangeend, propertyrow) {
     const startMonth = getMonthFromDate(rangestart);
     const endMonth = getMonthFromDate(rangeend);
     const startDay = getDayFromDate(rangestart);

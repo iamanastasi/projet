@@ -100,13 +100,15 @@ fetch('http://localhost:3000/api/mydatabase')
         console.error('There was a problem with the fetch operation:', error);
     });
 }
-getDates();
+
 
 function getMonthFromDate(dateString) {
+    console.log(dateString);
     const [year, month, day] = dateString.split('-'); 
     return Number(month); 
 }
 function getDayFromDate(dateString) {
+    console.log(dateString);
     const [year, month, day] = dateString.split('-'); 
     return Number(day); 
 }
@@ -117,18 +119,14 @@ function CellsStatus(rangestart, rangeend, propertyrow) {
     const startDay = getDayFromDate(rangestart);
     const endDay = getDayFromDate(rangeend);
     const cells = document.querySelectorAll('tbody tr.row'+propertyrow+' td'); 
-    if(startMonth==endMonth)
+    if(startMonth==month+1&&endMonth==month+1)
     {
         const startNomer =startDay-today;
         const endNomer =endDay-today;
-        if(startMonth==month+1&&startDay<today)
+        if(startDay<today)
             {
                 endNomer =endDay-today;
                 startNomer =today;
-            }
-        if(startMonth==month+2&&endDay>30+MonthArr[month]-today)
-            {
-                endNomer =29;
             }
         console.log(today, startDay, endDay, startNomer, endNomer);
         for(let i=startNomer+1; i<=endNomer+1; i++)
@@ -136,10 +134,24 @@ function CellsStatus(rangestart, rangeend, propertyrow) {
             cells[i].style.backgroundColor = 'rgb(255, 117, 117)'; 
         }
     }
+    if(startMonth==month+2&&endMonth==month+2)
+        {
+            const startNomer =startDay-today+MonthArr[month];
+            const endNomer =endDay-today+MonthArr[month];
+            if(endDay>30+MonthArr[month]-today)
+                {
+                    endNomer =29;
+                }
+            console.log(today, startDay, endDay, startNomer, endNomer);
+            for(let i=startNomer+1; i<=endNomer+1; i++)
+            {
+                cells[i].style.backgroundColor = 'rgb(255, 117, 117)'; 
+            }
+        }
     if(startMonth!=endMonth) 
     {
         const startNomer =startDay-today;
-        const endNomer =endDay-today+MonthArr[endMonth-1];
+        const endNomer =endDay-today+MonthArr[month];
         if(startMonth==month+1&&startDay<today)
             {
                 startNomer =today;
@@ -149,7 +161,7 @@ function CellsStatus(rangestart, rangeend, propertyrow) {
                 endNomer =30;
             }
         console.log(today, startDay, endDay, startNomer, endNomer);
-        for(let i=startNomer+1; i<endNomer+1 ; i++)
+        for(let i=startNomer+1; i<=endNomer+1 ; i++)
         {
             cells[i].style.backgroundColor = 'rgb(255, 117, 117)'; 
         }

@@ -29,224 +29,112 @@
             <li><a id="button" href="booking.html">Забронировать</a></li>
         </ul>
     </header>
-   
+
     <table id="kalendar">
-        <caption>
-        </caption>
-        <thead>
-          <tr>
-            <th scope="col" rowspan="2">Недвижимость</th>
-            <th scope="col" colspan="15" id="month1">месяц1</th>
-            <th scope="col" colspan="15" id="month2">месяц2</th>
-          </tr>
-          <tr>
-            <th class="day1"></th>
-            <th class="day2"></th>
-            <th class="day3"></th>
-            <th class="day4"></th>
-            <th class="day5" id="flag"></th>
-            <th class="day6"></th>
-            <th class="day7"></th>
-            <th class="day8"></th>
-            <th class="day9"></th>
-            <th class="day10"></th>
-            <th class="day11"></th>
-            <th class="day12"></th>
-            <th class="day13"></th>
-            <th class="day14"></th>
-            <th class="day15"></th>
-            <th class="day16"></th>
-            <th class="day17"></th>
-            <th class="day18"></th>
-            <th class="day19"></th>
-            <th class="day20"></th>
-            <th class="day21"></th>
-            <th class="day22"></th>
-            <th class="day23"></th>
-            <th class="day24"></th>
-            <th class="day25"></th>
-            <th class="day26"></th>
-            <th class="day27"></th>
-            <th class="day28"></th>
-            <th class="day29"></th>
-            <th class="day30"></th>
+      <caption>
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col" colspan="7" id="month"><form>
+            <select id="mesac" name="mesaci" onchange="createKalendar(getMesac(), 2025)">
+              <option value="01">Январь</option>
+              <option value="02">Февраль</option>
+              <option value="03">Март</option>
+              <option value="04">Апрель</option>
+              <option value="05">Май</option>
+              <option value="06">Июнь</option>
+              <option value="07">Июль</option>
+              <option value="08">Август</option>
+              <option value="09">Сентябрь</option>
+              <option value="10">Октябрь</option>
+              <option value="11">Ноябрь</option>
+              <option value="12">Декабрь</option>
+            </select>
+          </form>
+          </th>
+        </tr>
+        <tr>
+          <th class="mon">пн</th>
+          <th class="tue">вт</th>
+          <th class="wed">ср</th>
+          <th class="thu">чт</th>
+          <th class="fri">пт</th>
+          <th class="sat">сб</th>
+          <th class="sun">вс</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="week1">
+          <td class="mon"></td>
+           <td class="tue"></td>
+           <td class="wed"></td>
+           <td class="thu"></td>
+           <td class="fri"></td>
+           <td class="sat"></td>
+           <td class="sun"></td>
+        </tr>
+        <tr class="week2">
+          <td class="mon"></td>
+           <td class="tue"></td>
+           <td class="wed"></td>
+           <td class="thu"></td>
+           <td class="fri"></td>
+           <td class="sat"></td>
+           <td class="sun"></td>
+        </tr>
+        <tr class="week3">
+           <td class="mon"></td>
+           <td class="tue"></td>
+           <td class="wed"></td>
+           <td class="thu"></td>
+           <td class="fri"></td>
+           <td class="sat"></td>
+           <td class="sun"></td>
+        </tr>
+        <tr class="week4">
+          <td class="mon"></td>
+           <td class="tue"></td>
+           <td class="wed"></td>
+           <td class="thu"></td>
+           <td class="fri"></td>
+           <td class="sat"></td>
+           <td class="sun"></td>
+        </tr>
+        <tr class="week5">
+          <td class="mon"></td>
+          <td class="tue"></td>
+          <td class="wed"></td>
+          <td class="thu"></td>
+          <td class="fri"></td>
+          <td class="sat"></td>
+          <td class="sun"></td>
+      </tbody>
+    </table>
+  
+  
+    <div id="calendar"></div>
 
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="row1">
-            <td>1</td>
-            <td class="day1"></td>
-             <td class="day2"></td>
-             <td class="day3"></td>
-             <td class="day4"></td>
-             <td class="day5"></td>
-             <td class="day6"></td>
-             <td class="day7"></td>
-             <td class="day8"></td>
-             <td class="day9"></td>
-             <td class="day10"></td>
-             <td class="day11"></td>
-             <td class="day12"></td>
-             <td class="day13"></td>
-             <td class="day14"></td>
-             <td class="day15"></td>
-             <td class="day16"></td>
-             <td class="day17"></td>
-             <td class="day18"></td>
-             <td class="day19"></td>
-             <td class="day20"></td>
-             <td class="day21"></td>
-             <td class="day22"></td>
-             <td class="day23"></td>
-             <td class="day24"></td>
-             <td class="day25"></td>
-             <td class="day26"></td>
-             <td class="day27"></td>
-             <td class="day28"></td>
-             <td class="day29"></td>
-             <td class="day30"></td>
-          </tr>
-          <tr class="row2">
-            <td>2</td>
-            <td class="day1"></td>
-             <td class="day2"></td>
-             <td class="day3"></td>
-             <td class="day4"></td>
-             <td class="day5"></td>
-             <td class="day6"></td>
-             <td class="day7"></td>
-             <td class="day8"></td>
-             <td class="day9"></td>
-             <td class="day10"></td>
-             <td class="day11"></td>
-             <td class="day12"></td>
-             <td class="day13"></td>
-             <td class="day14"></td>
-             <td class="day15"></td>
-             <td class="day16"></td>
-             <td class="day17"></td>
-             <td class="day18"></td>
-             <td class="day19"></td>
-             <td class="day20"></td>
-             <td class="day21"></td>
-             <td class="day22"></td>
-             <td class="day23"></td>
-             <td class="day24"></td>
-             <td class="day25"></td>
-             <td class="day26"></td>
-             <td class="day27"></td>
-             <td class="day28"></td>
-             <td class="day29"></td>
-             <td class="day30"></td>
-          </tr>
-          <tr class="row3">
-            <td>3</td>
-             <td class="day1"></td>
-             <td class="day2"></td>
-             <td class="day3"></td>
-             <td class="day4"></td>
-             <td class="day5"></td>
-             <td class="day6"></td>
-             <td class="day7"></td>
-             <td class="day8"></td>
-             <td class="day9"></td>
-             <td class="day10"></td>
-             <td class="day11"></td>
-             <td class="day12"></td>
-             <td class="day13"></td>
-             <td class="day14"></td>
-             <td class="day15"></td>
-             <td class="day16"></td>
-             <td class="day17"></td>
-             <td class="day18"></td>
-             <td class="day19"></td>
-             <td class="day20"></td>
-             <td class="day21"></td>
-             <td class="day22"></td>
-             <td class="day23"></td>
-             <td class="day24"></td>
-             <td class="day25"></td>
-             <td class="day26"></td>
-             <td class="day27"></td>
-             <td class="day28"></td>
-             <td class="day29"></td>
-             <td class="day30"></td>
-          </tr>
-          <tr class="row4">
-            <td>4</td>
-            <td class="day1"></td>
-             <td class="day2"></td>
-             <td class="day3"></td>
-             <td class="day4"></td>
-             <td class="day5"></td>
-             <td class="day6"></td>
-             <td class="day7"></td>
-             <td class="day8"></td>
-             <td class="day9"></td>
-             <td class="day10"></td>
-             <td class="day11"></td>
-             <td class="day12"></td>
-             <td class="day13"></td>
-             <td class="day14"></td>
-             <td class="day15"></td>
-             <td class="day16"></td>
-             <td class="day17"></td>
-             <td class="day18"></td>
-             <td class="day19"></td>
-             <td class="day20"></td>
-             <td class="day21"></td>
-             <td class="day22"></td>
-             <td class="day23"></td>
-             <td class="day24"></td>
-             <td class="day25"></td>
-             <td class="day26"></td>
-             <td class="day27"></td>
-             <td class="day28"></td>
-             <td class="day29"></td>
-             <td class="day30"></td>
-          </tr>
-          <tr class="row5">
-            <td>5</td>
-            <td class="day1"></td>
-            <td class="day2"></td>
-            <td class="day3"></td>
-            <td class="day4"></td>
-            <td class="day5"></td>
-            <td class="day6"></td>
-            <td class="day7"></td>
-            <td class="day8"></td>
-            <td class="day9"></td>
-            <td class="day10"></td>
-            <td class="day11"></td>
-            <td class="day12"></td>
-            <td class="day13"></td>
-            <td class="day14"></td>
-            <td class="day15"></td>
-            <td class="day16"></td>
-            <td class="day17"></td>
-            <td class="day18"></td>
-            <td class="day19"></td>
-            <td class="day20"></td>
-            <td class="day21"></td>
-            <td class="day22"></td>
-            <td class="day23"></td>
-            <td class="day24"></td>
-            <td class="day25"></td>
-            <td class="day26"></td>
-            <td class="day27"></td>
-            <td class="day28"></td>
-            <td class="day29"></td>
-            <td class="day30"></td>
-          </tr>
-        </tbody>
-      </table>
-
-
-      <script text="javascript">
-          kalendar()
-          getDates();
-      </script>
+    <script>
+      function getMesac() {
+              const selectElement = document.getElementById('mesac');
+              return selectElement.value-1;
+      }
+      function createKalendar(month, year) {
+        let firstDate = new Date( year, month, 1);
+        let startDay=firstDate.getDay();
+        if(startDay==0)
+      {
+        StartDay=7;
+      }
+        const ddayElements = document.querySelectorAll('tr td');
+        ddayElements.forEach(td => td.textContent = '');
+        let i = 1;
+        for (let j = startDay - 1; j < ddayElements.length && i <= MonthArr[month]; j++) {
+      ddayElements[j].textContent = i;
+      i++;
+    }
+      }
+    </script>
     <footer>
         <div class="footer">
             <div class="footer-section"><img src="logo.png" alt="Логотип" id="logo-footer"></div>

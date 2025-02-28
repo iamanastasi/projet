@@ -167,3 +167,27 @@ function CellsStatus(rangestart, rangeend, propertyrow) {
         }
     }
 }
+
+function getMesac() {
+    const selectElement = document.getElementById('mesac');
+    return selectElement.value-1;
+}
+function getYear() {
+    const selectElement = document.getElementById('year');
+    return selectElement.value;
+}
+function createKalendar(month, year) {
+let firstDate = new Date( year, month, 1);
+let startDay=firstDate.getDay();
+if(startDay==0)
+{
+startDay=7;
+}
+const ddayElements = document.querySelectorAll('tr td');
+ddayElements.forEach(td => td.textContent = '');
+let i = 1;
+for (let j = startDay - 1; j < ddayElements.length && i <= MonthArr[month]; j++) {
+ddayElements[j].textContent = i;
+i++;
+}
+}

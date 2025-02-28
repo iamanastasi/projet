@@ -118,21 +118,34 @@
     </table>
     <style>
       .selected {
-            background-color: yellow; 
+            background-color: rgb(49, 133, 85); 
         }
     </style>
     </style>
     <script>
       createKalendar(getMesac(), getYear());
-    </script>
-     <script>
+      let selectionCount = 0;
+      var cellStart, cellEnd;
       function selectCell(event) {
           const cells = document.querySelectorAll('#kalendar td');
+          cells.forEach(cell => cell.classList.remove('selected'));
           const selectedCell = event.target;
           selectedCell.classList.add('selected'); 
-  
-          const cellValue = selectedCell.textContent; 
-          console.log('Выделенная ячейка:', cellValue); 
+          selectionCount++;
+          if(selectionCount==3)
+          {
+            selectionCount=1;
+          }
+          if(selectionCount==1)
+          {
+            cellStart = getYear()+'-'+getMesac()+'-'+selectedCell.textContent;
+          }
+          if(selectionCount==2)
+          {
+            cellEnd = getYear()+'-'+getMesac()+'-'+selectedCell.textContent;
+          }
+          console.log('Выделенная ячейка:', selectedCell.textContent); 
+          console.log(selectionCount);
       }
   
       const cells = document.querySelectorAll('#kalendar td');

@@ -33,8 +33,8 @@ OR (StartDate < DATE('now') AND EndDate > DATE('now', '+30 days'));`;
                 res.status(500).json({ error: err.message });
                 return;
             }
-            if (rows.length === 0) { // Handle empty result set
-                res.status(200).json([]); // Return an empty array
+            if (rows.length === 0) { 
+                res.status(200).json([]); 
                 return;
             }
             res.json(rows);

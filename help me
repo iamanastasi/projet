@@ -60,3 +60,60 @@ db.close((err) => {
         console.error(err.message);
     }
 });
+Ваша реализация класса Rect выглядит хорошо, но вы столкнулись с проблемами в JavaScript-коде, связанными с функциями getMonthFromDate и getDayFromDate. Ошибка Uncaught TypeError: Cannot read properties of undefined (reading 'value') указывает на то, что вы пытаетесь получить доступ к свойству value у переменной, которая равна undefined.
+
+Давайте рассмотрим, как можно исправить эту ошибку.
+
+### Исправление функций getMonthFromDate и getDayFromDate
+
+Судя по вашему коду, вы пытаетесь получить день и месяц из строки даты, но, похоже, вы передаете неправильный аргумент в функции. Вместо того чтобы передавать объект с полем value, вы, вероятно, передаете строку. Вот как можно исправить функции:
+
+```
+function getMonthFromDate(dateString) {
+    const [day, month] = dateString.split('.'); 
+    return Number(month); 
+}
+
+function getDayFromDate(dateString) {
+    const [day, month] = dateString.split('.'); 
+    return Number(day); 
+}
+```
+
+### Пример использования
+
+Теперь, когда функции исправлены, вы можете использовать их следующим образом:
+
+```
+const date = '23.02';
+const day = getDayFromDate(date); // 23
+const month = getMonthFromDate(date); // 2
+
+console.log(Day: ${day}, Month: ${month});
+```
+
+### Проверка на ошибки
+
+Если вы хотите убедиться, что переданная строка имеет правильный формат, вы можете добавить проверку:
+
+```
+function getMonthFromDate(dateString) {
+    if (typeof dateString !== 'string') {
+        throw new Error('Expected a string');
+    }
+    const [day, month] = dateString.split('.'); 
+    return Number(month); 
+}
+
+function getDayFromDate(dateString) {
+    if (typeof dateString !== 'string') {
+        throw new Error('Expected a string');
+    }
+    const [day, month] = dateString.split('.'); 
+    return Number(day); 
+}
+```
+
+### Заключение
+
+Теперь ваши функции должны работать корректно, если вы передаете им строки в формате DD.MM. Убедитесь, что вы передаете правильные аргументы, чтобы избежать ошибок. Если у вас есть дополнительные вопросы или вам нужна помощь с другими частями кода, дайте знать!

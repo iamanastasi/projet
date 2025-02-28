@@ -191,3 +191,42 @@ ddayElements[j].textContent = i;
 i++;
 }
 }
+
+    function CellsStatusClient(rangestart, rangeend, propertyrow) {
+        const startMonth = getMonthFromDate(rangestart);
+        const endMonth = getMonthFromDate(rangeend);
+        const startDay = getDayFromDate(rangestart);
+        const endDay = getDayFromDate(rangeend);
+        const cells = document.querySelectorAll('tbody tr td'); 
+        if(startMonth==endMonth)
+        {
+            const startNomer=startDay+firstNomer;
+            const endNomer=endDay+;
+            if(startDay<today)
+                {
+                    endNomer =endDay-today;
+                    startNomer =today;
+                }
+            console.log(today, startDay, endDay, startNomer, endNomer);
+            for(let i=startNomer+1; i<=endNomer+1; i++)
+            {
+                cells[i].style.backgroundColor = 'rgb(255, 117, 117)'; 
+            }
+        }
+        if(startMonth!=endMonth) 
+        {
+            if(startMonth==month+1&&startDay<today)
+                {
+                    startNomer =today;
+                }
+            if(startMonth==month+2&&endDay>30+MonthArr[month]-today)
+                {
+                    endNomer =30;
+                }
+            console.log(today, startDay, endDay, startNomer, endNomer);
+            for(let i=startNomer+1; i<=endNomer+1 ; i++)
+            {
+                cells[i].style.backgroundColor = 'rgb(255, 117, 117)'; 
+            }
+        }
+    }

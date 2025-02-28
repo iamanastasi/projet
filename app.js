@@ -201,7 +201,7 @@ i++;
         if(startMonth==endMonth)
         {
             const startNomer=startDay+firstNomer;
-            const endNomer=endDay+;
+            const endNomer=endDay+1;
             if(startDay<today)
                 {
                     endNomer =endDay-today;

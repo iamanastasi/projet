@@ -116,9 +116,30 @@
            <td class="sun" id="35"></td>
       </tbody>
     </table>
+    <style>
+      .selected {
+            background-color: yellow; 
+        }
+    </style>
+    </style>
     <script>
       createKalendar(getMesac(), getYear());
     </script>
+     <script>
+      function selectCell(event) {
+          const cells = document.querySelectorAll('#kalendar td');
+          const selectedCell = event.target;
+          selectedCell.classList.add('selected'); 
+  
+          const cellValue = selectedCell.textContent; 
+          console.log('Выделенная ячейка:', cellValue); 
+      }
+  
+      const cells = document.querySelectorAll('#kalendar td');
+      cells.forEach(cell => {
+          cell.addEventListener('click', selectCell);
+      });
+      </script>
     <footer>
         <div class="footer">
             <div class="footer-section"><img src="logo.png" alt="Логотип" id="logo-footer"></div>

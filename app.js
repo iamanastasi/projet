@@ -176,6 +176,7 @@ function getYear() {
     const selectElement = document.getElementById('year');
     return selectElement.value;
 }
+
 function createKalendar(month, year) {
 let firstDate = new Date( year, month, 1);
 let startDay=firstDate.getDay();
@@ -190,43 +191,48 @@ for (let j = startDay - 1; j < ddayElements.length && i <= MonthArr[month]; j++)
 ddayElements[j].textContent = i;
 i++;
 }
+return startDay;
 }
 
-    function CellsStatusClient(rangestart, rangeend, propertyrow) {
+fetch('/get-bookings', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ month: getMesac(), PropertyID: 1 }), 
+})
+.then(response => response.json())
+.then(data => {
+    data.forEach(booking => {
+        const rangestart = booking.StartDate;
+        const rangeend = booking.EndDate;
+        console.log(rangestart, rangeend);
+        CellsStatus(rangestart, rangeend);
+    });
+})
+.catch(error => console.error('Error:', error));
+
+    function CellsStatusClient(rangestart, rangeend) {
         const startMonth = getMonthFromDate(rangestart);
         const endMonth = getMonthFromDate(rangeend);
         const startDay = getDayFromDate(rangestart);
         const endDay = getDayFromDate(rangeend);
+        var m=getMesac();
+        var firstNomer=createKalendar(m, getYear());
         const cells = document.querySelectorAll('tbody tr td'); 
-        if(startMonth==endMonth)
-        {
             const startNomer=startDay+firstNomer;
-            const endNomer=endDay+1;
-            if(startDay<today)
+            const endNomer=endDay+firstNomer;
+            if(startMonth<m)
                 {
-                    endNomer =endDay-today;
-                    startNomer =today;
+                    startNomer =firstNomer;
                 }
-            console.log(today, startDay, endDay, startNomer, endNomer);
-            for(let i=startNomer+1; i<=endNomer+1; i++)
-            {
-                cells[i].style.backgroundColor = 'rgb(255, 117, 117)'; 
-            }
-        }
-        if(startMonth!=endMonth) 
-        {
-            if(startMonth==month+1&&startDay<today)
+            if(endMonth>m)
                 {
-                    startNomer =today;
-                }
-            if(startMonth==month+2&&endDay>30+MonthArr[month]-today)
-                {
-                    endNomer =30;
+                    endNomer =firstNomer+MonthArr[m+1];
                 }
             console.log(today, startDay, endDay, startNomer, endNomer);
             for(let i=startNomer+1; i<=endNomer+1 ; i++)
             {
                 cells[i].style.backgroundColor = 'rgb(255, 117, 117)'; 
             }
-        }
     }

@@ -42,6 +42,28 @@ OR (StartDate < DATE('now') AND EndDate > DATE('now', '+30 days'));`;
     });
 });
 
+
+app.post('/get-bookings', (req, res) => {
+    const { month, PropertyID } = req.body; 
+
+    if (!month || !PropertyID) {
+        return res.status(400).send('Month and PropertyID are required.');
+    }
+
+    const query = `
+        SELECT * FROM bookings
+        WHERE PropertyID = ?
+        AND (strftime('%m', StartDate) = ? OR strftime('%m', EndDate) = ?)
+    `;
+
+    db.all(query, [PropertyID, month.padStart(2, '0'), month.padStart(2, '0')], (err, rows) => {
+        if (err) {
+            return res.status(500).send(err.message);
+        }
+        res.json(rows);
+    });
+});
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });

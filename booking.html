@@ -120,39 +120,86 @@
       .selected {
             background-color: rgb(49, 133, 85); 
         }
-    </style>
-    </style>
+    </style> 
+    <div id="modal" style="display: none;">
+      <div class="modal">
+        <span class="close">Закрыть</span>
+        <p>Начальная дата: <span id="startDate"></span></p>
+        <p>Конечная дата: <span id="endDate"></span></p>
+        <a id=br href="#">Забронировать</a>
+      </div>
+    </div>
     <script>
       createKalendar(getMesac(), getYear());
       let selectionCount = 0;
       var cellStart, cellEnd;
+      const modal = document.getElementById('modal');
+      const startDateSpan = document.getElementById('startDate');
+      const endDateSpan = document.getElementById('endDate');
+      const closeModal = document.querySelector('.close');
+    
       function selectCell(event) {
           const cells = document.querySelectorAll('#kalendar td');
           cells.forEach(cell => cell.classList.remove('selected'));
           const selectedCell = event.target;
           selectedCell.classList.add('selected'); 
           selectionCount++;
-          if(selectionCount==3)
+    
+          if (selectionCount === 3) 
           {
-            selectionCount=1;
+              selectionCount = 1;
           }
-          if(selectionCount==1)
+    
+          if (selectionCount === 1) 
           {
-            cellStart = getYear()+'-'+getMesac()+'-'+selectedCell.textContent;
+            let m=getMesac()+1;
+              cellStart = getYear()+'-'+m+'-'+ selectedCell.textContent;
           }
-          if(selectionCount==2)
+    
+          if (selectionCount === 2) 
           {
-            cellEnd = getYear()+'-'+getMesac()+'-'+selectedCell.textContent;
+            let m=getMesac()+1;
+              cellEnd = getYear()+'-'+m+'-'+selectedCell.textContent;
+              startDateSpan.textContent = cellStart;
+              endDateSpan.textContent = cellEnd;
+              modal.style.display = 'block';
           }
+    
           console.log('Выделенная ячейка:', selectedCell.textContent); 
           console.log(selectionCount);
       }
-  
+      closeModal.onclick = function(){
+          modal.style.display = 'none';
+      };
+      window.onclick = function(event){
+          if (event.target === modal) {
+              modal.style.display = 'none';
+          }
+      };
+
       const cells = document.querySelectorAll('#kalendar td');
       cells.forEach(cell => {
           cell.addEventListener('click', selectCell);
       });
-      </script>
+    </script>
+      <style>
+    #modal {
+    display: none;
+    position: fixed;
+    left: 400px;
+    top:150px;
+    width: 200px;
+    height: 200px;
+    overflow: auto;
+    background-color: rgb(245, 245, 245);
+  }  
+  .close {
+    background-color: rgb(238, 141, 235);
+  }
+  #br{
+    background-color: rgb(238, 141, 235);
+  }
+      </style>
     <footer>
         <div class="footer">
             <div class="footer-section"><img src="logo.png" alt="Логотип" id="logo-footer"></div>

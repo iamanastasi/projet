@@ -117,3 +117,130 @@ function getDayFromDate(dateString) {
 ### Заключение
 
 Теперь ваши функции должны работать корректно, если вы передаете им строки в формате DD.MM. Убедитесь, что вы передаете правильные аргументы, чтобы избежать ошибок. Если у вас есть дополнительные вопросы или вам нужна помощь с другими частями кода, дайте знать!
+Вот исправленный код с добавленным счетчиком выделений ячеек в таблице:
+
+```html
+
+    
+    
+    Таблица размеров
+    
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        td {
+            border: 1px solid #ccc;
+            height: 50px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .selected {
+            background-color: yellow; /* Цвет выделенной ячейки */
+        }
+    
+
+    
+        
+            
+                RU
+                FR
+                US Men
+                US Women
+                UK
+                Длина
+            
+        
+        
+            
+                35.5 RU
+                36
+                4
+                5
+                3.5
+                22.1
+            
+            
+                36 RU
+                36 2/3
+                4.5
+                5.5
+                4
+                22.5
+            
+            
+                36.5 RU
+                37 1/3
+                5
+                6
+                4.5
+                22.9
+            
+            
+                37 RU
+                38
+                5.5
+                6.5
+                5
+                23.3
+            
+            
+                37.5 RU
+                38 2/3
+                6
+                7
+                5.5
+                23.8
+            
+            
+                38 RU
+                39 1/3
+                6.5
+                7.5
+                6
+                24.2
+            
+            
+                38.5 RU
+                40
+                7
+                8
+                6.5
+                24.6
+            
+            
+                39 RU
+                40 2/3
+                7.5
+                8.5
+                7
+                25
+            
+            
+                40 RU
+                41 1/3
+                8
+                9
+                7.5
+                25.5
+            
+        
+    
+    
+        let selectionCount = 0; // Счетчик выделений
+
+        function selectCell(event) {
+            const cells = document.querySelectorAll('#kalendar td');
+            cells.forEach(cell => cell.classList.remove('selected')); // Убираем выделение со всех ячеек
+
+            const selectedCell = event.target; // Получаем ячейку, по которой кликнули
+            selectedCell.classList.add('selected'); // Добавляем класс выделения
+
+            const cellValue = selectedCell.textContent; // Получаем значение из выделенной ячейки
+            console.log('Выделенная ячейка:', cellValue); // Выводим значение в консоль
+
+            selectionCount++; // Увеличиваем счетчик выделений
+            console.log('Количество выделений:', selectionCount); // Выводим количество выделений в консоль
+        }
+
+        // Добавляем обработчик событий для всех я

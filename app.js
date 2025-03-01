@@ -14,7 +14,6 @@ const month2 = document.getElementById('month2');
 month2.textContent = MonthArrStr[month+1];
 month2.colSpan = 31-MonthArr[month]+today;
 let count=1;
-   let headerCount = 1;
 for (let i = today; i <= MonthArr[month]; i++) {
     const hdayElements = document.querySelectorAll('th.day' + count);
     hdayElements[0].textContent = i;
@@ -170,7 +169,7 @@ function CellsStatus(rangestart, rangeend, propertyrow) {
 
 function getMesac() {
     const selectElement = document.getElementById('mesac');
-    return selectElement.value-1;
+    return parseInt(selectElement.value)-1;
 }
 function getYear() {
     const selectElement = document.getElementById('year');
@@ -194,45 +193,41 @@ i++;
 return startDay;
 }
 
-fetch('/get-bookings', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ month: getMesac(), PropertyID: 1 }), 
-})
-.then(response => response.json())
-.then(data => {
-    data.forEach(booking => {
-        const rangestart = booking.StartDate;
-        const rangeend = booking.EndDate;
-        console.log(rangestart, rangeend);
-        CellsStatus(rangestart, rangeend);
-    });
-})
-.catch(error => console.error('Error:', error));
-
-    function CellsStatusClient(rangestart, rangeend) {
-        const startMonth = getMonthFromDate(rangestart);
-        const endMonth = getMonthFromDate(rangeend);
-        const startDay = getDayFromDate(rangestart);
-        const endDay = getDayFromDate(rangeend);
-        var m=getMesac();
-        var firstNomer=createKalendar(m, getYear());
-        const cells = document.querySelectorAll('tbody tr td'); 
-            const startNomer=startDay+firstNomer;
-            const endNomer=endDay+firstNomer;
-            if(startMonth<m)
-                {
-                    startNomer =firstNomer;
-                }
-            if(endMonth>m)
-                {
-                    endNomer =firstNomer+MonthArr[m+1];
-                }
-            console.log(today, startDay, endDay, startNomer, endNomer);
-            for(let i=startNomer+1; i<=endNomer+1 ; i++)
-            {
-                cells[i].style.backgroundColor = 'rgb(255, 117, 117)'; 
-            }
+function CellsStatusClient(rangestart, rangeend) {
+    const startMonth = getMonthFromDate(rangestart);
+    const endMonth = getMonthFromDate(rangeend);
+    const startDay = getDayFromDate(rangestart);
+    const endDay = getDayFromDate(rangeend);
+    const m = getMesac();
+    const firstNomer = createKalendar(m, getYear());
+    const cells = document.querySelectorAll('tbody tr td');
+    let startNomer = startDay + firstNomer - 1;
+    let endNomer = endDay + firstNomer - 1;
+    if (startMonth < m) {
+        startNomer = firstNomer - 1; 
     }
+    if (endMonth > m) {
+        endNomer = firstNomer + MonthArr[m] - 1; 
+    }
+    console.log(startDay, endDay, startNomer, endNomer);
+    for (let i = startNomer; i <= endNomer; i++) {
+        if (cells[i]) {
+            cells[i].style.backgroundColor = 'rgb(255, 117, 117)';
+        }
+    }
+}
+
+function getDatesClient() {
+    const month = getMesac();
+    const PropertyID = 1;
+
+    fetch(`/bookings-by-month?month=${month}&PropertyID=${PropertyID}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Bookings:', data);
+            data.forEach(booking => {
+                CellsStatusClient(booking.StartDate, booking.EndDate);
+            });
+        })
+        .catch(error => console.error('Error:', error));
+}

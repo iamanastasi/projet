@@ -6,6 +6,7 @@ const app = express();
 const port = 3000;
 
 app.use(cors());
+app.use(express.json());
 
 const db = new sqlite3.Database('./mydatabase.db', (err) => {
     if (err) {
@@ -43,7 +44,7 @@ OR (StartDate < DATE('now') AND EndDate > DATE('now', '+30 days'));`;
 });
 
 
-app.post('/get-bookings', (req, res) => {
+app.post('/bookings-by-month', (req, res) => {
     const { month, PropertyID } = req.body; 
 
     if (!month || !PropertyID) {
@@ -62,6 +63,10 @@ app.post('/get-bookings', (req, res) => {
         }
         res.json(rows);
     });
+});
+
+app.use((req, res) => {
+    res.status(404).json({ error: 'Resource not found' });
 });
 
 app.listen(port, () => {

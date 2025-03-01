@@ -120,8 +120,8 @@ function CellsStatus(rangestart, rangeend, propertyrow) {
     const cells = document.querySelectorAll('tbody tr.row'+propertyrow+' td'); 
     if(startMonth==month+1&&endMonth==month+1)
     {
-        const startNomer =startDay-today;
-        const endNomer =endDay-today;
+        let startNomer =startDay-today;
+        let endNomer =endDay-today;
         if(startDay<today)
             {
                 endNomer =endDay-today;
@@ -135,8 +135,8 @@ function CellsStatus(rangestart, rangeend, propertyrow) {
     }
     if(startMonth==month+2&&endMonth==month+2)
         {
-            const startNomer =startDay-today+MonthArr[month];
-            const endNomer =endDay-today+MonthArr[month];
+            let startNomer =startDay-today+MonthArr[month];
+            let endNomer =endDay-today+MonthArr[month];
             if(endDay>30+MonthArr[month]-today)
                 {
                     endNomer =29;
@@ -149,11 +149,12 @@ function CellsStatus(rangestart, rangeend, propertyrow) {
         }
     if(startMonth!=endMonth) 
     {
-        const startNomer =startDay-today;
-        const endNomer =endDay-today+MonthArr[month];
-        if(startMonth==month+1&&startDay<today)
+        let startNomer =startDay-today;
+        let endNomer=1;
+        if(startMonth==month)
             {
-                startNomer =today;
+                startNomer =0;
+                endNomer =endDay-today;
             }
         if(startMonth==month+2&&endDay>30+MonthArr[month]-today)
             {

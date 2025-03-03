@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск пользователя</title>
+</head>
+<body>
+    <h1>Поиск пользователя</h1>
+    <form id="searchUserForm">
+        <label for="secondName">Фамилия:</label>
+        <input type="text" id="secondName" name="secondName" required><br>
+
+        <label for="firstName">Имя:</label>
+        <input type="text" id="firstName" name="firstName" required><br>
+
+        <label for="thirdName">Отчество:</label>
+        <input type="text" id="thirdName" name="thirdName"><br>
+
+        <button type="submit">Найти</button>
+    </form>
+
+    <p>UserID: <span id="userIdResult"></span></p>
+
+    <script>
+        document.getElementById('searchUserForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = {
+                secondName: document.getElementById('secondName').value,
+                firstName: document.getElementById('firstName').value,
+                thirdName: document.getElementById('thirdName').value
+            };
+
+            fetch('/find-user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', 
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.userId) {
+                    document.getElementById('userIdResult').textContent = data.userId;
+                } else {
+                    document.getElementById('userIdResult').textContent = 'Пользователь не найден';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

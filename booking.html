@@ -126,7 +126,7 @@
         <span class="close">Закрыть</span>
         <p>Начальная дата: <span id="startDate"></span></p>
         <p>Конечная дата: <span id="endDate"></span></p>
-        <a id=br href="#">Забронировать</a>
+        <a id=br href="clientbook.html">Забронировать</a>
       </div>
     </div>
     <script>
@@ -180,6 +180,12 @@
       cells.forEach(cell => {
           cell.addEventListener('click', selectCell);
       });
+      document.getElementById('br').addEventListener('click', (event) => {
+    event.preventDefault();
+    localStorage.setItem('startDate', cellStart);
+    localStorage.setItem('endDate', cellEnd);
+    window.location.href = 'clientbook.html';
+});
       getDatesClient();
     </script>
       <style>

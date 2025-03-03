@@ -36,7 +36,7 @@
       <thead>
         <tr>
           <th scope="col" colspan="7" id="month"><form>
-            <select id="mesac" name="mesaci" onchange="createKalendar(getMesac(), getYear())">
+            <select id="mesac" name="mesaci" onchange="createKalendar(getMesac(), getYear()), getDatesClient()">
               <option value="01">Январь</option>
               <option value="02">Февраль</option>
               <option value="03">Март</option>
@@ -52,7 +52,7 @@
             </select>
           </form>
           <form>
-            <select id="year" name="years" onchange="createKalendar(getMesac(), getYear())">
+            <select id="year" name="years" onchange="createKalendar(getMesac(), getYear()), getDatesClient()">
               <option value="2025">2025</option>
               <option value="2026">2026</option>
             </select>

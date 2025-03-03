@@ -44,8 +44,8 @@ OR (StartDate < DATE('now') AND EndDate > DATE('now', '+30 days'));`;
 });
 
 
-app.post('/bookings-by-month', (req, res) => {
-    const { month, PropertyID } = req.body; 
+app.get('/bookings-by-month', (req, res) => {
+    const { month, PropertyID } = req.query; 
 
     if (!month || !PropertyID) {
         return res.status(400).send('Month and PropertyID are required.');

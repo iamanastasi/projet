@@ -178,6 +178,7 @@ function getYear() {
 }
 
 function createKalendar(month, year) {
+    console.log(month ,MonthArr[month]);
 let firstDate = new Date( year, month, 1);
 let startDay=firstDate.getDay();
 if(startDay==0)
@@ -199,19 +200,19 @@ function CellsStatusClient(rangestart, rangeend) {
     const endMonth = getMonthFromDate(rangeend);
     const startDay = getDayFromDate(rangestart);
     const endDay = getDayFromDate(rangeend);
-    const m = getMesac();
+    const m = getMesac()+1;
     const firstNomer = createKalendar(m, getYear());
     const cells = document.querySelectorAll('tbody tr td');
     let startNomer = startDay + firstNomer - 1;
     let endNomer = endDay + firstNomer - 1;
     if (startMonth < m) {
-        startNomer = firstNomer - 1; 
+        startNomer = firstNomer; 
     }
     if (endMonth > m) {
         endNomer = firstNomer + MonthArr[m] - 1; 
     }
-    console.log(startDay, endDay, startNomer, endNomer);
-    for (let i = startNomer; i <= endNomer; i++) {
+    console.log(m, startMonth, startDay, endDay, startNomer, endNomer);
+    for (let i = startNomer-1; i < endNomer; i++) {
         if (cells[i]) {
             cells[i].style.backgroundColor = 'rgb(255, 117, 117)';
         }
@@ -219,10 +220,13 @@ function CellsStatusClient(rangestart, rangeend) {
 }
 
 function getDatesClient() {
-    const month = getMesac();
+    const MON = getMesac()+1;
     const PropertyID = 1;
-
-    fetch(`/bookings-by-month?month=${month}&PropertyID=${PropertyID}`)
+        const cells = document.querySelectorAll('#kalendar td');
+        cells.forEach(cell => {
+            cell.style.backgroundColor = '';
+        });
+    fetch(`http://localhost:3000/bookings-by-month?month=${MON}&PropertyID=${PropertyID}`)
         .then(response => response.json())
         .then(data => {
             console.log('Bookings:', data);

@@ -201,7 +201,7 @@ function CellsStatusClient(rangestart, rangeend) {
     const startDay = getDayFromDate(rangestart);
     const endDay = getDayFromDate(rangeend);
     const m = getMesac()+1;
-    const firstNomer = createKalendar(m, getYear());
+    const firstNomer = createKalendar(m-1, getYear());
     const cells = document.querySelectorAll('tbody tr td');
     let startNomer = startDay + firstNomer - 1;
     let endNomer = endDay + firstNomer - 1;
@@ -209,7 +209,7 @@ function CellsStatusClient(rangestart, rangeend) {
         startNomer = firstNomer; 
     }
     if (endMonth > m) {
-        endNomer = firstNomer + MonthArr[m] - 1; 
+        endNomer = firstNomer + MonthArr[m-1] - 1; 
     }
     console.log(m, startMonth, startDay, endDay, startNomer, endNomer);
     for (let i = startNomer-1; i < endNomer; i++) {

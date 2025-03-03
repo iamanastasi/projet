@@ -19,9 +19,15 @@
 <body>
     <h1>Бронирование</h1>
     <form action="/add-booking" method="POST">
+        <label for="UserID">id:</label>
+        <input type="number" id="UserID" name="UserID" required><br>  
+        <label for="PropertyID">id:</label>
+        <input type="number" id="PropertyID" name="PropertyID" required><br>
+        <label for="Amount">id:</label>
+        <input type="number" id="Amount" name="Amount" required><br>
+<!--
         <label for="secondName">Фамилия:</label>
         <input type="text" id="secondName" name="secondName" required><br>
-
         <label for="firstName">Имя:</label>
         <input type="text" id="firstName" name="firstName" required><br>
 
@@ -33,9 +39,9 @@
 
         <label for="telephone">Номер телефона:</label>
         <input type="text" id="telephone" name="telephone" required><br>
-
-        <label for="tenantNumber">Количество человек:</label>
-        <input type="number" id="tenantNumber" name="tenantNumber"><br>
+    -->
+        <label for="NumberPers">Количество человек:</label>
+        <input type="number" id="NumberPers" name="NumberPers"><br>
         <input type="hidden" id="startDate" name="startDate">
         <input type="hidden" id="endDate" name="endDate">
 

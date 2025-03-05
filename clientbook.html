@@ -3,28 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Шаблон</title>
-    <link rel="stylesheet" href="main.css">
-    <script src="app.js"></script>
-
-  </head>
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Шаблон</title>
+    <title>Бронирование</title>
     <link rel="stylesheet" href="main.css">
 </head>
-
 <body>
     <h1>Бронирование</h1>
-    <form action="/add-booking" method="POST">
-        <label for="UserID">id:</label>
-        <input type="number" id="UserID" name="UserID" required><br>  
-        <label for="PropertyID">id:</label>
+    <form id="bookingForm">
+        <label for="UserID">ID пользователя:</label>
+        <input type="number" id="UserID" name="UserID" required><br>
+
+        <label for="PropertyID">ID объекта:</label>
         <input type="number" id="PropertyID" name="PropertyID" required><br>
-        <label for="Amount">id:</label>
+
+        <label for="Amount">Сумма:</label>
         <input type="number" id="Amount" name="Amount" required><br>
+
+        
 <!--
         <label for="secondName">Фамилия:</label>
         <input type="text" id="secondName" name="secondName" required><br>
@@ -40,27 +34,63 @@
         <label for="telephone">Номер телефона:</label>
         <input type="text" id="telephone" name="telephone" required><br>
     -->
-        <label for="NumberPers">Количество человек:</label>
-        <input type="number" id="NumberPers" name="NumberPers"><br>
-        <input type="hidden" id="startDate" name="startDate">
-        <input type="hidden" id="endDate" name="endDate">
+    <label for="NumberPers">Количество человек:</label>
+    <input type="number" id="NumberPers" name="NumberPers" required><br>
 
-        <p>Начальная дата: <span id="anketStartDate"></span></p>
-        <p>Конечная дата: <span id="anketEndDate"></span></p>
+    <input type="hidden" id="StartDate" name="StartDate">
+    <input type="hidden" id="EndDate" name="EndDate">
 
-        <button type="submit">Забронировать</button>
-    </form>
-    <script>
-        const startDate = localStorage.getItem('startDate');
-        const endDate = localStorage.getItem('endDate');
+    <p>Начальная дата: <span id="anketStartDate"></span></p>
+    <p>Конечная дата: <span id="anketEndDate"></span></p>
 
-        if (startDate && endDate) {
-            document.getElementById('anketStartDate').textContent = startDate;
-            document.getElementById('anketEndDate').textContent = endDate;
-        } else {
-            document.getElementById('anketStartDate').textContent = 'Не указана';
-            document.getElementById('anketEndDate').textContent = 'Не указана';
-        }
-    </script>
+    <button type="submit">Забронировать</button>
+</form>
+
+<script>
+    // Извлекаем данные из localStorage
+    const startDate = localStorage.getItem('startDate');
+    const endDate = localStorage.getItem('endDate');
+
+    // Отображаем даты на странице
+    if (startDate && endDate) {
+        document.getElementById('anketStartDate').textContent = startDate;
+        document.getElementById('anketEndDate').textContent = endDate;
+
+        // Заполняем скрытые поля
+        document.getElementById('StartDate').value = startDate;
+        document.getElementById('EndDate').value = endDate;
+    } else {
+        document.getElementById('anketStartDate').textContent = 'Не указана';
+        document.getElementById('anketEndDate').textContent = 'Не указана';
+    }
+
+    // Обработка отправки формы
+    document.getElementById('bookingForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Предотвращаем отправку формы
+
+        const formData = {
+            UserID: document.getElementById('UserID').value,
+            PropertyID: document.getElementById('PropertyID').value,
+            StartDate: document.getElementById('StartDate').value,
+            EndDate: document.getElementById('EndDate').value,
+            Amount: document.getElementById('Amount').value,
+            NumberPers: document.getElementById('NumberPers').value
+        };
+
+        // Отправляем данные на сервер
+        fetch('http://127.0.0.1:8080/add-booking', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert(data); // Показываем результат
+        })
+        .catch(error => console.error('Ошибка:', error));
+    });
+</script>
 </body>
 </html>

@@ -9,41 +9,22 @@
 
   </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Шаблон</title>
-    <link rel="stylesheet" href="main.css">
-</head>
-
 <body>
     <h1>Бронирование</h1>
-    <form action="/add-booking" method="POST">
+    <form id="bookingForm" action="http://localhost:3000/add-book" method="POST">
         <label for="UserID">id:</label>
         <input type="number" id="UserID" name="UserID" required><br>  
         <label for="PropertyID">id:</label>
         <input type="number" id="PropertyID" name="PropertyID" required><br>
         <label for="Amount">id:</label>
         <input type="number" id="Amount" name="Amount" required><br>
-<!--
-        <label for="secondName">Фамилия:</label>
-        <input type="text" id="secondName" name="secondName" required><br>
-        <label for="firstName">Имя:</label>
-        <input type="text" id="firstName" name="firstName" required><br>
 
-        <label for="thirdName">Отчество:</label>
-        <input type="text" id="thirdName" name="thirdName"><br>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
-
-        <label for="telephone">Номер телефона:</label>
-        <input type="text" id="telephone" name="telephone" required><br>
-    -->
         <label for="NumberPers">Количество человек:</label>
         <input type="number" id="NumberPers" name="NumberPers"><br>
-        <input type="hidden" id="startDate" name="startDate">
-        <input type="hidden" id="endDate" name="endDate">
+        <label for="StartDate">START:</label>
+        <input type="text" id="StartDate" name="StartDate"><br>
+        <label for="EndDate">End:</label>
+        <input type="text" id="EndDate" name="EndDate">
 
         <p>Начальная дата: <span id="anketStartDate"></span></p>
         <p>Конечная дата: <span id="anketEndDate"></span></p>
@@ -61,6 +42,40 @@
             document.getElementById('anketStartDate').textContent = 'Не указана';
             document.getElementById('anketEndDate').textContent = 'Не указана';
         }
+        document.getElementById('bookingForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Отключаем стандартную отправку формы
+
+        // Собираем данные из формы
+        const formData = {
+            UserID: document.getElementById('UserID').value,
+            PropertyID: document.getElementById('PropertyID').value,
+            Amount: document.getElementById('Amount').value,
+            NumberPers: document.getElementById('NumberPers').value,
+            StartDate: document.getElementById('StartDate').value,
+            EndDate: document.getElementById('EndDate').value,
+        };
+
+        // Отправляем данные на сервер с помощью fetch
+        fetch('http://localhost:3000/add-book', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', // Указываем, что отправляем JSON
+            },
+            body: JSON.stringify(formData), // Преобразуем данные в JSON
+        })
+        .then(response => response.json()) // Парсим ответ от сервера
+        .then(data => {
+            if (data.success) {
+                document.getElementById('resultMessage').textContent = 'Бронирование успешно добавлено!';
+            } else {
+                document.getElementById('resultMessage').textContent = 'Ошибка: ' + data.error;
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            document.getElementById('resultMessage').textContent = 'Произошла ошибка при отправке данных.';
+        });
+    });
     </script>
 </body>
 </html>

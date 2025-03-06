@@ -1,49 +1,99 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
-const bodyParser = require('body-parser');
+const path = require('path');
+const cors = require('cors');
 
 const app = express();
-const PORT = 4000;
+const port = 3000;
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
-
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/clientbook.html');
-});
-
-const db = new sqlite3.Database('mydatabase.db', (err) => {
+const db = new sqlite3.Database('./mydatabase.db', (err) => {
     if (err) {
-        console.error(err.message);
+        console.error('Error connecting to the database:', err.message);
+    } else {
+        console.log('Connected to the database.');
     }
-    console.log('Connected to the mydatabase.db SQLite database.');
+});
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+//bookings
+
+app.get('/bookings-by-month', (req, res) => {
+    const { month, PropertyID } = req.query; 
+
+    if (!month || !PropertyID) {
+        return res.status(400).send('Month and PropertyID are required.');
+    }
+
+    const query = `
+        SELECT * FROM bookings
+        WHERE PropertyID = ?
+        AND (strftime('%m', StartDate) = ? OR strftime('%m', EndDate) = ?)
+    `;
+
+    db.all(query, [PropertyID, month.padStart(2, '0'), month.padStart(2, '0')], (err, rows) => {
+        if (err) {
+            return res.status(500).send(err.message);
+        }
+        res.json(rows);
+    });
 });
 
-db.serialize(() => {
-    db.run(`CREATE TABLE IF NOT EXISTS bookings (
-        BookingID INTEGER PRIMARY KEY AUTOINCREMENT,
-        UserID INTEGER NOT NULL,
-        PropertyID INTEGER NOT NULL,
-        StartDate TEXT,
-        EndDate TEXT,
-        Amount INTEGER,
-        NumberPers INTEGER
-    )`);
-});
-
-app.post('/add-booking', (req, res) => {
+app.post('/add-book', (req, res) => {
     const { UserID, PropertyID, StartDate, EndDate, Amount, NumberPers } = req.body;
     
-    const stmt = db.prepare(`INSERT INTO bookings (User ID, PropertyID, StartDate, EndDate, Amount, NumberPers) VALUES (?, ?, ?, ?, ?, ?)`);
+    const stmt = db.prepare(`INSERT INTO bookings (UserID, PropertyID, StartDate, EndDate, Amount, NumberPers) VALUES (?, ?, ?, ?, ?, ?)`);
     
     stmt.run(UserID, PropertyID, StartDate, EndDate, Amount, NumberPers, function(err) {
         if (err) {
             return res.status(400).send(err.message);
         }
-        res.send('Booking added successfully!');
     });
     
     stmt.finalize();
+});
+
+//tenants
+
+app.post('/add-tenant', (req, res) => {
+    const { secondName, firstName, thirdName, email, telephone, tenantNumber } = req.body;
+    const stmt = db.prepare(`INSERT INTO tenants (SecondName, FirstName, ThirdName, email, telephone, TenantNumber) VALUES (?, ?, ?, ?, ?, ?)`);
+    
+    stmt.run(secondName, firstName, thirdName, email, telephone, tenantNumber, function(err) {
+        if (err) {
+            return res.status(400).send(err.message);
+        }
+        res.send('Tenant added successfully!');
+    });
+    
+    stmt.finalize();
+});
+
+app.post('/find-user', (req, res) => {
+    const { secondName, firstName, thirdName } = req.body;
+
+    if (!secondName || !firstName) {
+        return res.status(400).json({ error: 'SecondName and FirstName are required.' });
+    }
+
+    const query = `
+        SELECT TenantID FROM tenants
+        WHERE SecondName = ? AND FirstName = ? AND ThirdName = ?
+    `;
+
+    db.get(query, [secondName, firstName, thirdName || null], (err, row) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+
+        if (row) {
+            res.json({ userId: row.TenantID });
+        } else {
+            res.json({ userId: null });
+        }
+    });
 });
 
 process.on('SIGINT', () => {
@@ -56,6 +106,6 @@ process.on('SIGINT', () => {
     });
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
 });

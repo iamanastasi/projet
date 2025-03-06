@@ -3,6 +3,8 @@ const sqlite3 = require('sqlite3').verbose();
 
 const app = express();
 const port = 3000;
+const cors = require('cors');
+app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));  
 
@@ -32,7 +34,7 @@ db.serialize(() => {
     });
 });
 
-app.post('/find-user', (req, res) => {
+app.post('/api/find-user', (req, res) => {
     const { secondName, firstName, thirdName } = req.body;
 
     if (!secondName || !firstName) {

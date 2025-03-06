@@ -34,7 +34,7 @@ db.serialize(() => {
     });
 });
 
-app.post('/api/find-user', (req, res) => {
+app.post('/find-user', (req, res) => {
     const { secondName, firstName, thirdName } = req.body;
 
     if (!secondName || !firstName) {

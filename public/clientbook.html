@@ -11,24 +11,34 @@
 
 <body>
     <h1>Бронирование</h1>
+    <form id="searchUserForm">
+        <label for="secondName">Фамилия:</label>
+        <input type="text" id="secondName" name="secondName" required><br>
+
+        <label for="firstName">Имя:</label>
+        <input type="text" id="firstName" name="firstName" required><br>
+        <label for="thirdName">Отчество:</label>
+        <input type="text" id="thirdName" name="thirdName"><br>
+    </form>
     <form id="bookingForm" action="http://localhost:3000/add-book" method="POST">
-        <label for="UserID">id:</label>
-        <input type="number" id="UserID" name="UserID" required><br>  
-        <label for="PropertyID">id:</label>
+        <input type="hidden" id="UserID" name="UserID" required><br>  
+        <p>UserID: <span id="userIdResult"></span></p>
+        <label for="PropertyID">Недвижисъмость номер:</label>
         <input type="number" id="PropertyID" name="PropertyID" required><br>
         <label for="Amount">id:</label>
         <input type="number" id="Amount" name="Amount" required><br>
 
         <label for="NumberPers">Количество человек:</label>
-        <input type="number" id="NumberPers" name="NumberPers"><br>
-        <input type="hidden" id="StartDate" name="StartDate"><br>
-        <input type="hidden" id="EndDate" name="EndDate">
+        <input type="number" id="NumberPers" name="NumberPers"required><br>
+        <input type="hidden" id="StartDate" name="StartDate" required><br>
+        <input type="hidden" id="EndDate" name="EndDate"required>
 
         <p>Начальная дата: <span id="anketStartDate"></span></p>
         <p>Конечная дата: <span id="anketEndDate"></span></p>
-
+        <p>Нажмите 2 раза</p>
         <button type="submit">Забронировать</button>
     </form>
+ 
     <script>
         const startDate = localStorage.getItem('startDate');
         const endDate = localStorage.getItem('endDate');
@@ -44,8 +54,33 @@
         }
         document.getElementById('bookingForm').addEventListener('submit', function (event) {
         event.preventDefault(); 
+        function getUserID(){
+        const userData = {
+                secondName: document.getElementById('secondName').value,
+                firstName: document.getElementById('firstName').value,
+                thirdName: document.getElementById('thirdName').value
+            };
 
-        const formData = {
+            fetch('http://localhost:3000/find-user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', 
+                },
+                body: JSON.stringify(userData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.userId) {
+                    document.getElementById('UserID').value = data.userId;
+                    document.getElementById('userIdResult').textContent = data.userId;
+                } else {
+                    document.getElementById('UserID').value = '';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        function booking(){
+        const bookData = {
             UserID: document.getElementById('UserID').value,
             PropertyID: document.getElementById('PropertyID').value,
             Amount: document.getElementById('Amount').value,
@@ -54,12 +89,13 @@
             EndDate: document.getElementById('EndDate').value,
         };
 
+
         fetch('http://localhost:3000/add-book', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify(bookData),
         })
         .then(response => response.json())
         .then(data =>{
@@ -75,6 +111,12 @@
         console.error('Ошибка при отправке:', error);
         alert('Произошла ошибка. Пожалуйста, попробуйте снова.');
         });
+    }
+    getUserID();
+    if(UserID.value)
+    {
+        booking();
+    }
     });
     </script>
 </body>

@@ -48,7 +48,7 @@ app.post('/add-book', (req, res) => {
     
     stmt.run(UserID, PropertyID, StartDate, EndDate, Amount, NumberPers, function(err) {
         if (err) {
-            return res.status(400).send(err.message);
+            return res.status(400).json({error: err.message});
         }
     });
     

@@ -236,3 +236,69 @@ function getDatesClient() {
         })
         .catch(error => console.error('Error:', error));
 }
+
+      function removeStatus(){
+        const cells = document.querySelectorAll('#kalendar td');
+          cells.forEach(cell => cell.classList.remove('selected'));
+      }
+    
+      function selectCell(event) {
+          const cells = document.querySelectorAll('#kalendar td');
+          cells.forEach(cell => cell.classList.remove('selected'));
+          const selectedCell = event.target;
+          selectedCell.classList.add('selected'); 
+          selectionCount++;
+    
+          if (selectionCount === 3) 
+          {
+              selectionCount = 1;
+          }
+    
+          if (selectionCount === 1) 
+          {
+            let m=(getMesac()+1).toString();
+              cellStart = getYear()+'-'+m.padStart(2, '0')+'-'+ selectedCell.textContent.padStart(2, '0');
+          }
+    
+          if (selectionCount === 2) 
+          {
+            let m=(getMesac()+1).toString();
+              cellEnd = getYear()+'-'+m.padStart(2, '0')+'-'+selectedCell.textContent.padStart(2, '0');
+              startDateSpan.textContent = cellStart;
+              endDateSpan.textContent = cellEnd;
+              modal.style.display = 'block';
+          }
+    
+          console.log('Выделенная ячейка:', selectedCell.textContent, selectionCount);
+      }
+      
+      function workingKalendar()
+      {
+        createKalendar(getMesac(), getYear());
+      let selectionCount = 0;
+      var cellStart, cellEnd;
+      const modal = document.getElementById('modal');
+      const startDateSpan = document.getElementById('startDate');
+      const endDateSpan = document.getElementById('endDate');
+      const closeModal = document.querySelector('.close');
+      closeModal.onclick = function(){
+        modal.style.display = 'none';
+    };
+    window.onclick = function(event){
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
+
+    const cells = document.querySelectorAll('#kalendar td');
+    cells.forEach(cell => {
+        cell.addEventListener('click', selectCell);
+    });
+    document.getElementById('br').addEventListener('click', (event) => {
+  event.preventDefault();
+  localStorage.setItem('startDate', cellStart);
+  localStorage.setItem('endDate', cellEnd);
+  window.location.href = 'clientbook.html';
+});
+    getDatesClient();
+      }

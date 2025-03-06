@@ -219,10 +219,10 @@ function CellsStatusClient(rangestart, rangeend) {
     }
 }
 
-function getDatesClient() {
+function getDatesClient(nom) {
     const MON = getMesac()+1;
-    const PropertyID = 1;
-        const cells = document.querySelectorAll('#kalendar td');
+    const PropertyID = nom;
+        const cells = document.querySelectorAll('#kalendar'+nom+' td');
         cells.forEach(cell => {
             cell.style.backgroundColor = '';
         });
@@ -237,13 +237,13 @@ function getDatesClient() {
         .catch(error => console.error('Error:', error));
 }
 
-      function removeStatus(){
-        const cells = document.querySelectorAll('#kalendar td');
+      function removeStatus(nom){
+        const cells = document.querySelectorAll('#kalendar'+nom+ ' td');
           cells.forEach(cell => cell.classList.remove('selected'));
       }
     
       function selectCell(event) {
-          const cells = document.querySelectorAll('#kalendar td');
+          const cells = document.querySelectorAll('#kalendar'+1+ ' td');
           cells.forEach(cell => cell.classList.remove('selected'));
           const selectedCell = event.target;
           selectedCell.classList.add('selected'); 
@@ -272,7 +272,7 @@ function getDatesClient() {
           console.log('Выделенная ячейка:', selectedCell.textContent, selectionCount);
       }
       
-      function workingKalendar()
+      function workingKalendar(nom)
       {
         createKalendar(getMesac(), getYear());
       let selectionCount = 0;
@@ -290,7 +290,7 @@ function getDatesClient() {
         }
     };
 
-    const cells = document.querySelectorAll('#kalendar td');
+    const cells = document.querySelectorAll('#kalendar'+nom+ ' td');
     cells.forEach(cell => {
         cell.addEventListener('click', selectCell);
     });
@@ -300,5 +300,5 @@ function getDatesClient() {
   localStorage.setItem('endDate', cellEnd);
   window.location.href = 'clientbook.html';
 });
-    getDatesClient();
+    getDatesClient(nom);
       }

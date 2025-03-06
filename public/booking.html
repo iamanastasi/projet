@@ -21,13 +21,14 @@
         </ul>
     </header>
 
-    <table id="kalendar">
+    <table id="kalendar1">
       <caption>
+        недвижимость 1
       </caption>
       <thead>
         <tr>
           <th scope="col" colspan="7" id="month"><form>
-            <select id="mesac" name="mesaci" onchange="removeStatus(), createKalendar(getMesac(), getYear()), getDatesClient()">
+            <select id="mesac" name="mesaci" onchange="removeStatus(1), createKalendar(getMesac(), getYear()), getDatesClient(1)">
               <option value="01">Январь</option>
               <option value="02">Февраль</option>
               <option value="03">Март</option>
@@ -43,7 +44,7 @@
             </select>
           </form>
           <form>
-            <select id="year" name="years" onchange="removeStatus(), createKalendar(getMesac(), getYear()), getDatesClient()">
+            <select id="year" name="years" onchange="removeStatus(1), createKalendar(getMesac(), getYear()), getDatesClient(1)">
               <option value="2025">2025</option>
               <option value="2026">2026</option>
             </select>
@@ -121,7 +122,7 @@
       </div>
     </div>
     <script>
-      workingKalendar();
+      workingKalendar(1);
     </script>
       <style>
     #modal {
@@ -141,6 +142,109 @@
     background-color: rgb(238, 141, 235);
   }
       </style>
+      <table id="kalendar2">
+        <caption>
+          недвижимость 2
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col" colspan="7" id="month"><form>
+              <select id="mesac" name="mesaci" onchange="removeStatus(2), createKalendar(getMesac(), getYear()), getDatesClient(2)">
+                <option value="01">Январь</option>
+                <option value="02">Февраль</option>
+                <option value="03">Март</option>
+                <option value="04">Апрель</option>
+                <option value="05">Май</option>
+                <option value="06">Июнь</option>
+                <option value="07">Июль</option>
+                <option value="08">Август</option>
+                <option value="09">Сентябрь</option>
+                <option value="10">Октябрь</option>
+                <option value="11">Ноябрь</option>
+                <option value="12">Декабрь</option>
+              </select>
+            </form>
+            <form>
+              <select id="year" name="years" onchange="removeStatus(2), createKalendar(getMesac(), getYear()), getDatesClient(2)">
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
+              </select>
+            </form>
+            </th>
+          </tr>
+          <tr>
+            <th class="mon">пн</th>
+            <th class="tue">вт</th>
+            <th class="wed">ср</th>
+            <th class="thu">чт</th>
+            <th class="fri">пт</th>
+            <th class="sat">сб</th>
+            <th class="sun">вс</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="week1">
+            <td class="mon" id="1"></td>
+             <td class="tue" id="2"></td>
+             <td class="wed" id="3"></td>
+             <td class="thu" id="4"></td>
+             <td class="fri" id="5"></td>
+             <td class="sat" id="6"></td>
+             <td class="sun" id="7"></td>
+          </tr>
+          <tr class="week2">
+            <td class="mon" id="8"></td>
+             <td class="tue" id="9"></td>
+             <td class="wed" id="10"></td>
+             <td class="thu" id="11"></td>
+             <td class="fri" id="12"></td>
+             <td class="sat" id="13"></td>
+             <td class="sun" id="14"></td>
+          </tr>
+          <tr class="week3">
+             <td class="mon" id="15"></td>
+             <td class="tue" id="15"></td>
+             <td class="wed" id="17"></td>
+             <td class="thu" id="18"></td>
+             <td class="fri" id="19"></td>
+             <td class="sat" id="20"></td>
+             <td class="sun" id="21"></td>
+          </tr>
+          <tr class="week4">
+            <td class="mon" id="22"></td>
+             <td class="tue" id="23"></td>
+             <td class="wed" id="24"></td>
+             <td class="thu" id="25"></td>
+             <td class="fri" id="26"></td>
+             <td class="sat" id="27"></td>
+             <td class="sun" id="28"></td>
+          </tr>
+          <tr class="week5">
+            <td class="mon" id="29"></td>
+             <td class="tue" id="30"></td>
+             <td class="wed" id="31"></td>
+             <td class="thu" id="32"></td>
+             <td class="fri" id="33"></td>
+             <td class="sat" id="34"></td>
+             <td class="sun" id="35"></td>
+        </tbody>
+      </table>
+      <style>
+        .selected {
+              background-color: rgb(49, 133, 85); 
+          }
+      </style> 
+      <div id="modal" style="display: none;">
+        <div class="modal">
+          <span class="close">Закрыть</span>
+          <p>Начальная дата: <span id="startDate"></span></p>
+          <p>Конечная дата: <span id="endDate"></span></p>
+          <a id=br href="clientbook.html">Забронировать</a>
+        </div>
+      </div>
+      <script>
+        workingKalendar(2);
+      </script>
     <footer>
         <div class="footer">
             <div class="footer-section"><img src="logo.png" alt="Логотип" id="logo-footer"></div>

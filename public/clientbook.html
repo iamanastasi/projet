@@ -21,10 +21,8 @@
 
         <label for="NumberPers">Количество человек:</label>
         <input type="number" id="NumberPers" name="NumberPers"><br>
-        <label for="StartDate">START:</label>
-        <input type="text" id="StartDate" name="StartDate"><br>
-        <label for="EndDate">End:</label>
-        <input type="text" id="EndDate" name="EndDate">
+        <input type="hidden" id="StartDate" name="StartDate"><br>
+        <input type="hidden" id="EndDate" name="EndDate">
 
         <p>Начальная дата: <span id="anketStartDate"></span></p>
         <p>Конечная дата: <span id="anketEndDate"></span></p>
@@ -36,16 +34,17 @@
         const endDate = localStorage.getItem('endDate');
 
         if (startDate && endDate) {
-            document.getElementById('anketStartDate').textContent = startDate;
-            document.getElementById('anketEndDate').textContent = endDate;
+            document.getElementById('anketStartDate').textContent= startDate;
+            document.getElementById('StartDate').value= startDate;
+            document.getElementById('anketEndDate').textContent=endDate;
+            document.getElementById('EndDate').value= endDate;
         } else {
-            document.getElementById('anketStartDate').textContent = 'Не указана';
-            document.getElementById('anketEndDate').textContent = 'Не указана';
+            document.getElementById('anketStartDate').textContent='Не указана';
+            document.getElementById('anketEndDate').textContent='Не указана';
         }
         document.getElementById('bookingForm').addEventListener('submit', function (event) {
-        event.preventDefault(); // Отключаем стандартную отправку формы
+        event.preventDefault(); 
 
-        // Собираем данные из формы
         const formData = {
             UserID: document.getElementById('UserID').value,
             PropertyID: document.getElementById('PropertyID').value,
@@ -55,25 +54,26 @@
             EndDate: document.getElementById('EndDate').value,
         };
 
-        // Отправляем данные на сервер с помощью fetch
         fetch('http://localhost:3000/add-book', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json', // Указываем, что отправляем JSON
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData), // Преобразуем данные в JSON
+            body: JSON.stringify(formData),
         })
-        .then(response => response.json()) // Парсим ответ от сервера
-        .then(data => {
-            if (data.success) {
-                document.getElementById('resultMessage').textContent = 'Бронирование успешно добавлено!';
-            } else {
-                document.getElementById('resultMessage').textContent = 'Ошибка: ' + data.error;
-            }
-        })
-        .catch(error => {
-            console.error('Ошибка:', error);
-            document.getElementById('resultMessage').textContent = 'Произошла ошибка при отправке данных.';
+        .then(response => response.json())
+        .then(data =>{
+        if (data.error) {
+            console.error('Ошибка:', data.error);
+            alert('Ошибка: '+ data.error);
+        } else {
+            console.log('Успех:', data.message);
+            alert('Успех: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка при отправке:', error);
+        alert('Произошла ошибка. Пожалуйста, попробуйте снова.');
         });
     });
     </script>

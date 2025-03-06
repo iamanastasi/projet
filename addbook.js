@@ -72,7 +72,7 @@ app.post('/add-tenant', (req, res) => {
 });
 
 app.post('/find-user', (req, res) => {
-    const { secondName, firstName, thirdName } = req.body;
+    const {secondName, firstName, thirdName, email, telephone} = req.body;
 
     if (!secondName || !firstName) {
         return res.status(400).json({ error: 'SecondName and FirstName are required.' });
@@ -91,7 +91,15 @@ app.post('/find-user', (req, res) => {
         if (row) {
             res.json({ userId: row.TenantID });
         } else {
-            res.json({ userId: null });
+            const stmt = db.prepare(`INSERT INTO tenants (SecondName, FirstName, ThirdName, email, telephone, TenantNumber) VALUES (?, ?, ?, ?, ?, ?)`);
+    
+    stmt.run(secondName, firstName, thirdName, email, telephone, function(err) {
+        if (err) {
+            return res.status(400).send(err.message);
+        }
+    });
+    
+    res.json({ userId: this.lastID });
         }
     });
 });

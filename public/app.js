@@ -168,16 +168,16 @@ function CellsStatus(rangestart, rangeend, propertyrow) {
     }
 }
 
-function getMesac() {
-    const selectElement = document.getElementById('mesac');
+function getMesac(nom) {
+    const selectElement = document.getElementById('mesac'+nom);
     return parseInt(selectElement.value)-1;
 }
-function getYear() {
-    const selectElement = document.getElementById('year');
+function getYear(nom) {
+    const selectElement = document.getElementById('year'+nom);
     return selectElement.value;
 }
 
-function createKalendar(month, year) {
+function createKalendar(month, year, nom) {
     console.log(month ,MonthArr[month]);
 let firstDate = new Date( year, month, 1);
 let startDay=firstDate.getDay();
@@ -185,7 +185,7 @@ if(startDay==0)
 {
 startDay=7;
 }
-const ddayElements = document.querySelectorAll('tr td');
+const ddayElements = document.querySelectorAll('#kalendar' + nom +' tr td');
 ddayElements.forEach(td => td.textContent = '');
 let i = 1;
 for (let j = startDay - 1; j < ddayElements.length && i <= MonthArr[month]; j++) {
@@ -195,14 +195,14 @@ i++;
 return startDay;
 }
 
-function CellsStatusClient(rangestart, rangeend) {
+function CellsStatusClient(rangestart, rangeend, nom) {
     const startMonth = getMonthFromDate(rangestart);
     const endMonth = getMonthFromDate(rangeend);
     const startDay = getDayFromDate(rangestart);
     const endDay = getDayFromDate(rangeend);
-    const m = getMesac()+1;
-    const firstNomer = createKalendar(m-1, getYear());
-    const cells = document.querySelectorAll('tbody tr td');
+    const m = getMesac(nom)+1;
+    const firstNomer = createKalendar(m-1, getYear(nom),nom);
+    const cells = document.querySelectorAll('#kalendar' + nom +' tbody tr td');
     let startNomer = startDay + firstNomer - 1;
     let endNomer = endDay + firstNomer - 1;
     if (startMonth < m) {
@@ -220,7 +220,7 @@ function CellsStatusClient(rangestart, rangeend) {
 }
 
 function getDatesClient(nom) {
-    const MON = getMesac()+1;
+    const MON = getMesac(nom)+1;
     const PropertyID = nom;
         const cells = document.querySelectorAll('#kalendar'+nom+' td');
         cells.forEach(cell => {
@@ -231,7 +231,7 @@ function getDatesClient(nom) {
         .then(data => {
             console.log('Bookings:', data);
             data.forEach(booking => {
-                CellsStatusClient(booking.StartDate, booking.EndDate);
+                CellsStatusClient(booking.StartDate, booking.EndDate, nom);
             });
         })
         .catch(error => console.error('Error:', error));
@@ -242,63 +242,75 @@ function getDatesClient(nom) {
           cells.forEach(cell => cell.classList.remove('selected'));
       }
     
-      function selectCell(event) {
-          const cells = document.querySelectorAll('#kalendar'+1+ ' td');
+      function selectCell(event, nom) {
+          const cells = document.querySelectorAll('#kalendar'+nom+ ' td');
           cells.forEach(cell => cell.classList.remove('selected'));
           const selectedCell = event.target;
           selectedCell.classList.add('selected'); 
-          selectionCount++;
+          selectionCount[nom]++;
     
-          if (selectionCount === 3) 
+          if (selectionCount[nom] === 3) 
           {
-              selectionCount = 1;
+              selectionCount[nom] = 1;
           }
     
-          if (selectionCount === 1) 
+          if (selectionCount[nom] === 1) 
           {
-            let m=(getMesac()+1).toString();
-              cellStart = getYear()+'-'+m.padStart(2, '0')+'-'+ selectedCell.textContent.padStart(2, '0');
+            let m=(getMesac(nom)+1).toString();
+              cellStart = getYear(nom)+'-'+m.padStart(2, '0')+'-'+ selectedCell.textContent.padStart(2, '0');
           }
     
-          if (selectionCount === 2) 
+          if (selectionCount[nom] === 2) 
           {
-            let m=(getMesac()+1).toString();
-              cellEnd = getYear()+'-'+m.padStart(2, '0')+'-'+selectedCell.textContent.padStart(2, '0');
-              startDateSpan.textContent = cellStart;
-              endDateSpan.textContent = cellEnd;
-              modal.style.display = 'block';
+            let m=(getMesac(nom)+1).toString();
+              cellEnd = getYear(nom)+'-'+m.padStart(2, '0')+'-'+selectedCell.textContent.padStart(2, '0');
+              startDateSpan.textContent = cellStart[nom];
+              endDateSpan.textContent = cellEnd[nom];
+              modal[nom].style.display = 'block';
           }
     
-          console.log('Выделенная ячейка:', selectedCell.textContent, selectionCount);
+          console.log('Выделенная ячейка:', selectedCell.textContent, selectionCount[nom]);
       }
       
-      function workingKalendar(nom)
-      {
-        createKalendar(getMesac(), getYear());
-      let selectionCount = 0;
-      var cellStart, cellEnd;
-      const modal = document.getElementById('modal');
-      const startDateSpan = document.getElementById('startDate');
-      const endDateSpan = document.getElementById('endDate');
-      const closeModal = document.querySelector('.close');
-      closeModal.onclick = function(){
-        modal.style.display = 'none';
+      const selectionCount = { 1: 0, 2: 0 };
+let cellStart = { 1: '', 2: '' };
+let cellEnd = { 1: '', 2: '' };
+let modal = { 1: null, 2: null };
+let startDateSpan = { 1: null, 2: null };
+let endDateSpan = { 1: null, 2: null };
+
+function workingKalendar(nom) {
+    createKalendar(getMesac(nom), getYear(nom), nom);
+    selectionCount[nom] = 0;
+    cellStart[nom] = '';
+    cellEnd[nom] = '';
+    modal[nom] = document.getElementById('modal' + nom);
+    startDateSpan[nom] = document.getElementById('startDate' + nom);
+    endDateSpan[nom] = document.getElementById('endDate' + nom);
+    const closeModal = document.querySelector('.close' + nom);
+
+    closeModal.onclick = function () {
+        modal[nom].style.display = 'none';
     };
-    window.onclick = function(event){
-        if (event.target === modal) {
-            modal.style.display = 'none';
+
+    window.onclick = function (event) {
+        if (event.target === modal[nom]) {
+            modal[nom].style.display = 'none';
         }
     };
 
-    const cells = document.querySelectorAll('#kalendar'+nom+ ' td');
+    const cells = document.querySelectorAll('#kalendar' + nom + ' td');
     cells.forEach(cell => {
-        cell.addEventListener('click', selectCell);
+        cell.addEventListener('click', (event) => selectCell(event, nom));
     });
-    document.getElementById('br').addEventListener('click', (event) => {
-  event.preventDefault();
-  localStorage.setItem('startDate', cellStart);
-  localStorage.setItem('endDate', cellEnd);
-  window.location.href = 'clientbook.html';
-});
+
+    const brElement = document.getElementById('br' + nom);
+        brElement.addEventListener('click', (event) => {
+            event.preventDefault();
+            localStorage.setItem('startDate' + nom, cellStart[nom]);
+            localStorage.setItem('endDate' + nom, cellEnd[nom]);
+            window.location.href = 'clientbook.html';
+        });
+
     getDatesClient(nom);
-      }
+}

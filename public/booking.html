@@ -28,7 +28,7 @@
       <thead>
         <tr>
           <th scope="col" colspan="7" id="month"><form>
-            <select id="mesac" name="mesaci" onchange="removeStatus(1), createKalendar(getMesac(), getYear()), getDatesClient(1)">
+            <select id="mesac1" name="mesac1" onchange="removeStatus(1), createKalendar(getMesac(1), getYear(1), 1), getDatesClient(1)">
               <option value="01">Январь</option>
               <option value="02">Февраль</option>
               <option value="03">Март</option>
@@ -44,7 +44,7 @@
             </select>
           </form>
           <form>
-            <select id="year" name="years" onchange="removeStatus(1), createKalendar(getMesac(), getYear()), getDatesClient(1)">
+            <select id="year1" name="years1" onchange="removeStatus(1), createKalendar(getMesac(1), getYear(1), 1), getDatesClient(1)">
               <option value="2025">2025</option>
               <option value="2026">2026</option>
             </select>
@@ -113,19 +113,17 @@
             background-color: rgb(49, 133, 85); 
         }
     </style> 
-    <div id="modal" style="display: none;">
+    <div id="modal1" style="display: none;">
       <div class="modal">
-        <span class="close">Закрыть</span>
-        <p>Начальная дата: <span id="startDate"></span></p>
-        <p>Конечная дата: <span id="endDate"></span></p>
-        <a id=br href="clientbook.html">Забронировать</a>
+        <span class="close1">Закрыть</span>
+        <p>Начальная дата: <span id="startDate1"></span></p>
+        <p>Конечная дата: <span id="endDate1"></span></p>
+        <a id=br1 href="clientbook.html">Забронировать</a>
       </div>
     </div>
-    <script>
-      workingKalendar(1);
-    </script>
+    
       <style>
-    #modal {
+    .modal {
     display: none;
     position: fixed;
     left: 400px;
@@ -149,7 +147,7 @@
         <thead>
           <tr>
             <th scope="col" colspan="7" id="month"><form>
-              <select id="mesac" name="mesaci" onchange="removeStatus(2), createKalendar(getMesac(), getYear()), getDatesClient(2)">
+              <select id="mesac2" name="mesac2" onchange="removeStatus(2), createKalendar(getMesac(2), getYear(2), 2), getDatesClient(2)">
                 <option value="01">Январь</option>
                 <option value="02">Февраль</option>
                 <option value="03">Март</option>
@@ -165,7 +163,7 @@
               </select>
             </form>
             <form>
-              <select id="year" name="years" onchange="removeStatus(2), createKalendar(getMesac(), getYear()), getDatesClient(2)">
+              <select id="year2" name="years2" onchange="removeStatus(2), createKalendar(getMesac(2), getYear(2), 2), getDatesClient(2)">
                 <option value="2025">2025</option>
                 <option value="2026">2026</option>
               </select>
@@ -234,16 +232,19 @@
               background-color: rgb(49, 133, 85); 
           }
       </style> 
-      <div id="modal" style="display: none;">
+      <div id="modal2" style="display: none;">
         <div class="modal">
-          <span class="close">Закрыть</span>
-          <p>Начальная дата: <span id="startDate"></span></p>
-          <p>Конечная дата: <span id="endDate"></span></p>
-          <a id=br href="clientbook.html">Забронировать</a>
+          <span class="close2">Закрыть</span>
+          <p>Начальная дата: <span id="startDate2"></span></p>
+          <p>Конечная дата: <span id="endDate2"></span></p>
+          <a id=br2 href="clientbook.html">Забронировать</a>
         </div>
       </div>
       <script>
-        workingKalendar(2);
+        document.addEventListener('DOMContentLoaded', function () {
+          workingKalendar(1);
+          workingKalendar(2);
+        });
       </script>
     <footer>
         <div class="footer">

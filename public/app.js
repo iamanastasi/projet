@@ -322,7 +322,7 @@ function workingKalendar(nom) {
             event.preventDefault();
             localStorage.setItem('startDate' + nom, cellStart[nom]);
             localStorage.setItem('endDate' + nom, cellEnd[nom]);
-            localStorage.setItem('propertyNumber', nom);
+            localStorage.setItem('propertyNumber', nom.toString());
             window.location.href = 'clientbook.html';
         });
 

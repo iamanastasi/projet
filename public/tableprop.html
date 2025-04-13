@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Price</title>
+</head>
+<body>
+    <h1>Add Price</h1>
+    <form action="/add-price" method="POST">
+        <label for="numberProperty">Недвижимость:</label>
+        <select id="numberProperty" name="Property" onchange="getProperty()">
+          <option value="1">недвижимость 1</option>
+          <option value="2">недвижимость 2</option>
+          <option value="3">недвижимость 3</option>
+        </select><br>
+          <label for="classPeriod">Тип периода:</label>
+            <select id="classPeriod" name="Class" onchange="getClass()">
+              <option value="1">период: с ****-**-** по ****-**-**</option>
+              <option value="2">отдельная дата ****-**-**</option>
+              <option value="3">тип дней в месяце ( рабочие/выходные )</option>
+            </select><br>
+
+            <div class="period" id="period">
+
+        <label for="StartPeriod">Начало периода</label>
+        <input type="text" id="StartPeriod" name="StartPeriod" ><br>
+
+        <label for="EndPeriod">Конец периода</label>
+        <input type="text" id="EndPeriod" name="EndPeriod"><br>
+            </div>
+
+          <div class="singleDate" id="singleDate">
+        <label for="Date">Дата</label>
+        <input type="text" id="Date" name="Date"><br>
+        </div>
+
+        <div class="typeDate" id="typeDate">
+        <label for="dayType">Тип дней:</label>
+            <select id="dayType" name="EndOrD" onchange="getType()">
+                <option value="weekday">Рабочие дни</option>
+                <option value="weekend">Выходные дни</option>
+            </select><br>
+        
+        <label for="MonthInType">Месяц</label>
+        <input type="text" id="MonthInType" name="MonthInType"><br>
+        </div>
+        
+        <label for="PricePerDay">Цена за день:</label>
+        <input type="number" id="PricePerDay" name="PricePerDay" required><br>
+
+        <button type="submit">Сохранить изменения</button>
+    </form>
+</body>
+<script>
+   getClass();
+   getProperty();
+   getType();
+  function getClass() {
+    const selectElement = document.getElementById('classPeriod');
+    let clas= selectElement.value;
+    console.log(clas);
+    const periodDiv =document.getElementById('period');
+    const singleDateDiv =document.getElementById('singleDate');
+    const typeDateDiv =document.getElementById('typeDate');
+    if(clas==1)
+  {
+    periodDiv.style="display: block";
+    singleDateDiv.style="display: none";
+    typeDateDiv.style="display: none";
+  }
+  else if(clas==2)
+  {
+    periodDiv.style="display: none";
+    singleDateDiv.style="display: block";
+    typeDateDiv.style="display: none";
+  }
+  else if(clas==3)
+  {
+    periodDiv.style="display: none";
+    singleDateDiv.style="display: none";
+    typeDateDiv.style="display: block";
+  }
+    return parseInt(clas);
+}
+function getProperty() {
+    const selectElement = document.getElementById('numberProperty');
+    console.log(selectElement.value);
+    return parseInt(selectElement.value);
+}
+function getType() {
+    const selectElement = document.getElementById('dayType');
+    console.log(selectElement.value);
+    return parseInt(selectElement.value);
+}
+</script>
+</html>

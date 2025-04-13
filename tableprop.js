@@ -22,18 +22,22 @@ const db = new sqlite3.Database('mydatabase.db', (err) => {
 
 db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS prices (
+        Property NUMBER NOT NULL,
         Class TEXT NOT NULL,
-        StartOrM TEXT NOT NULL,
-        EndOrD TEXT NOT NULL,
-        PricePerDay TEXT
+        StartPeriod TEXT,
+        EndPeriod TEXT,
+        Date TEXT,
+        dayType TEXT,
+        MonthInType TEXT,
+        PricePerDay NUMBER
     )`);
 });
 
 app.post('/add-price', (req, res) => {
-    const { secondName, firstName, thirdName, email, telephone, tenantNumber } = req.body;
-    const stmt = db.prepare(`INSERT INTO prices (Class, StartOrM, EndOrD, PricePerDay) VALUES (?, ?, ?, ?, ?, ?)`);
+    const { Property, Class, StartPeriod, EndPeriod, Date, dayType, MonthInType, PricePerDay } = req.body;
+    const stmt = db.prepare(`INSERT INTO prices (Property, Class, StartPeriod, EndPeriod, Date, dayType, MonthInType, PricePerDay) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
     
-    stmt.run(Class, StartOrM, EndOrD, PricePerDay, function(err) {
+    stmt.run(Property, Class, StartPeriod, EndPeriod, Date, dayType, MonthInType, PricePerDay, function(err) {
         if (err) {
             return res.status(400).send(err.message);
         }

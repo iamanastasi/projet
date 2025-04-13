@@ -104,6 +104,100 @@ app.post('/find-user', (req, res) => {
     });
 });
 
+//prices
+
+app.get('/api/calculate', async (req, res) => {
+    try {
+        const { propertyId, startDate, endDate } = req.body;
+        const prices = await getPrices(propertyId);
+        const result = calculatePrice(startDate, endDate, prices);
+        
+        res.json({
+            success: true,
+            total: result.total,
+            details: result.details,
+            currency: 'RUB'
+        });
+        
+    } catch (error) {
+        console.error('Ошибка расчета:', error);
+        res.status(500).json({ error: 'Ошибка сервера при расчете стоимости' });
+    }
+});
+
+async function getPrices(propertyId) {
+    return new Promise((resolve, reject) => {
+        db.all(
+            `SELECT * FROM prices WHERE Property = ? ORDER BY 
+            CASE Class 
+                WHEN '2' THEN 1
+                WHEN '1' THEN 2
+                WHEN '3' THEN 3
+            END`,
+            [propertyId],
+            (err, rows) => {
+                if (err) return reject(err);
+                resolve(rows);
+            }
+        );
+    });
+}
+
+function calculatePrice(startDate, endDate, prices) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    let total = 0;
+    const details = [];
+    
+    for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+        const dateStr = date.toISOString().split('T')[0];
+        const dayPrice = getPriceForDate(date, prices);
+        
+        details.push({
+            date: dateStr,
+            price: dayPrice,
+            dayType: getDayType(date)
+        });
+        
+        total += dayPrice;
+    }
+    
+    return { total, details };
+}
+
+function getPriceForDate(date, prices) {
+    const dateStr = date.toISOString().split('T')[0];
+    const month = date.getMonth() + 1;
+    const dayType = getDayType(date);
+    
+   
+    const singlePrice = prices.find(p => p.Class === '2' && p.single_date === dateStr);
+    if (singlePrice) return singlePrice.PricePerDay;
+    
+  
+    const periodPrice = prices.find(p => 
+        p.period_type === '1' && 
+        p.start_date <= dateStr && 
+        p.end_date >= dateStr
+    );
+    if (periodPrice) return periodPrice.PricePerDay;
+    
+  
+    const weekdayPrice = prices.find(p => 
+        p.period_type === '3' && 
+        p.day_type === dayType && 
+        p.month === month
+    );
+    if (weekdayPrice) return weekdayPrice.PricePerDay;
+    
+   
+    return 0;
+}
+
+function getDayType(date) {
+    return date.getDay() === 0 || date.getDay() === 6 ? 'weekend' : 'weekday';
+}
+
 process.on('SIGINT', () => {
     db.close((err) => {
         if (err) {

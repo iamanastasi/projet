@@ -253,14 +253,12 @@ function selectCell(event, nom) {
     const cells = document.querySelectorAll('#kalendar'+nom+ ' td');
     const selectedCell = event.target;
     
-    // Пропускаем пустые ячейки
-    if (!selectedCell.textContent.trim()) return;
-    
     cells.forEach(cell => cell.classList.remove('selected'));
     selectedCell.classList.add('selected'); 
     selectionCount[nom]++;
     
-    if (selectionCount[nom] === 3) {
+    if (selectionCount[nom] === 3) 
+    {
         selectionCount[nom] = 1;
     }
     
@@ -324,6 +322,7 @@ function workingKalendar(nom) {
             event.preventDefault();
             localStorage.setItem('startDate' + nom, cellStart[nom]);
             localStorage.setItem('endDate' + nom, cellEnd[nom]);
+            localStorage.setItem('propertyNumber', nom);
             window.location.href = 'clientbook.html';
         });
 

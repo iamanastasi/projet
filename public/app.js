@@ -269,23 +269,13 @@ function selectCell(event, nom) {
     
     if (selectionCount[nom] === 1) {
         cellStart[nom] = dateStr;
-        console.log('Start date set:', cellStart[nom]);
     } else if (selectionCount[nom] === 2) {
         cellEnd[nom] = dateStr;
-        console.log('End date set:', cellEnd[nom]);
-        
-        if (!startDateSpan[nom] || !endDateSpan[nom]) {
-            console.error('Spans not found for calendar', nom);
-            return;
-        }
-                startDateSpan[nom].textContent = cellStart[nom];
+      
+        startDateSpan[nom].textContent = cellStart[nom];
         endDateSpan[nom].textContent = cellEnd[nom];
         
-        console.log('Updating modal with:', {
-            start: cellStart[nom],
-            end: cellEnd[nom]
-        });
-        
+        console.log('Выделенная ячейка:', selectedCell.textContent, selectionCount);        
         modal[nom].style.display = 'block';
     }
 }
@@ -320,8 +310,36 @@ function workingKalendar(nom) {
             localStorage.setItem('startDate' + nom, cellStart[nom]);
             localStorage.setItem('endDate' + nom, cellEnd[nom]);
             localStorage.setItem('propertyNumber', nom.toString());
+            const totalPrice =  calculatePrice(nom, startDate, endDate);
+    localStorage.setItem('totalPrice' + nom, totalPrice);
             window.location.href = 'clientbook.html';
         });
-
+        
     getDatesClient(nom);
+}
+async function calculatePrice(propertyId, startDate, endDate) {
+    try {
+        const url = new URL('http://localhost:3000/api/calculate');
+        url.searchParams.append('propertyId', propertyId);
+        url.searchParams.append('startDate', startDate);
+        url.searchParams.append('endDate', endDate);
+        const response = await fetch(url.toString(), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Сетевая ошибка: ' + response.status);
+        }
+
+        const data = await response.json();
+        
+        console.log('Результат:', data);
+        return data.total;
+    } catch (error) {
+        console.error('Ошибка:', error);
+    }
+    return 0;
 }

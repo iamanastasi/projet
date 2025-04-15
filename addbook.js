@@ -110,6 +110,7 @@ app.get('/api/calculate', async (req, res) => {
     try {
         const { propertyId, startDate, endDate } = req.query;
         const prices = await getPrices(propertyId);
+        console.log('Prices:', prices);
         const result = calculatePrice(startDate, endDate, prices);
         
         res.json({
@@ -128,16 +129,30 @@ app.get('/api/calculate', async (req, res) => {
 async function getPrices(propertyId) {
     return new Promise((resolve, reject) => {
         db.all(
-            `SELECT * FROM prices WHERE Property = ? ORDER BY 
-            CASE Class 
-                WHEN '2' THEN 1
-                WHEN '1' THEN 2
-                WHEN '3' THEN 3
-            END`,
+            `SELECT 
+                Class,
+                CASE 
+                  WHEN Class = '2' THEN Date 
+                    WHEN Class = '1' THEN NULL 
+                END as Date,
+                CASE 
+                    WHEN Class = '1' THEN StartPeriod 
+                    ELSE NULL 
+                END as StartPeriod,
+                CASE 
+                    WHEN Class = '1' THEN EndPeriod 
+                    ELSE NULL 
+                END as EndPeriod,
+                PricePerDay
+             FROM prices 
+             WHERE Property = ? 
+             ORDER BY Class`,
             [propertyId],
-            (err, rows) => {
-                if (err) return reject(err);
-                resolve(rows);
+            (err, rows) => { 
+                if (err) {
+                    return reject(err); 
+                }
+                resolve(rows); 
             }
         );
     });
@@ -152,45 +167,45 @@ function calculatePrice(startDate, endDate, prices) {
     for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
         const dateString = date.toISOString().split('T')[0];
         const dayPrice = getPriceForDate(date, prices);
-        
+        console.log(dayPrice);
         details.push({
             date: dateString,
             price: dayPrice,
             dayType: getDayType(date)
         });
         
-        total += dayPrice;
+        total =total+ dayPrice;
     }
     
     return { total, details };
 }
 
 function getPriceForDate(date, prices) {
-    const dateString = date.toISOString().split('T')[0];
+    const dateStr = date.toISOString().split('T')[0];
     const month = date.getMonth() + 1;
-    const dayType = getDayType(date);
-    
-   
-    const singlePrice = prices.find(p => p.Class === '2' && p.single_date === dateString);
-    if (singlePrice) return singlePrice.PricePerDay;
-    
+
   
-    const periodPrice = prices.find(p => 
-        p.period_type === '1' && 
-        p.start_date <= dateStr && 
-        p.end_date >= dateStr
+    const exactMatch = prices.find(p => 
+        p.Class === '2' && 
+        p.Date === dateStr
     );
-    if (periodPrice) return periodPrice.PricePerDay;
-    
-  
-    const weekdayPrice = prices.find(p => 
-        p.period_type === '3' && 
-        p.day_type === dayType && 
-        p.month === month
+    if (exactMatch) return exactMatch.PricePerDay;
+
+ 
+    const periodMatch = prices.find(p => 
+        p.Class === '1' && 
+        new Date(p.StartPeriod) <= date && 
+        new Date(p.EndPeriod) >= date
     );
-    if (weekdayPrice) return weekdayPrice.PricePerDay;
-    
-   
+    if (periodMatch) return periodMatch.PricePerDay;
+
+
+    const seasonalMatch = prices.find(p => 
+        p.Class === '3' && 
+        p.MonthInType == month
+    );
+    if (seasonalMatch) return seasonalMatch.PricePerDay;
+
     return 0;
 }
 

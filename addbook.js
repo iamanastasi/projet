@@ -72,7 +72,7 @@ app.post('/add-tenant', (req, res) => {
 });
 
 app.post('/find-user', (req, res) => {
-    const {secondName, firstName, thirdName, email, telephone} = req.body;
+    const { secondName, firstName, thirdName, email, telephone } = req.body;
 
     if (!secondName || !firstName) {
         return res.status(400).json({ error: 'SecondName and FirstName are required.' });
@@ -80,29 +80,29 @@ app.post('/find-user', (req, res) => {
 
     const query = `
         SELECT TenantID FROM tenants
-        WHERE SecondName = ? AND FirstName = ? AND ThirdName = ?
+        WHERE SecondName = ? AND FirstName = ? AND (ThirdName = ? OR (ThirdName IS NULL AND ? IS NULL))
     `;
 
-    db.get(query, [secondName, firstName, thirdName || null], (err, row) => {
+    db.get(query, [secondName, firstName, thirdName, thirdName], (err, row) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
 
         if (row) {
-            res.json({ userId: row.TenantID });
+            return res.json({ userId: row.TenantID });
         } else {
-            const stmt = db.prepare(`INSERT INTO tenants (SecondName, FirstName, ThirdName, email, telephone, TenantNumber) VALUES (?, ?, ?, ?, ?, ?)`);
-    
-    stmt.run(secondName, firstName, thirdName, email, telephone, function(err) {
-        if (err) {
-            return res.status(400).send(err.message);
-        }
-    });
-    
-    res.json({ userId: this.lastID });
+            const insertStmt = db.prepare(`INSERT INTO tenants (SecondName, FirstName, ThirdName, email, telephone) VALUES (?, ?, ?, ?, ?)`);
+            insertStmt.run(secondName, firstName, thirdName, email, telephone, function(err) {
+                if (err) {
+                    return res.status(500).json({ error: err.message });
+                }
+                return res.json({ userId: this.lastID });
+            });
+            insertStmt.finalize();
         }
     });
 });
+
 
 //prices
 

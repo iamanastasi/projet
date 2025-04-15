@@ -58,39 +58,40 @@
             document.getElementById('anketStartDate').textContent='Не указана';
             document.getElementById('anketEndDate').textContent='Не указана';
         }
-        document.getElementById('bookingForm').addEventListener('submit', function (event) {
-        event.preventDefault(); 
-        const getUserID = () => {
-        const userData = {
-                secondName: document.getElementById('secondName').value,
-                firstName: document.getElementById('firstName').value,
-                thirdName: document.getElementById('thirdName').value,
-                email: document.getElementById('email').value,
-                telephone: document.getElementById('telephone').value
-            };
+        document.getElementById('bookingForm').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-            return fetch('http://localhost:3000/find-user', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json', 
-                },
-                body: JSON.stringify(userData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.userId) {
-                    document.getElementById('UserID').value = data.userId;
-                    document.getElementById('userIdResult').textContent = data.userId;
-                    return data.userId;
-                } else {
-                    document.getElementById('UserID').value = '';
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-        function booking(getUserID){
+    const userData = {
+        secondName: document.getElementById('secondName').value.trim(),
+        firstName: document.getElementById('firstName').value.trim(),
+        thirdName: document.getElementById('thirdName').value.trim() || null,
+        email: document.getElementById('email').value.trim(),
+        telephone: document.getElementById('telephone').value.trim()
+    };
+
+    function getUserID() {
+        return fetch('http://localhost:3000/find-user', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw new Error(err.error || 'Ошибка сервера'); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (!data.userId) {
+                throw new Error('Не удалось получить ID пользователя');
+            }
+            return data.userId;
+        });
+    }
+
+    function booking(userId) {
         const bookData = {
-            UserID: document.getElementById('UserID').value,
+            UserID: userId,
             PropertyID: document.getElementById('PropertyID').value,
             Amount: document.getElementById('Amount').value,
             NumberPers: document.getElementById('NumberPers').value,
@@ -98,41 +99,39 @@
             EndDate: document.getElementById('EndDate').value,
         };
 
-
-        fetch('http://localhost:3000/add-book', {
+        return fetch('http://localhost:3000/add-book', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(bookData),
         })
-        .then(response => response.json())
-        .then(data =>{
-        if (data.error) {
-            console.error('Ошибка:', data.error);
-            alert('Ошибка: '+ data.error);
-        } else {
-            console.log('Успех:', data.message);
-            alert('Успех: ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Ошибка при отправке:', error);
-        alert('Произошла ошибка. Пожалуйста, попробуйте снова.');
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw new Error(err.error || 'Ошибка сервера'); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            return data.message || 'Бронирование успешно добавлено';
         });
     }
+
     getUserID()
-    .then(userId => {
-            return booking(userId); 
+        .then(userId => {
+            document.getElementById('UserID').value = userId;
+            document.getElementById('userIdResult').textContent = userId;
+            return booking(userId);
         })
         .then(message => {
-            alert('Успех: ' + message); 
+            alert('Успех: ' + message);
         })
         .catch(error => {
             console.error('Ошибка:', error);
             alert('Ошибка: ' + error.message);
         });
-    });
+});
     </script>
 </body>
 </html>

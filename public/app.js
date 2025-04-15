@@ -274,14 +274,11 @@ function selectCell(event, nom) {
         cellEnd[nom] = dateStr;
         console.log('End date set:', cellEnd[nom]);
         
-        // Проверяем элементы перед присвоением
         if (!startDateSpan[nom] || !endDateSpan[nom]) {
             console.error('Spans not found for calendar', nom);
             return;
         }
-        
-        // Правильное присвоение значений
-        startDateSpan[nom].textContent = cellStart[nom];
+                startDateSpan[nom].textContent = cellStart[nom];
         endDateSpan[nom].textContent = cellEnd[nom];
         
         console.log('Updating modal with:', {

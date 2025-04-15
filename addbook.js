@@ -108,7 +108,7 @@ app.post('/find-user', (req, res) => {
 
 app.get('/api/calculate', async (req, res) => {
     try {
-        const { propertyId, startDate, endDate } = req.body;
+        const { propertyId, startDate, endDate } = req.query;
         const prices = await getPrices(propertyId);
         const result = calculatePrice(startDate, endDate, prices);
         
@@ -150,11 +150,11 @@ function calculatePrice(startDate, endDate, prices) {
     const details = [];
     
     for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
-        const dateStr = date.toISOString().split('T')[0];
+        const dateString = date.toISOString().split('T')[0];
         const dayPrice = getPriceForDate(date, prices);
         
         details.push({
-            date: dateStr,
+            date: dateString,
             price: dayPrice,
             dayType: getDayType(date)
         });
@@ -166,12 +166,12 @@ function calculatePrice(startDate, endDate, prices) {
 }
 
 function getPriceForDate(date, prices) {
-    const dateStr = date.toISOString().split('T')[0];
+    const dateString = date.toISOString().split('T')[0];
     const month = date.getMonth() + 1;
     const dayType = getDayType(date);
     
    
-    const singlePrice = prices.find(p => p.Class === '2' && p.single_date === dateStr);
+    const singlePrice = prices.find(p => p.Class === '2' && p.single_date === dateString);
     if (singlePrice) return singlePrice.PricePerDay;
     
   

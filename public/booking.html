@@ -113,7 +113,7 @@
             background-color: rgb(49, 133, 85); 
         }
     </style> 
-    <div id="modal1" style="display: none;">
+    <div id="modal1"  style="display: none;">
       <div class="modal-content">
         <span class="close close1">Закрыть</span>
         <p>Начальная дата: <span id="startDate1"></span></p>
@@ -124,17 +124,24 @@
     </div>
     
     <style>
+      #modal1 {
+      position: fixed;
+    left: 400px;
+    top:140px;
+    width: 250px;
+    height: 250px;
+    background-color: rgb(255, 255, 255);
+      }
+      #modal2 {
+      position: fixed;
+    left: 400px;
+    top:440px;
+    width: 250px;
+    height: 250px;
+    background-color: rgb(255, 255, 255);
+      }
     .modal-content {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
         padding: 20px;
-        border: 1px solid #ccc;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        z-index: 1000;
-        color: black;
     }
     
     .modal-content span {
@@ -250,15 +257,15 @@
               background-color: rgb(49, 133, 85); 
           }
       </style> 
-      <div id="modal2" style="display: none;">
-        <div class="modal">
-          <span class="close2">Закрыть</span>
+      <div id="modal2"  style="display: none;">
+        <div class="modal-content">
+          <span class="close close2">Закрыть</span>
           <p>Начальная дата: <span id="startDate2"></span></p>
           <p>Конечная дата: <span id="endDate2"></span></p>
-          <a id=br2 class=br href="clientbook.html">Забронировать</a>
+          <p>Общая стоимость: <span id="totalPrice2">0</span> руб.</p>
+          <a id="br1" class="br" href="clientbook.html">Забронировать</a>
         </div>
       </div>
-    -->
       <script>
         document.addEventListener('DOMContentLoaded', function () {
           workingKalendar(1);

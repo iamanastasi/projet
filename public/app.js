@@ -248,8 +248,9 @@ let cellEnd = { 1: '', 2: '' };
 let modal = { 1: null, 2: null };
 let startDateSpan = { 1: null, 2: null };
 let endDateSpan = { 1: null, 2: null };
+let totalPriceSpan = { 1: null, 2: null };
 
-function selectCell(event, nom) {
+async function selectCell(event, nom) {
     const cells = document.querySelectorAll('#kalendar'+nom+ ' td');
     const selectedCell = event.target;
     
@@ -274,10 +275,15 @@ function selectCell(event, nom) {
       
         startDateSpan[nom].textContent = cellStart[nom];
         endDateSpan[nom].textContent = cellEnd[nom];
-        
+        let totalPrice = await calculatePrice(nom, cellStart[nom], cellEnd[nom]); 
+        console.log(totalPrice);
+        totalPriceSpan[nom].textContent = totalPrice.toString();
+        localStorage.setItem('totalPrice' + nom, totalPrice);
+
         console.log('Выделенная ячейка:', selectedCell.textContent, selectionCount);        
         modal[nom].style.display = 'block';
     }
+    console.log('Выделенная ячейка:', selectedCell.textContent, selectionCount[nom]);  
 }
 function workingKalendar(nom) {
     createKalendar(getMesac(nom), getYear(nom), nom);
@@ -287,6 +293,7 @@ function workingKalendar(nom) {
     modal[nom] = document.getElementById('modal' + nom);
     startDateSpan[nom] = document.getElementById('startDate' + nom);
     endDateSpan[nom] = document.getElementById('endDate' + nom);
+    totalPriceSpan[nom] = document.getElementById('totalPrice' + nom);
     const closeModal = document.querySelector('.close' + nom);
 
     closeModal.onclick = function () {
@@ -304,14 +311,13 @@ function workingKalendar(nom) {
         cell.addEventListener('click', (event) => selectCell(event, nom));
     });
 
+    
     const brElement = document.getElementById('br' + nom);
         brElement.addEventListener('click', (event) => {
             event.preventDefault();
             localStorage.setItem('startDate' + nom, cellStart[nom]);
             localStorage.setItem('endDate' + nom, cellEnd[nom]);
             localStorage.setItem('propertyNumber', nom.toString());
-            const totalPrice =  calculatePrice(nom, startDate, endDate);
-    localStorage.setItem('totalPrice' + nom, totalPrice);
             window.location.href = 'clientbook.html';
         });
         
@@ -319,27 +325,38 @@ function workingKalendar(nom) {
 }
 async function calculatePrice(propertyId, startDate, endDate) {
     try {
-        const url = new URL('http://localhost:3000/api/calculate');
-        url.searchParams.append('propertyId', propertyId);
-        url.searchParams.append('startDate', startDate);
-        url.searchParams.append('endDate', endDate);
-        const response = await fetch(url.toString(), {
+        console.log('Запрос цены для:', { propertyId, startDate, endDate });
+
+        const url = `http://localhost:3000/api/calculate?propertyId=${propertyId}&startDate=${startDate}&endDate=${endDate}`;
+        
+        // 1. Делаем запрос с await
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
         });
 
+        // 2. Проверяем статус ответа
         if (!response.ok) {
-            throw new Error('Сетевая ошибка: ' + response.status);
+            const errorText = await response.text();
+            throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
         }
 
+        // 3. Парсим JSON с await
         const data = await response.json();
         
-        console.log('Результат:', data);
-        return data.total;
+        console.log('Результат расчета:', data);
+        
+        // 4. Возвращаем total или 0, если не найдено
+        return data.total || 0;
+                                          
     } catch (error) {
-        console.error('Ошибка:', error);
+        console.error('Ошибка при расчете цены:', {
+            error: error.message,
+            request: { propertyId, startDate, endDate },
+            timestamp: new Date().toISOString()
+        });
+        return 0;
     }
-    return 0;
 }

@@ -29,14 +29,14 @@
         <input type="hidden" id="UserID" name="UserID" required><br>  
         <p>UserID: <span id="userIdResult"></span></p>
         <input type="hidden" id="PropertyID" name="PropertyID" required><br>
-        <label for="Amount">Стоимость:</label>
-        <input type="number" id="Amount" name="Amount" required><br>
+    
+        <input type="hidden" id="Amount" name="Amount" required><br>
 
         <label for="NumberPers">Количество человек:</label>
         <input type="number" id="NumberPers" name="NumberPers"required><br>
         <input type="hidden" id="StartDate" name="StartDate" required><br>
         <input type="hidden" id="EndDate" name="EndDate"required>
-
+        <p>Стоимость: <span id="anketPrice"></span></p>
         <p>Начальная дата: <span id="anketStartDate"></span></p>
         <p>Конечная дата: <span id="anketEndDate"></span></p>
         <p>Нажмите 2 раза</p>
@@ -47,6 +47,7 @@
         const propID = localStorage.getItem('propertyNumber');
         const startDate = localStorage.getItem('startDate'+propID);
         const endDate = localStorage.getItem('endDate'+propID);
+        const price = localStorage.getItem('totalPrice'+propID);
 
         if (startDate && endDate) {
             document.getElementById('PropertyID').value= propID;
@@ -54,6 +55,8 @@
             document.getElementById('StartDate').value= startDate;
             document.getElementById('anketEndDate').textContent=endDate;
             document.getElementById('EndDate').value= endDate;
+            document.getElementById('anketPrice').textContent=price;
+            document.getElementById('Amount').value= price;
         } else {
             document.getElementById('anketStartDate').textContent='Не указана';
             document.getElementById('anketEndDate').textContent='Не указана';

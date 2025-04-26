@@ -10,7 +10,7 @@
   </head>
 
 <body>
-    <h1>Бронирование</h1>
+    <h1 class="hform">Бронирование</h1>
     <form id="searchUserForm">
         <label for="secondName">Фамилия:</label>
         <input type="text" id="secondName" name="secondName" required><br>
@@ -27,9 +27,9 @@
     </form>
     <form id="bookingForm" action="http://localhost:3000/add-book" method="POST">
         <input type="hidden" id="UserID" name="UserID" required><br>  
-        <p>UserID: <span id="userIdResult"></span></p>
         <input type="hidden" id="PropertyID" name="PropertyID" required><br>
-    
+        <p hidden>UserID: <span id="userIdResult"></span></p>
+
         <input type="hidden" id="Amount" name="Amount" required><br>
 
         <label for="NumberPers">Количество человек:</label>
@@ -39,7 +39,6 @@
         <p>Стоимость: <span id="anketPrice"></span></p>
         <p>Начальная дата: <span id="anketStartDate"></span></p>
         <p>Конечная дата: <span id="anketEndDate"></span></p>
-        <p>Нажмите 2 раза</p>
         <button type="submit">Забронировать</button>
     </form>
  

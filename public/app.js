@@ -92,7 +92,7 @@ fetch('http://localhost:3000/api/mydatabase')
             const rangeend = booking.EndDate;
             const propertyrow = booking.PropertyID;
             console.log(rangestart, rangeend, propertyrow);
-            CellsStatus(rangestart, rangeend, propertyrow);
+            CellsStatus(rangestart, rangeend, propertyrow, 1);
         });
     })
     .catch(error => {
@@ -112,7 +112,15 @@ function getDayFromDate(dateString) {
     return Number(day); 
 }
 
-function CellsStatus(rangestart, rangeend, propertyrow) {
+function CellsStatus(rangestart, rangeend, propertyrow, status) {
+    if(status==1)
+    {
+        let color='rgb(255, 117, 117)';
+    }
+    else if (status==2)
+    {
+        let color='rgb(49, 133, 85)';
+    }
     const startMonth = getMonthFromDate(rangestart);
     const endMonth = getMonthFromDate(rangeend);
     const startDay = getDayFromDate(rangestart);
@@ -130,7 +138,7 @@ function CellsStatus(rangestart, rangeend, propertyrow) {
         console.log(today, startDay, endDay, startNomer, endNomer);
         for(let i=startNomer+1; i<=endNomer+1; i++)
         {
-            cells[i].style.backgroundColor = 'rgb(255, 117, 117)'; 
+            cells[i].style.backgroundColor = color; 
         }
     }
     if(startMonth==month+2&&endMonth==month+2)
@@ -144,7 +152,7 @@ function CellsStatus(rangestart, rangeend, propertyrow) {
             console.log(today, startDay, endDay, startNomer, endNomer);
             for(let i=startNomer+1; i<=endNomer+1; i++)
             {
-                cells[i].style.backgroundColor = 'rgb(255, 117, 117)'; 
+                cells[i].style.backgroundColor = color; 
             }
         }
     if(startMonth!=endMonth) 
@@ -163,7 +171,7 @@ function CellsStatus(rangestart, rangeend, propertyrow) {
         console.log(today, startDay, endDay, startNomer, endNomer);
         for(let i=startNomer+1; i<=endNomer+1 ; i++)
         {
-            cells[i].style.backgroundColor = 'rgb(255, 117, 117)'; 
+            cells[i].style.backgroundColor = color; 
         }
     }
 }
@@ -195,7 +203,16 @@ i++;
 return startDay;
 }
 
-function CellsStatusClient(rangestart, rangeend, nom) {
+function CellsStatusClient(rangestart, rangeend, nom, status) {
+    let stat;
+    if(status==1)
+    {
+     stat='no';   
+    }
+    else if (status==2)
+        {
+         stat='mb';   
+        }
     const startMonth = getMonthFromDate(rangestart);
     const endMonth = getMonthFromDate(rangeend);
     const startDay = getDayFromDate(rangestart);
@@ -214,7 +231,8 @@ function CellsStatusClient(rangestart, rangeend, nom) {
     console.log(m, startMonth, startDay, endDay, startNomer, endNomer);
     for (let i = startNomer-1; i < endNomer; i++) {
         if (cells[i]) {
-            cells[i].style.backgroundColor = 'rgb(255, 117, 117)';
+            cells[i].classList.add(stat);
+            
         }
     }
 }
@@ -231,7 +249,7 @@ function getDatesClient(nom) {
         .then(data => {
             console.log('Bookings:', data);
             data.forEach(booking => {
-                CellsStatusClient(booking.StartDate, booking.EndDate, nom);
+                CellsStatusClient(booking.StartDate, booking.EndDate, nom, 1);
             });
         })
         .catch(error => console.error('Error:', error));
@@ -249,6 +267,8 @@ let modal = { 1: null, 2: null };
 let startDateSpan = { 1: null, 2: null };
 let endDateSpan = { 1: null, 2: null };
 let totalPriceSpan = { 1: null, 2: null };
+let dCheck1 = { 1: null, 2: null };
+let dCheck2 = { 1: null, 2: null };
 
 async function selectCell(event, nom) {
     const cells = document.querySelectorAll('#kalendar'+nom+ ' td');
@@ -267,12 +287,23 @@ async function selectCell(event, nom) {
     const month = (getMesac(nom)+1).toString().padStart(2, '0');
     const year = getYear(nom);
     const dateStr = `${year}-${month}-${day}`;
+    const dateCheck = new Date(year, month-1, day);
     
     if (selectionCount[nom] === 1) {
         cellStart[nom] = dateStr;
+        dCheck1[nom]=dateCheck;
+        const cells = document.querySelectorAll('#kalendar'+nom+ ' td');
+        cells.forEach(cell => cell.classList.remove('mb'));
     } else if (selectionCount[nom] === 2) {
         cellEnd[nom] = dateStr;
-      
+        dCheck2[nom]=dateCheck;
+        if(dCheck1[nom]>dCheck2[nom])
+        {
+            let helpdate=cellStart[nom];
+            cellStart[nom]=cellEnd[nom];
+            cellEnd[nom]=helpdate;
+        }
+        CellsStatusClient(cellStart[nom], cellEnd[nom], nom, 2);
         startDateSpan[nom].textContent = cellStart[nom];
         endDateSpan[nom].textContent = cellEnd[nom];
         let totalPrice = await calculatePrice(nom, cellStart[nom], cellEnd[nom]); 
@@ -280,7 +311,6 @@ async function selectCell(event, nom) {
         totalPriceSpan[nom].textContent = totalPrice.toString();
         localStorage.setItem('totalPrice' + nom, totalPrice);
 
-        console.log('Выделенная ячейка:', selectedCell.textContent, selectionCount);        
         modal[nom].style.display = 'block';
     }
     console.log('Выделенная ячейка:', selectedCell.textContent, selectionCount[nom]);  
@@ -325,33 +355,24 @@ function workingKalendar(nom) {
 }
 async function calculatePrice(propertyId, startDate, endDate) {
     try {
-        console.log('Запрос цены для:', { propertyId, startDate, endDate });
 
         const url = `http://localhost:3000/api/calculate?propertyId=${propertyId}&startDate=${startDate}&endDate=${endDate}`;
         
-        // 1. Делаем запрос с await
         const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
         });
-
-        // 2. Проверяем статус ответа
         if (!response.ok) {
             const errorText = await response.text();
             throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
         }
 
-        // 3. Парсим JSON с await
-        const data = await response.json();
-        
-        console.log('Результат расчета:', data);
-        
-        // 4. Возвращаем total или 0, если не найдено
+        const data = await response.json();        
         return data.total || 0;
                                           
-    } catch (error) {
+    } catch (error){
         console.error('Ошибка при расчете цены:', {
             error: error.message,
             request: { propertyId, startDate, endDate },
